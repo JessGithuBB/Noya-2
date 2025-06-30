@@ -11,3 +11,24 @@ import './styles/app.scss';
 require('bootstrap');
 import 'bootstrap-icons/font/bootstrap-icons.css'; 
 import './styles/app.scss';
+
+
+
+
+/////////////  Icon Search ///////////////
+
+const searchToggle = document.getElementById('searchToggle');
+const searchInput = document.getElementById('searchInput');
+
+searchToggle.addEventListener('click', () => {
+  searchInput.classList.toggle('expanded');
+  if (searchInput.classList.contains('expanded')) {
+    searchInput.focus();
+  }
+});
+
+document.addEventListener('click', (e) => {
+  if (!document.querySelector('.search-container').contains(e.target)) {
+    searchInput.classList.remove('expanded');
+  }
+});

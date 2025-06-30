@@ -4,20 +4,92 @@
   font-weight:400 ;
   font-style: normal;
 }
+
+///////  Navbar ///////
 .navbar-brand{
+  background-color: rgb(255, 255, 255);
   font-family: "Nunito", sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
 }
 
+
 .navbar-brand img {
-    width: 150px; 
-    height: 150px;  
+  margin-left: 10px;
+    width: 60px; 
+    height: 40px;  
 }
 
 .navbar-nav .nav-item {
     margin-left: 0.75rem;
     margin-right: 0.75rem;
 }
+
+///// Bannière livraison /////
+
+.promo-banner {
+    font-family: "Nunito", sans-serif;
+    background-color: rgb(207, 233, 165);
+    font-size: 1px;
+}
+
+/////  Icon search ///////
+.search-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+#searchInput {
+  width: 0;
+  opacity: 0;
+  padding: 0.5rem;
+  margin-left: 10px;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  border-radius: 5px;
+}
+
+#searchInput.expanded {
+  width: 200px; /* Largeur quand ouvert */
+  opacity: 1;
+}
+
+.search-icon {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 10px;
+  cursor: pointer;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+
+    i {
+      font-size: 1.2rem;
+      color: inherit;
+    }
+  }
+
+  /////// Caroussel ////////
+.carousel {
+  max-height: 70vh; // ou 60vh pour ne pas dépasser l'écran
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+//// Service client //////
+.service {
+   font-family: "Nunito", sans-serif;
+   background-color: rgb(207, 233, 165);
+}
+
+
+
+
 
