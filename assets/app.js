@@ -1,10 +1,34 @@
-import './bootstrap.js';
 /*
  * Welcome to your app's main JavaScript file!
  *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
+ * We recommend including the built version of this JavaScript file
+ * (and its CSS file) in your base layout (base.html.twig).
  */
-import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+// any CSS you import will output into a single css file (app.css in this case)
+import './styles/app.scss';
+
+require('bootstrap');
+import 'bootstrap-icons/font/bootstrap-icons.css'; 
+import './styles/app.scss';
+
+
+
+
+/////////////  Icon Search ///////////////
+
+const searchToggle = document.getElementById('searchToggle');
+const searchInput = document.getElementById('searchInput');
+
+searchToggle.addEventListener('click', () => {
+  searchInput.classList.toggle('expanded');
+  if (searchInput.classList.contains('expanded')) {
+    searchInput.focus();
+  }
+});
+
+document.addEventListener('click', (e) => {
+  if (!document.querySelector('.search-container').contains(e.target)) {
+    searchInput.classList.remove('expanded');
+  }
+});

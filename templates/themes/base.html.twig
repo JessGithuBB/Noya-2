@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Noya{% endblock %}</title>
+
+        {# SEO #}
+        <meta name="description" content="{% block description %}{% endblock %}">
+        <meta name="robots" content="index, follow">    
+        <meta name="author" content="Noya">    
+        <meta name="publisher" content="Augier Jessica">    
+
+        {# Google font #}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+       
+        {# Favicon #}
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        
+
+        {# Logo #}
+       <link rel="icon" href="{{ asset('build/images/logo-noya.png') }}">
+      
+      
+      
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        <!-- Bannière promo -->
+        <div class="container-fluid p-0">
+        <div class="promo-banner p-3 p-md-4 d-flex justify-content-center align-items-center min-vh-5">
+            <h1 class="h6 md mb-0">Livraison gratuite à partir de 30 € d'achat</h1>
+        </div>
+        </div>
+
+        <!-- Navbar -->
+
+        <nav class="navbar navbar-expand-lg">
+        <!-- Logo -->
+            <a class="navbar-brand img" href="{{path('app_visitor_welcome')}}">
+
+                <img src="{{ asset('build/images/n-logo.png') }}"
+                    alt="Logo Noya" 
+                    width="50" 
+                    height="50"
+                    class="d-inline-block align-text-top">
+            </a>
+
+        <!-- Bouton recherche et champ -->
+
+                <div class="search-container">
+                <button id="searchToggle" class="search-icon">
+                    <i class="bi bi-search"></i> <!-- Icône Bootstrap Icons -->
+                </button>
+                <input type="text" id="searchInput" placeholder="Rechercher..." />
+                </div>
+
+        <!-- Icône de recherche -->
+            </button>
+            <div id="searchBox" class="search-box collapse">
+                <form class="d-flex"> 
+                    <input class="form-control me-2" 
+                           type="search" 
+                           name="q"
+                           placeholder="Rechercher..." 
+                           aria-label="Search">
+                    <button class="btn " type="submit"> 
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+
+<!-- Menu -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+
+        <!-- Logo (optionnel ici) -->
+
+        <!-- Menu -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+
+        <!-- Logo (optionnel ici) -->
+
+        <!-- Bouton toggler -->
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarToggler"
+                aria-controls="navbarToggler"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Contenu collapsible -->
+        <div class="collapse navbar-collapse" id="navbarToggler">
+
+            <!-- Menu centré -->
+            <div class="mx-auto">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="{{path('app_visitor_nouveautés_index')}}">Nouveautés</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Best-sellers</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Soin de la peau</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Corps et cheveux</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Problématique Cutanée</a></li>
+                </ul>
+            </div>
+
+            <!-- Icônes à droite -->
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="{{ asset('build/images/user.png') }}"
+                             alt="User"
+                             width="30"
+                             height="30">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="{{ asset('build/images/panier.png') }}"
+                             alt="Panier"
+                             width="30"
+                             height="30">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</nav>
+
+
+</nav>
+        {# Main #}
+         {% block main %}
+            
+         {% endblock %}
+        {# Footer #}
+<footer class="bg-light py-4">
+    <div class="container">
+        <div class="row align-items-start">
+            <!-- Colonne Logo -->
+            <div class="col-12 col-md-3 mb-3 mb-md-0">
+                <a href="{{ path('app_visitor_welcome') }}">
+                    <img src="{{ asset('build/images/n-logo.png') }}"
+                         alt="Logo Noya"
+                         width="80"
+                         height="80">
+                </a>
+            </div>
+
+            <!-- Colonne navigation : Qui sommes-nous + Aide -->
+            <div class="col-12 col-md-9">
+                <div class="row">
+                    <!-- Qui sommes-nous -->
+                    <div class="col-6 col-lg-4 mb-3">
+                        <div class="fw-bold fs-5">À propos</div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="{{ path('app_visitor_welcome') }}#about-me">Qui sommes-nous ?</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">La Qualité Noya</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Fiches produits</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Aide et support -->
+                    <div class="col-6 col-lg-4 mb-3">
+                        <div class="fw-bold fs-5">Aide et support</div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="{{path('app_visitor_contact-us')}}">Service client</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Paiement sécurisé</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Frais de port</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Informations légales -->
+                    <div class="col-12 col-lg-4 mb-3">
+                        <div class="fw-bold fs-5">Informations</div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Mentions légales</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Politiques Cookies</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Conditions générales</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    </body>
+</html>
