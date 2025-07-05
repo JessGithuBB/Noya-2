@@ -7,10 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Impossible de créer un compte avec cet email, il est déjà utilisé.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,9 +22,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
 
+    #[Assert\NotBlank(message: 'Le nom est obligatoire.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le nom ne doit pas dépasser {{ limit }} caractères',
+    )]
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
+    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "L'email ne doit pas dépasser {{ limit }} caractères",
+    )]
+    #[Assert\Email(
+        message: "L'email est invalide ",
+    )]
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
@@ -33,16 +47,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    #[ORM\Column]
+    private bool $isVerified = false;
 
     /**
      * @var string The hashed password
      */
+    #[Assert\NotBlank(message: 'Le mot de passe est obligatoire.')]
+    #[Assert\Length(
+        min: 12,
+        max: 255,
+        minMessage: 'Le mot de passe doit contenir au moins {{ limit}} caractères',
+        maxMessage: 'Le mot de passe ne doit pas dépasser {{ limit }} caractères',
+    )]
+    #[Assert\Regex(
+        pattern: "/^(?=.*[a-zà-ÿ])(?=.*\d)(?=.*[^a-zà-ÿA-Z0-9]).{11,255}$/iu",
+        match: true,
+        message: 'Le mot de passe doit contenir au moins une lettre minuscule, un chiffre, un caractère spécial et avoir entre 11 et 255 caractères.'
+    )]
     #[ORM\Column]
     private ?string $password = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
@@ -52,9 +81,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
-
-    #[ORM\Column]
-    private bool $isVerified = false;
 
     public function getEmail(): ?string
     {
