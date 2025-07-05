@@ -15,7 +15,7 @@ class EmailVerifier
     public function __construct(
         private VerifyEmailHelperInterface $verifyEmailHelper,
         private MailerInterface $mailer,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -46,6 +46,8 @@ class EmailVerifier
         $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), (string) $user->getEmail());
 
         $user->setIsVerified(true);
+        $user->setVerifiedAt(new \DateTimeImmutable());
+        $user->setupdatedAt(new \DateTimeImmutable());
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

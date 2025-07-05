@@ -31,6 +31,26 @@
     <span class="visually-hidden">Suivant</span>
   </button>
 </div>
+
+{% for message in app.flashes('confirmation_email_sent') %}
+    <div id="confirmation-popup" class="popup-validate">
+        <div class="popup-content">
+            <p>{{ message }}</p>
+            <button onclick="closeConfirmationPopup()">Fermer</button>
+        </div>
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('welcome') %}
+    <div id="welcome-popup" class="popup-hi">
+        <div class="popup-content">
+            <p>{{ message }}</p>
+            <button onclick="closeWelcomePopup()">Fermer</button>
+        </div>
+    </div>
+{% endfor %}
+
+
 {% endblock %}
 
 

@@ -15,6 +15,7 @@ import './styles/app.scss';
 
 
 
+
 /////////////  Icon Search ///////////////
 
 const searchToggle = document.getElementById('searchToggle');
@@ -32,3 +33,14 @@ document.addEventListener('click', (e) => {
     searchInput.classList.remove('expanded');
   }
 });
+
+
+window.closeConfirmationPopup = function () {
+    const popup = document.getElementById('confirmation-popup');
+    if (popup) popup.style.display = 'none';
+};
+
+window.closeWelcomePopup = function () {
+    const popup = document.getElementById('welcome-popup');
+    if (popup) popup.style.display = 'none';
+};
