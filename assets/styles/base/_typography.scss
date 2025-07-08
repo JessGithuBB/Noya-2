@@ -89,7 +89,22 @@
    background-color: #cfe9a5;
 }
 
+.button-register {
+  background-color: #cfe9a5;
+  color: #000;
+  border: none;
+  padding: 12px 20px;
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 0;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
-
+.button-register:hover {
+  background-color: #b6d181;
+}
 
 

@@ -9,7 +9,7 @@
         <meta name="description" content="{% block description %}{% endblock %}">
         <meta name="robots" content="index, follow">    
         <meta name="author" content="Noya">    
-        <meta name="publisher" content="Augier Jessica">    
+        <meta name="publisher" content=" Jessica">    
 
         {# Google font #}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -125,7 +125,7 @@
             <!-- Icônes à droite -->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ path('app_register') }}">
                         <img src="{{ asset('build/images/user.png') }}"
                              alt="User"
                              width="30"
