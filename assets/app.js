@@ -34,7 +34,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-
+ /////////////// Confirmation et Bienvenue Popups /////////////////
 window.closeConfirmationPopup = function () {
     const popup = document.getElementById('confirmation-popup');
     if (popup) popup.style.display = 'none';
