@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <title>Register</title>
-
+{% extends "themes/base.html.twig" %}
 {% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
@@ -21,3 +21,9 @@
         <button formnovalidate type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
+
+
+
+{#} {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
