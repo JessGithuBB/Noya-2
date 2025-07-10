@@ -89,45 +89,22 @@
    background-color: #cfe9a5;
 }
 
-
-.popup-validate {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 1000;
-}
-.popup-content {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 400px;
+.button-register {
+  background-color: #cfe9a5;
+  color: #000;
+  border: none;
+  padding: 12px 20px;
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 0;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.popup-hi {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* fond grisé */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+.button-register:hover {
+  background-color: #b6d181;
 }
-
-.popup-content {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-}
-
-
 
 
