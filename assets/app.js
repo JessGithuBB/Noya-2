@@ -35,12 +35,41 @@ document.addEventListener('click', (e) => {
 });
 
  /////////////// Confirmation et Bienvenue Popups /////////////////
-window.closeConfirmationPopup = function () {
-    const popup = document.getElementById('confirmation-popup');
-    if (popup) popup.style.display = 'none';
-};
 
-window.closeWelcomePopup = function () {
-    const popup = document.getElementById('welcome-popup');
-    if (popup) popup.style.display = 'none';
-};
+document.addEventListener('DOMContentLoaded', function () {
+    // Sélectionne tous les popups
+    const popups = document.querySelectorAll('.popup');
+
+    popups.forEach((popup) => {
+        popup.style.display = 'flex';
+
+        const closeBtn = popup.querySelector('.close-popup');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+        }
+    });
+});
+
+
+////////////// POP UP CLICK USER MENU ///////////////
+
+document.addEventListener('DOMContentLoaded', function() {
+    const userToggle = document.querySelector('.user-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu-user');
+
+    if (userToggle && dropdownMenu) {
+        userToggle.addEventListener('click', function(event) {
+            event.preventDefault();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Optionnel : cliquer ailleurs ferme le menu
+        document.addEventListener('click', function(event) {
+            if (!userToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+    }
+});

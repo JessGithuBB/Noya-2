@@ -87,12 +87,12 @@
 
 
 <!-- Menu -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light ">
     <div class="container-fluid">
 
 
         <!-- Menu -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light ">
             <div class="container-fluid">
 
 
@@ -112,6 +112,8 @@
 
             <!-- Menu centré -->
             <div class="mx-auto">
+
+            
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active" href="{{path('app_visitor_nouveautés_index')}}">Nouveautés</a></li>
                     <li class="nav-item"><a class="nav-link active" href="{{path('app_visitor_best-sellers')}}">Best-sellers</a></li>
@@ -122,15 +124,33 @@
             </div>
 
             <!-- Icônes user droite -->
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{path('app_register')}}">
-                        <img src="{{ asset('build/images/user.png') }}"
-                             alt="User"
-                             width="30"
-                             height="30">
-                    </a>
-                </li>
+                        {% if app.user %}
+                        <li class="nav-item dropdown-user">
+                            <a class="nav-link user-toggle" href="#">
+                                <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
+                            </a>
+                            <div class="dropdown-menu-user">
+                                <div class="welcome-message">
+                                    Bonjour, {{ app.user.firstName }} !
+                                </div>
+                                <br>
+                                <br>
+
+                                <div class="separator"></div>
+                                <br>
+                                <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                            </div>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_login') }}">
+                                <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
+                            </a>
+                        </li>
+                        {% endif %}
+
+
+
              <!-- Icônes panier droite -->
                 <li class="nav-item">
                     <a class="nav-link" href="#">
@@ -149,36 +169,64 @@
 
 
 </nav>
-        {# Main #}
-         {% block main %}
-            
-         {% endblock %}
+                            {# Main #}
+                            {% block main %}
+
+                            {% for message in app.flashes('confirmation_email_sent') %}
+                        <div class="popup popup-validate">
+                            <div class="popup-content">
+                                <p>{{ message }}</p>
+                                <button class="close-popup">Fermer</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% for message in app.flashes('success') %}
+                        <div class="popup popup-success">
+                            <div class="popup-content">
+                                <p>{{ message }}</p>
+                                <button class="close-popup">Fermer</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% for message in app.flashes('welcome') %}
+                        <div class="popup popup-hi">
+                            <div class="popup-content">
+                                <p>{{ message }}</p>
+                                <button class="close-popup">Fermer</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                            {% endblock %}
         {# Footer #}
-<footer class="bg-light py-4">
-    <div class="container">
+<footer class="footer py-4">
+    <div class="container-fluid">
         <div class="row align-items-start">
             <!-- Colonne Logo -->
-            <div class="col-12 col-md-2 mb-4 mb-md-0 d-flex justify-content-start">
+            <div class="col-12 col-md-2 p-0 text-start text-md-center ">
                 <a href="{{ path('app_visitor_welcome') }}">
                     <img src="{{ asset('build/images/new-noya2.png') }}"
                          alt="Logo Noya"
-                         width="100"
-                         height="100">
+                         width="110"
+                         height="80">
                 </a>
             </div>
 
             <!-- Colonne navigation : Qui sommes-nous + Aide -->
-            <div class="col-12 col-md-9">
+            <div class="col-12 col-md-9 d-flex ">
                 <div class="row">
                     <!-- Qui sommes-nous -->
                     <div class="col-6 col-lg-4 mb-3">
-                        <div class="fw-bold fs-5">À propos</div>
-                        <ul class="nav flex-column">
-                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="{{path('app_visitor_about_us')}}">Qui sommes nous </a></li>
+                        <div class="fw-bold fs-5 ms-1">À propos</div>
+                        <ul class="nav flex-column ">
+                            <li class="nav-item "><a class="nav-link p-0 text-dark" href="{{path('app_visitor_about_us')}}">Qui sommes nous </a></li>
                             <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">La Qualité Noya</a></li>
                             <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Fiches produits</a></li>
                         </ul>
                     </div>
+                    
 
                     <!-- Aide et support -->
                     <div class="col-6 col-lg-4 mb-3">
