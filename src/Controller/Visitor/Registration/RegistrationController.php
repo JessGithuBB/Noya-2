@@ -61,32 +61,31 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
-    {
-        $id = $request->query->get('id');
+        #[Route('/verify/email', name: 'app_verify_email')]
+        public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
+        {
+            $id = $request->query->get('id');
 
-        if (null === $id) {
-            return $this->redirectToRoute('app_register');
+            if (null === $id) {
+                return $this->redirectToRoute('app_register');
+            }
+
+            $user = $userRepository->find($id);
+
+            if (null === $user) {
+                return $this->redirectToRoute('app_register');
+            }
+
+            try {
+                $this->emailVerifier->handleEmailConfirmation($request, $user);
+                $this->addFlash('success', $translator->trans('Votre adresse email a bien été vérifiée.', [], 'VerifyEmailBundle'));
+            } catch (VerifyEmailExceptionInterface $exception) {
+                $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+                return $this->redirectToRoute('app_register');
+            }
+            //$this->addFlash('confirmation_email_sent', 'Merci de valider votre compte en cliquant sur le lien envoyé par email.');//
+
+            return $this->redirectToRoute('app_visitor_welcome'); // Modifier cette route selon ta logique
         }
 
-        $user = $userRepository->find($id);
-
-        if (null === $user) {
-            return $this->redirectToRoute('app_register');
-        }
-
-        // lien de validation reçu dans le mail
-        try {
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-
-            return $this->redirectToRoute('app_visitor_welcome');
-        }
-
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('welcome', 'Bienvenue '.$user->getFirstName().' !');
-
-        return $this->redirectToRoute('app_visitor_welcome');
-    }
 }
