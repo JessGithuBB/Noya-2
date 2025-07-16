@@ -46,129 +46,84 @@
         </div>
         </div>
 
-        <!-- Navbar -->
+ <nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
 
-        <nav class="navbar navbar-expand-lg">
-        <!-- Logo -->
-            <a class="navbar-brand img" href="{{path('app_visitor_welcome')}}">
+    <!-- Logo + recherche -->
+    <div class="d-flex align-items-center gap-3">
+      <!-- Logo -->
+      <a class="navbar-brand" href="{{ path('app_visitor_welcome') }}">
+        <img src="{{ asset('build/images/n-logo.png') }}" alt="Logo Noya" width="50" height="50" class="d-inline-block align-text-top">
+      </a>
 
-                <img src="{{ asset('build/images/n-logo.png') }}"
-                    alt="Logo Noya" 
-                    width="50" 
-                    height="50"
-                    class="d-inline-block align-text-top">
-            </a>
-
-        <!-- Bouton recherche et champ -->
-
-                <div class="search-container">
-                <button id="searchToggle" class="search-icon">
-                    <i class="bi bi-search"></i> <!-- Icône Bootstrap Icons -->
-                </button>
-                <input type="text" id="searchInput" placeholder="Rechercher..." />
-                </div>
-
-        <!-- Icône de recherche -->
-            </button>
-            <div id="searchBox" class="search-box collapse">
-                <form class="d-flex"> 
-                    <input class="form-control me-2" 
-                           type="search" 
-                           name="q"
-                           placeholder="Rechercher..." 
-                           aria-label="Search">
-                    <button class="btn " type="submit"> 
-                        <i class="bi bi-arrow-right"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-
-
-
-<!-- Menu -->
-<nav class="navbar navbar-expand-lg navbar-light ">
-    <div class="container-fluid">
-
-
-        <!-- Menu -->
-        <nav class="navbar navbar-expand-lg navbar-light ">
-            <div class="container-fluid">
-
-
-
-        <!-- Bouton toggler -->
-        <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarToggler"
-                aria-controls="navbarToggler"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+      <!-- Bouton recherche et champ -->
+      <div class="search-container d-flex align-items-center">
+        <button id="searchToggle" class="btn btn-link p-0 search-icon" type="button" data-bs-toggle="collapse" data-bs-target="#searchBox" aria-expanded="false" aria-controls="searchBox">
+          <i class="bi bi-search fs-4"></i>
         </button>
-
-        <!-- Contenu collapsible -->
-        <div class="collapse navbar-collapse" id="navbarToggler">
-
-            <!-- Menu centré -->
-            <div class="mx-auto">
-
-            
-                <ul class="navbar-nav mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" href="{{path('app_visitor_nouveautés_index')}}">Nouveautés</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{path('app_visitor_best-sellers')}}">Best-sellers</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{path('app_visitor_soin_de_la_peau')}}">Soin de la peau</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{path('app_visitor_corps_et_cheveux')}}">Corps et cheveux</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{path('app_visitor_problematique_cutanee')}}">Problématique Cutanée</a></li>
-                </ul>
-            </div>
-
-            <!-- Icônes user droite -->
-                        {% if app.user %}
-                        <li class="nav-item dropdown-user">
-                            <a class="nav-link user-toggle" href="#">
-                                <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
-                            </a>
-                            <div class="dropdown-menu-user">
-                                <div class="welcome-message">
-                                    Bonjour, {{ app.user.firstName }} !
-                                </div>
-                                <br>
-                                <br>
-
-                                <div class="separator"></div>
-                                <br>
-                                <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
-                            </div>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_login') }}">
-                                <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
-                            </a>
-                        </li>
-                        {% endif %}
-
-
-
-             <!-- Icônes panier droite -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <img src="{{ asset('build/images/panier.png') }}"
-                             alt="Panier"
-                             width="30"
-                             height="30">
-                    </a>
-                </li>
-            </ul>
-        </div>
+      </div>
     </div>
+
+    <!-- Recherche déroulante (collapse) -->
+    <div class="collapse" id="searchBox">
+      <form class="d-flex ms-3" role="search" method="get" action="/search">
+        <input class="form-control me-2" type="search" name="q" placeholder="Rechercher..." aria-label="Search" />
+        <button class="btn btn-outline-primary" type="submit">
+          <i class="bi bi-arrow-right"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Bouton toggler (pour mobile) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menu + icônes -->
+    <div class="collapse navbar-collapse" id="navbarToggler">
+      <!-- Menu centré -->
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 d-flex justify-content-center w-100">
+        <li class="nav-item"><a class="nav-link active" href="{{ path('app_visitor_nouveautés_index') }}">Nouveautés</a></li>
+        <li class="nav-item"><a class="nav-link active" href="{{ path('app_visitor_best-sellers') }}">Best-sellers</a></li>
+        <li class="nav-item"><a class="nav-link active" href="{{ path('app_visitor_soin_de_la_peau') }}">Soin de la peau</a></li>
+        <li class="nav-item"><a class="nav-link active" href="{{ path('app_visitor_corps_et_cheveux') }}">Corps et cheveux</a></li>
+        <li class="nav-item"><a class="nav-link active" href="{{ path('app_visitor_problematique_cutanee') }}">Problématique Cutanée</a></li>
+      </ul>
+
+      <!-- Icônes à droite -->
+      <ul class="navbar-nav d-flex align-items-center gap-3">
+      <!-- liste deroulante  -->
+{% if app.user %}
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+    <li><h5 class="dropdown-header">Bonjour, {{ app.user.firstName }} !</h5></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+  </ul>
+</li>
+{% else %}
+<li class="nav-item">
+  <a class="nav-link" href="{{ path('app_login') }}">
+    <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
+  </a>
+</li>
+{% endif %}
+
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <img src="{{ asset('build/images/panier.png') }}" alt="Panier" width="30" height="30">
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
 
-</nav>
 
-
-</nav>
                             {# Main #}
                             {% block main %}
 

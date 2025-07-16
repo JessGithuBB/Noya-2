@@ -11,59 +11,65 @@
 
             {{ form_start(registrationForm) }}
 
-                <div class="mb-3">
-                    {{ form_widget(registrationForm.firstName, {
-                        'attr': {
-                            'placeholder': 'Prénom',
-                            'class': 'form-control border-0 border-bottom border-dark rounded-0 px-0'
-                        }
-                    }) }}
-                </div>
-                <br>
-                <div class="mb-3">
-                    {{ form_widget(registrationForm.lastName, {
-                        'attr': {
-                            'placeholder': 'Nom',
-                            'class': 'form-control border-0 border-bottom border-dark rounded-0 px-0'
-                        }
-                    }) }}
-                </div>
-                <br>
-                <div class="mb-3">
-                    {{ form_widget(registrationForm.email, {
-                        'attr': {
-                            'placeholder': 'Email',
-                            'class': 'form-control border-0 border-bottom border-dark rounded-0 px-0'
-                        }
-                    }) }}
-                </div>
-                <br>
-                <div class="mb-3">
-                    {{ form_widget(registrationForm.password.first, {
-                        'attr': {
-                            'placeholder': 'Mot de passe',
-                            'class': 'form-control border-0 border-bottom border-dark rounded-0 px-0'
-                        }
-                    }) }}
-                </div>
-                <br>
-                <div class="mb-3">
-                    {{ form_widget(registrationForm.password.second, {
-                        'attr': {
-                            'placeholder': 'Confirmation du mot de passe',
-                            'class': 'form-control border-0 border-bottom border-dark rounded-0 px-0'
-                        }
-                    }) }}
-                </div>
-                <br>
-                <div class="mb-3 form-check">
-                    {{ form_widget(registrationForm.agreeTerms) }} 
-                    <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
-                        Lire et accepter <a href="#">les conditions générales d'utilisation</a>
-                    </label>
-                </div>
-                <br>
-                <button type="submit" class="button-register">S'inscrire</button>
+            <div class="mb-3">
+                {{ form_widget(registrationForm.firstName, {
+                    'attr': {
+                        'placeholder': 'Prénom',
+                        'class': 'form-control'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.firstName) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_widget(registrationForm.lastName, {
+                    'attr': {
+                        'placeholder': 'Nom',
+                        'class': 'form-control'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.lastName) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_widget(registrationForm.email, {
+                    'attr': {
+                        'placeholder': 'Email',
+                        'class': 'form-control'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_widget(registrationForm.password.first, {
+                    'attr': {
+                        'placeholder': 'Mot de passe',
+                        'class': 'form-control'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.password.first) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_widget(registrationForm.password.second, {
+                    'attr': {
+                        'placeholder': 'Confirmation du mot de passe',
+                        'class': 'form-control'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.password.second) }}
+            </div>
+
+            <div class="mb-3 form-check">
+                {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
+                    Lire et accepter <a href="#">les conditions générales d'utilisation</a>
+                </label>
+                {{ form_errors(registrationForm.agreeTerms) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">S’inscrire</button>
 
             {{ form_end(registrationForm) }}
 
@@ -73,6 +79,7 @@
         </div>
     </div>
 {% endblock %}
+
 
 {#} {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>

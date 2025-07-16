@@ -107,14 +107,14 @@
 
                 <div class="mb-3">
                     <label for="inputEmail" class="form-label">Email</label>
-                    <input type="email"
-                           name="email"
-                           id="inputEmail"
-                           class="form-control"
-                           placeholder="Email"
-                           value="{{ last_username }}"
-                           required
-                           autofocus>
+                        <input type="email"
+                            name="email"
+                            id="inputEmail"
+                            class="form-control"
+                            placeholder="Email"
+                            value="{{ last_username }}"
+                            required>
+
                 </div>
 
                 <div class="mb-3">
@@ -131,6 +131,13 @@
                 <input type="hidden" name="_csrf_token"
                        value="{{ csrf_token('authenticate') }}"
                        data-controller="csrf-protection">
+                       <div class="mb-3 text-end">
+                            <a href="{{ path('app_forgot_password_request') }}" class="text-decoration-underline text-dark">
+                                Mot de passe oublié ?
+                            </a>
+                        </div>
+
+
 
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" name="_remember_me" id="rememberMe">
@@ -143,8 +150,12 @@
             </form>
         </div>
 
+        <br>
+        <br>
+
         <!-- Inscription -->
-        <div class="col-md-6 text-center d-flex flex-column justify-content-center align-items-center">
+
+        <div class="col-md-6 text-center d-flex flex-column justify-content-center align-items-center mt-5">
             
             <img src="{{ asset('build/images/new-noya2.png') }}" alt="new-noya2.png" class="img-fluid mb-4" style="max-width: 150px;">
             <p class="mb-4">Créez un compte pour profiter de tous nos services.</p>
