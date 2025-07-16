@@ -28,6 +28,17 @@
     margin-right: 0.75rem;
 }
 
+.navbar-nav {
+  list-style: none;      /* enlève puces */
+  padding-left: 0;       /* enlève padding gauche par défaut */
+  margin: 0;             /* enlève marges par défaut */
+}
+
+.navbar-nav li {
+  list-style: none;
+}
+
+
 ///// Bannière livraison /////
 
 .promo-banner {
@@ -122,6 +133,29 @@
   border-color: #cfe9a5 !important;        /* bord vert */
 }
 
+input.form-control:focus,
+textarea.form-control:focus,
+select.form-control:focus {
+  border-color: #cfe9a5 !important;
+  box-shadow: 0 0 0 0.2rem rgba(207, 233, 165, 0.5) !important;
+  outline: none !important;
+}
+
+input[autofocus].form-control,
+textarea[autofocus].form-control,
+select[autofocus].form-control {
+  border-color: #cfe9a5 !important;
+  box-shadow: 0 0 0 0.2rem rgba(207, 233, 165, 0.5) !important;
+  outline: none !important;
+}
+
+
+
+
+
+
+
+
 
 
 .footer {
@@ -181,4 +215,10 @@
 
 .separator {
   border-top: solid 1px #b6d181;
+}
+
+.separator-register {
+  margin-bottom: 15px;
+  margin-top: 15px;
+   border-top: solid 1px #b6d181;
 }
