@@ -94,6 +94,56 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+       // Adresse postale détaillée
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'L’adresse est obligatoire.')]
+    private ?string $street = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $addressComplement = null;
+
+    #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(message: 'Le code postal est obligatoire.')]
+    private ?string $postalCode = null;
+
+    #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: 'La ville est obligatoire.')]
+    private ?string $city = null;
+
+    #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: 'Le pays est obligatoire.')]
+    private ?string $country = null;
+
+    
+    #[ORM\Column(length:20, nullable:true)]
+     
+    private ?string $phoneNumber = null;
+
+    public function getStreet(): ?string { return $this->street; }
+    public function setStreet(string $street): self { $this->street = $street; return $this; }
+
+    public function getAddressComplement(): ?string { return $this->addressComplement; }
+    public function setAddressComplement(?string $addressComplement): self { $this->addressComplement = $addressComplement; return $this; }
+
+    public function getPostalCode(): ?string { return $this->postalCode; }
+    public function setPostalCode(string $postalCode): self { $this->postalCode = $postalCode; return $this; }
+
+    public function getCity(): ?string { return $this->city; }
+    public function setCity(string $city): self { $this->city = $city; return $this; }
+
+    public function getCountry(): ?string { return $this->country; }
+    public function setCountry(string $country): self { $this->country = $country; return $this; }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): self
+    {
+        $this->phoneNumber = $phoneNumber;
+        return $this;
+    }
     /**
      * A visual identifier that represents this user.
      *

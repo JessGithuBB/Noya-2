@@ -150,18 +150,6 @@ select[autofocus].form-control {
 }
 
 
-
-
-
-
-
-
-
-
-.footer {
-  background-color: white;
-}
-
 ///// Pop up validation ///////////
 .popup {
     display: none; /* caché par défaut */
@@ -221,4 +209,10 @@ select[autofocus].form-control {
   margin-bottom: 15px;
   margin-top: 15px;
    border-top: solid 1px #b6d181;
+}
+
+///// Footer //////////
+
+.footer {
+  background-color: white;
 }
