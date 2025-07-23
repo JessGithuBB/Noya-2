@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\Address;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -68,6 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -82,6 +86,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class, cascade: ['persist', 'remove'])]
+    private Collection $addresses;
+
+    public function __construct()
+    {
+        $this->addresses = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+    public function getAddresses(): Collection
+    {
+    return $this->addresses;
+    }
+
+     public function setAddresses(Collection $addresses): self
+    {
+    $this->addresses = $addresses;
+    return $this;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -95,44 +119,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
        // Adresse postale détaillée
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'L’adresse est obligatoire.')]
-    private ?string $street = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $addressComplement = null;
-
-    #[ORM\Column(length: 20)]
-    #[Assert\NotBlank(message: 'Le code postal est obligatoire.')]
-    private ?string $postalCode = null;
-
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: 'La ville est obligatoire.')]
-    private ?string $city = null;
-
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: 'Le pays est obligatoire.')]
-    private ?string $country = null;
 
     
     #[ORM\Column(length:20, nullable:true)]
      
     private ?string $phoneNumber = null;
 
-    public function getStreet(): ?string { return $this->street; }
-    public function setStreet(string $street): self { $this->street = $street; return $this; }
-
-    public function getAddressComplement(): ?string { return $this->addressComplement; }
-    public function setAddressComplement(?string $addressComplement): self { $this->addressComplement = $addressComplement; return $this; }
-
-    public function getPostalCode(): ?string { return $this->postalCode; }
-    public function setPostalCode(string $postalCode): self { $this->postalCode = $postalCode; return $this; }
-
-    public function getCity(): ?string { return $this->city; }
-    public function setCity(string $city): self { $this->city = $city; return $this; }
-
-    public function getCountry(): ?string { return $this->country; }
-    public function setCountry(string $country): self { $this->country = $country; return $this; }
 
     public function getPhoneNumber(): ?string
     {

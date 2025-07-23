@@ -1,46 +1,49 @@
-{% extends 'themes/base.html.twig' %}
+{% extends "themes/base.html.twig" %}
 
 {% block title %}Modifier mon profil{% endblock %}
 
 {% block main %}
-<br>
-<br>
+        <div class="container d-flex justify-content-center align-items-center min-vh-100 mb-5">
+            <div class="bg-white p-4 p-md-5 shadow-sm" style="max-width: 500px; width: 100%;">
+                <h3>Modifier mon profil</h3>
+                <h6 class="text-muted">Mettez à jour vos informations personnelles</h6>
+                <br><br>
 
-<div class="container mt-5">
-    <h6>
-        <img src="{{ asset('build/images/return.png') }}"
-             alt="bouton retour"
-             width="20"
-             height="20">
-        <a href="{{ path('app_profile') }}"> Retour à mon compte </a>
-    </h6>
+                {{ form_start(form) }}
 
-    <h2>Modifier mon profil</h2>
-    <br>
-        {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
+                <!-- Prénom -->
+                <div class="mb-3">
+                    {{ form_widget(form.firstName, {
+                        'attr': {
+                            'placeholder': 'Prénom',
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.firstName) }}
+                </div>
+
+                <!-- Nom -->
+                <div class="mb-3">
+                    {{ form_widget(form.lastName, {
+                        'attr': {
+                            'placeholder': 'Nom',
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.lastName) }}
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    {{ form_widget(form.email, {
+                        'attr': {
+                            'placeholder': 'Email',
+                            'class': 'form-control'
+                        }
+                    }) }}
+                    {{ form_errors(form.email) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
         </div>
-    {% endfor %}
-
-    <div class="col-md-6 mx-auto">
-        {{ form_start(form) }}
-
-        <div class="mb-3">
-            {{ form_widget(form.firstName, {'attr': {'class': 'form-control mb-2', 'placeholder': 'Prénom'}}) }}
-            {{ form_widget(form.lastName, {'attr': {'class': 'form-control mb-2', 'placeholder': 'Nom'}}) }}
-            {{ form_widget(form.email, {'attr': {'class': 'form-control mb-4', 'placeholder': 'Email'}}) }}
-            {{ form_widget(form.street, {'attr': {'class': 'form-control mb-2', 'placeholder': 'Rue'}}) }}
-            {{ form_widget(form.addressComplement, {'attr': {'class': 'form-control mb-2', 'placeholder': 'Complément d\'adresse'}}) }}
-            {{ form_widget(form.postalCode, {'attr': {'class': 'form-control mb-2', 'placeholder': 'Code postal'}}) }}
-            {{ form_widget(form.city, {'attr': {'class': 'form-control mb-2', 'placeholder': 'Ville'}}) }}
-            {{ form_widget(form.country, {'attr': {'class': 'form-control mb-2', 'placeholder': 'Pays'}}) }}
-            {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control mb-2', 'placeholder': 'Téléphone'}}) }}
-        </div>
-        <div class="mb-3">
-            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
-
-        {{ form_end(form) }}
-    </div>
-</div>
 {% endblock %}
