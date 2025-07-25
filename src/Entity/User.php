@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\Address;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -10,7 +13,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'Impossible de créer un compte avec cet email, il est déjà utilisé.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -18,6 +20,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
 
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
@@ -35,9 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         max: 255,
         maxMessage: "L'email ne doit pas dépasser {{ limit }} caractères",
     )]
-    #[Assert\Email(
-        message: "L'email est invalide ",
-    )]
+    #[Assert\Email(message: "L'email est invalide")]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -57,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(
         min: 12,
         max: 255,
-        minMessage: 'Le mot de passe doit contenir au moins {{ limit}} caractères',
+        minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères',
         maxMessage: 'Le mot de passe ne doit pas dépasser {{ limit }} caractères',
     )]
     #[Assert\Regex(
@@ -68,11 +69,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -81,6 +77,56 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $addresses;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $phoneNumber = null;
+
+    public function __construct()
+    {
+        $this->addresses = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Collection|Address[]
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): self
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->setUser($this); // Assure la liaison bidirectionnelle
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): self
+    {
+        if ($this->addresses->removeElement($address)) {
+            // set the owning side to null (unless already changed)
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    // Getters et setters pour email
 
     public function getEmail(): ?string
     {
@@ -94,45 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-       // Adresse postale détaillée
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'L’adresse est obligatoire.')]
-    private ?string $street = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $addressComplement = null;
-
-    #[ORM\Column(length: 20)]
-    #[Assert\NotBlank(message: 'Le code postal est obligatoire.')]
-    private ?string $postalCode = null;
-
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: 'La ville est obligatoire.')]
-    private ?string $city = null;
-
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: 'Le pays est obligatoire.')]
-    private ?string $country = null;
-
-    
-    #[ORM\Column(length:20, nullable:true)]
-     
-    private ?string $phoneNumber = null;
-
-    public function getStreet(): ?string { return $this->street; }
-    public function setStreet(string $street): self { $this->street = $street; return $this; }
-
-    public function getAddressComplement(): ?string { return $this->addressComplement; }
-    public function setAddressComplement(?string $addressComplement): self { $this->addressComplement = $addressComplement; return $this; }
-
-    public function getPostalCode(): ?string { return $this->postalCode; }
-    public function setPostalCode(string $postalCode): self { $this->postalCode = $postalCode; return $this; }
-
-    public function getCity(): ?string { return $this->city; }
-    public function setCity(string $city): self { $this->city = $city; return $this; }
-
-    public function getCountry(): ?string { return $this->country; }
-    public function setCountry(string $country): self { $this->country = $country; return $this; }
+    // Phone number
 
     public function getPhoneNumber(): ?string
     {
@@ -144,31 +152,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
+
+    // UserInterface
+
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
+
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -176,9 +177,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
+    // PasswordAuthenticatedUserInterface
+
     public function getPassword(): ?string
     {
         return $this->password;
@@ -191,14 +191,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // If you store any temporary sensitive data, clear them here
     }
+
+    // FirstName
 
     public function getFirstName(): ?string
     {
@@ -212,6 +210,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // LastName
+
     public function getLastName(): ?string
     {
         return $this->lastName;
@@ -223,6 +223,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    // CreatedAt
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -236,6 +238,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // VerifiedAt
+
     public function getVerifiedAt(): ?\DateTimeImmutable
     {
         return $this->verifiedAt;
@@ -248,6 +252,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // UpdatedAt
+
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
@@ -259,6 +265,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    // isVerified
 
     public function isVerified(): bool
     {

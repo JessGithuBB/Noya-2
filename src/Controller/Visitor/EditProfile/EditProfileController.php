@@ -2,36 +2,46 @@
 
 namespace App\Controller\Visitor\EditProfile;
 
+use App\Dto\EditProfileDTO;
 use App\Form\EditProfileTypeForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class EditProfileController extends AbstractController
 {
     #[Route('/edit/profile', name: 'app_edit_profile')]
-    public function index(Request $request, EntityManagerInterface $entityManager)
-    {
-        $user = $this->getUser();
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
-        }
+   public function index(Request $request, EntityManagerInterface $entityManager): Response
+{
+    /** @var \App\Entity\User $user */
+    $user = $this->getUser();
+    $entityManager->refresh($user);
 
-        $form = $this->createForm(EditProfileTypeForm::class, $user);
-        $form->handleRequest($request);
+    $dto = new EditProfileDTO();
+    $dto->firstName = $user->getFirstName();
+    $dto->lastName = $user->getLastName();
+    $dto->email = $user->getEmail();
+    $dto->phoneNumber = $user->getPhoneNumber();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Persiste les modifications
-            $entityManager->flush();
+    $form = $this->createForm(EditProfileTypeForm::class, $dto);
+    $form->handleRequest($request);
 
-            $this->addFlash('success', 'Profil mis à jour avec succès.');
+    if ($form->isSubmitted() && $form->isValid()) {
+        $user->setFirstName($dto->firstName);
+        $user->setLastName($dto->lastName);
+        $user->setEmail($dto->email);
+        $user->setPhoneNumber($dto->phoneNumber);
 
-            return $this->redirectToRoute('app_edit_profile');
-        }
+        $entityManager->flush();
 
-        return $this->render('pages/visitor/edit_profile/index.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        $this->addFlash('success', 'Profil mis à jour avec succès.');
+        return $this->redirectToRoute('app_edit_profile');
     }
+
+    return $this->render('pages/visitor/edit_profile/index.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
 }
