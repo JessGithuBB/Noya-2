@@ -13,7 +13,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'Impossible de créer un compte avec cet email, il est déjà utilisé.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -21,6 +20,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
 
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
@@ -38,9 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         max: 255,
         maxMessage: "L'email ne doit pas dépasser {{ limit }} caractères",
     )]
-    #[Assert\Email(
-        message: "L'email est invalide ",
-    )]
+    #[Assert\Email(message: "L'email est invalide")]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -60,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(
         min: 12,
         max: 255,
-        minMessage: 'Le mot de passe doit contenir au moins {{ limit}} caractères',
+        minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères',
         maxMessage: 'Le mot de passe ne doit pas dépasser {{ limit }} caractères',
     )]
     #[Assert\Regex(
@@ -71,12 +69,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -86,8 +78,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $addresses;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $phoneNumber = null;
 
     public function __construct()
     {
@@ -95,16 +90,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
-    public function getAddresses(): Collection
+
+    public function getId(): ?int
     {
-    return $this->addresses;
+        return $this->id;
     }
 
-     public function setAddresses(Collection $addresses): self
+    /**
+     * @return Collection|Address[]
+     */
+    public function getAddresses(): Collection
     {
-    $this->addresses = $addresses;
-    return $this;
+        return $this->addresses;
     }
+
+    public function addAddress(Address $address): self
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->setUser($this); // Assure la liaison bidirectionnelle
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): self
+    {
+        if ($this->addresses->removeElement($address)) {
+            // set the owning side to null (unless already changed)
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    // Getters et setters pour email
 
     public function getEmail(): ?string
     {
@@ -118,13 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-       // Adresse postale détaillée
-
-    
-    #[ORM\Column(length:20, nullable:true)]
-     
-    private ?string $phoneNumber = null;
-
+    // Phone number
 
     public function getPhoneNumber(): ?string
     {
@@ -136,31 +152,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
+
+    // UserInterface
+
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
+
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -168,9 +177,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
+    // PasswordAuthenticatedUserInterface
+
     public function getPassword(): ?string
     {
         return $this->password;
@@ -183,14 +191,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // If you store any temporary sensitive data, clear them here
     }
+
+    // FirstName
 
     public function getFirstName(): ?string
     {
@@ -204,6 +210,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // LastName
+
     public function getLastName(): ?string
     {
         return $this->lastName;
@@ -215,6 +223,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    // CreatedAt
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -228,6 +238,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // VerifiedAt
+
     public function getVerifiedAt(): ?\DateTimeImmutable
     {
         return $this->verifiedAt;
@@ -240,6 +252,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // UpdatedAt
+
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
@@ -251,6 +265,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    // isVerified
 
     public function isVerified(): bool
     {

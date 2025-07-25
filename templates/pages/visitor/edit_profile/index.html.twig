@@ -1,49 +1,52 @@
 {% extends "themes/base.html.twig" %}
 
-{% block title %}Modifier mon profil{% endblock %}
+{% block title %}Modification profil{% endblock %}
 
 {% block main %}
-        <div class="container d-flex justify-content-center align-items-center min-vh-100 mb-5">
-            <div class="bg-white p-4 p-md-5 shadow-sm" style="max-width: 500px; width: 100%;">
-                <h3>Modifier mon profil</h3>
-                <h6 class="text-muted">Mettez à jour vos informations personnelles</h6>
-                <br><br>
 
-                {{ form_start(form) }}
-
-                <!-- Prénom -->
-                <div class="mb-3">
-                    {{ form_widget(form.firstName, {
-                        'attr': {
-                            'placeholder': 'Prénom',
-                            'class': 'form-control'
-                        }
-                    }) }}
-                    {{ form_errors(form.firstName) }}
-                </div>
-
-                <!-- Nom -->
-                <div class="mb-3">
-                    {{ form_widget(form.lastName, {
-                        'attr': {
-                            'placeholder': 'Nom',
-                            'class': 'form-control'
-                        }
-                    }) }}
-                    {{ form_errors(form.lastName) }}
-                </div>
-
-                <!-- Email -->
-                <div class="mb-3">
-                    {{ form_widget(form.email, {
-                        'attr': {
-                            'placeholder': 'Email',
-                            'class': 'form-control'
-                        }
-                    }) }}
-                    {{ form_errors(form.email) }}
-                </div>
-                {{ form_end(form) }}
-            </div>
+    {% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-{% endblock %}
+    {% endfor %}
+    {% endfor %}
+
+    <div class="mt-5 container d-flex justify-content-center align-items-start">
+        <div class="bg-white p-2 p-md-2 shadow-sm" style="max-width: 500px; width: 100%;">
+            <h3>Modifiez votre Profil</h3>
+
+            {{ form_start(form) }}
+
+<div class="mb-3">
+    {{ form_row(form.firstName, {
+        attr: { class: 'form-control', placeholder: 'Prénom' }
+    }) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.lastName, {
+        attr: { class: 'form-control', placeholder: 'Nom' }
+    }) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.email, {
+        attr: { class: 'form-control', placeholder: 'Email' }
+    }) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.phoneNumber, {
+        attr: { class: 'form-control', placeholder: 'Téléphone' }
+    }) }}
+</div>
+
+<button type="submit" class="btn btn-primary">Enregistrer</button>
+
+{{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}  
