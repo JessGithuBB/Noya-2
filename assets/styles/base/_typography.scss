@@ -44,8 +44,32 @@
 .promo-banner {
     font-family: "Nunito", sans-serif;
     background-color: rgb(207, 233, 165);
-    font-size: 1px;
+    font-size: 15px;
 }
+
+.promo-banner {
+  overflow: hidden;
+  height: 40px; /* hauteur fixe de la bannière */
+  line-height: 40px; /* centrer verticalement le texte */
+}
+
+.promo-slider {
+  display: flex;
+  flex-direction: column;
+  animation: scroll-vertical 15s linear infinite;
+}
+
+.promo-slide {
+  height: 40px; /* même hauteur que la bannière */
+}
+
+@keyframes scroll-vertical {
+  0%   { transform: translateY(0); }
+  43%  { transform: translateY(-40px); }
+  66%  { transform: translateY(-80px); }
+  100% { transform: translateY(0); }
+}
+
 
 /////  Icon search ///////
 .search-container {
@@ -216,3 +240,53 @@ select[autofocus].form-control {
 .footer {
   background-color: white;
 }
+
+
+//// ADMIN //////
+/// lISTE UTILISATEURS ////
+h1.page-title {
+    background-color: #cfe9a5;
+    color: rgb(0, 0, 0);
+    padding: 15px 0;
+    margin: 0 -15px 1.5rem -15px; /* enlève la marge horizontale du container pour que ça prenne toute la largeur */
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* ombre douce */
+    border-radius: 4px;
+    } 
+
+    /* Centrer la table dans son container */
+    .table-container {
+    display: flex;
+    justify-content: center;
+    }
+
+    /* Fond vert clair pour les lignes paires */
+    .table-striped tbody tr:nth-child(even) {
+      background-color: #d4edda; /* vert clair bootstrap */
+    }
+
+    .bouton-new-user{
+    
+    background-color: #cfe9a5;
+    color: #000000; /* texte noir ou une autre couleur visible */
+    padding: 0.75rem 1.25rem;
+    font-size: 1.25rem; /* bouton large */
+    border: none;
+    border-radius: 0.25rem;
+    display: inline-block;
+    width: 100%; /* bouton pleine largeur */
+    max-width: 400px; /* largeur max, à adapter */
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 1.5rem; /* espace vers le bas */
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    
+    &:hover {
+        background-color: darken(#cfe9a5, 10%);
+        color: #000;
+        text-decoration: none;
+    }
+}
+
+    

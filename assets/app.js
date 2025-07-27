@@ -10,7 +10,7 @@ import './styles/app.scss';
 
 require('bootstrap');
 import 'bootstrap-icons/font/bootstrap-icons.css'; 
-import './styles/app.scss';
+
 
 
 

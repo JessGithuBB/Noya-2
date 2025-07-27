@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Visitor\EditProfile;
+namespace App\Controller\User\Profile\EditProfile;
 
 use App\Dto\EditProfileDTO;
 use App\Form\EditProfileTypeForm;
@@ -28,19 +28,23 @@ final class EditProfileController extends AbstractController
     $form = $this->createForm(EditProfileTypeForm::class, $dto);
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $user->setFirstName($dto->firstName);
-        $user->setLastName($dto->lastName);
-        $user->setEmail($dto->email);
-        $user->setPhoneNumber($dto->phoneNumber);
+if ($form->isSubmitted() && $form->isValid()) {
+    /** @var EditProfileDTO $dto */
+    $dto = $form->getData();  // Récupère les données mises à jour par le formulaire
 
-        $entityManager->flush();
+    $user->setFirstName($dto->firstName);
+    $user->setLastName($dto->lastName);
+    $user->setEmail($dto->email);
+    $user->setPhoneNumber($dto->phoneNumber);
 
-        $this->addFlash('success', 'Profil mis à jour avec succès.');
-        return $this->redirectToRoute('app_edit_profile');
-    }
+    $entityManager->flush();
 
-    return $this->render('pages/visitor/edit_profile/index.html.twig', [
+    $this->addFlash('success', 'Profil mis à jour avec succès.');
+    return $this->redirectToRoute('app_edit_profile');
+}
+
+
+    return $this->render('pages/user/profile/edit_profile/index.html.twig', [
         'form' => $form->createView(),
     ]);
 }
