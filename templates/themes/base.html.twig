@@ -23,7 +23,7 @@
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        
+        <meta name="theme-color" content="#712cf9">
 
         {# Logo #}
        <link rel="icon" href="{{ asset('build/images/logo-noya.png') }}">
@@ -40,14 +40,30 @@
     </head>
     <body>
         <!-- Bannière promo -->
-        <div class="container-fluid p-0">
-        <div class="promo-banner p-3 p-md-4 d-flex justify-content-center align-items-center min-vh-5">
-            <h1 class="h6 md mb-0">Livraison gratuite à partir de 30 € d'achat</h1>
+          <div class="promo-banner fixed-top bg-primary text-black text-center p-2" style="z-index: 1028;">
+         <div class="promo-slider">
+            <div class="promo-slide">Livraison gratuite à partir de 30 € d'achat</div>
+            <div class="promo-slide">-10% sur votre première commande avec le code WELCOME10</div>
+            <div class="promo-slide">Nouveaux produits chaque semaine !</div>
         </div>
         </div>
 
- <nav class="navbar navbar-expand-lg navbar-light bg-white">
+ <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top" style="top: 40px; z-index: 1030;">
   <div class="container-fluid d-flex align-items-center justify-content-between">
+         <!-- Lien admin invisible -->
+    
+          {% if is_granted('ROLE_ADMIN') %}
+
+          <!-- Lien vers accueil  -->   
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" href="">Accueil</a>
+            </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ path('app_admin_home') }}">Administration</a>
+              </li>
+          {% endif %}
+    </ul>
 
     <!-- Logo + recherche -->
     <div class="d-flex align-items-center gap-3">
@@ -110,13 +126,13 @@
           <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
         </ul>
       </li>
-{% else %}
-<li class="nav-item">
-  <a class="nav-link" href="{{ path('app_login') }}">
-    <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
-  </a>
-</li>
-{% endif %}
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_login') }}">
+              <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
+            </a>
+          </li>
+          {% endif %}
 
 
         <li class="nav-item">

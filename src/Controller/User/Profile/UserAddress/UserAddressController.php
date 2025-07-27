@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Visitor\UserAddress;
+namespace App\Controller\User\Profile\UserAddress;
 
 use App\Entity\Address;
 use App\Entity\User;
@@ -43,7 +43,7 @@ class UserAddressController extends AbstractController
         return $this->redirectToRoute('app_user_address');
     }
 
-    return $this->render('pages/visitor/user_address/index.html.twig', [
+    return $this->render('pages/user/profile/user_address/index.html.twig', [
         'form' => $form->createView(),
     ]);
 }

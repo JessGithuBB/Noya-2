@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Visitor\ProfileUser;
+namespace App\Controller\User\Profile\ProfileUser;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ class ProfileController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        return $this->render('pages/visitor/profile/index.html.twig', [
+        return $this->render('pages/user/profile/index.html.twig', [
             'user' => $user,
             'addresses' => $user->getAddresses(), // c’est une collection, pas un seul objet
         ]);

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Security;
-
+use App\Entity\User;    
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,10 +46,20 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName))
+        {
             return new RedirectResponse($targetPath);
         }
-
+        // Récupération de l'utilisateur qui s'authentifie (son rôle)
+        $user =$token->getUser();
+        $userRoles =$user->getRoles();
+        
+        // Si c'est un utilisateur admin, on le redirige vers la page d'accueil admin
+        if( in_array('ROLE_ADMIN', $userRoles,true) )
+        {
+            return new RedirectResponse($this->urlGenerator->generate('app_admin_home'));
+        }
+        // Sinon, on le redirige vers la page d'accueil visiteur
         return new RedirectResponse($this->urlGenerator->generate('app_visitor_welcome'));
     }
 
