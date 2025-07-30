@@ -13,39 +13,39 @@ use Symfony\Component\Routing\Annotation\Route;
 final class EditProfileController extends AbstractController
 {
     #[Route('/edit/profile', name: 'app_edit_profile')]
-   public function index(Request $request, EntityManagerInterface $entityManager): Response
-{
-    /** @var \App\Entity\User $user */
-    $user = $this->getUser();
-    $entityManager->refresh($user);
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        $entityManager->refresh($user);
 
-    $dto = new EditProfileDTO();
-    $dto->firstName = $user->getFirstName();
-    $dto->lastName = $user->getLastName();
-    $dto->email = $user->getEmail();
-    $dto->phoneNumber = $user->getPhoneNumber();
+        $dto = new EditProfileDTO();
+        $dto->firstName = $user->getFirstName();
+        $dto->lastName = $user->getLastName();
+        $dto->email = $user->getEmail();
+        $dto->phoneNumber = $user->getPhoneNumber();
 
-    $form = $this->createForm(EditProfileTypeForm::class, $dto);
-    $form->handleRequest($request);
+        $form = $this->createForm(EditProfileTypeForm::class, $dto);
+        $form->handleRequest($request);
 
-if ($form->isSubmitted() && $form->isValid()) {
-    /** @var EditProfileDTO $dto */
-    $dto = $form->getData();  // Récupère les données mises à jour par le formulaire
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var EditProfileDTO $dto */
+            $dto = $form->getData();  // Récupère les données mises à jour par le formulaire
 
-    $user->setFirstName($dto->firstName);
-    $user->setLastName($dto->lastName);
-    $user->setEmail($dto->email);
-    $user->setPhoneNumber($dto->phoneNumber);
+            $user->setFirstName($dto->firstName);
+            $user->setLastName($dto->lastName);
+            $user->setEmail($dto->email);
+            $user->setPhoneNumber($dto->phoneNumber);
 
-    $entityManager->flush();
+            $entityManager->flush();
 
-    $this->addFlash('success', 'Profil mis à jour avec succès.');
-    return $this->redirectToRoute('app_edit_profile');
-}
+            $this->addFlash('success', 'Profil mis à jour avec succès.');
 
+            return $this->redirectToRoute('app_edit_profile');
+        }
 
-    return $this->render('pages/user/profile/edit_profile/index.html.twig', [
-        'form' => $form->createView(),
-    ]);
-}
+        return $this->render('pages/user/profile/edit_profile/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 }

@@ -9,8 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
 {
-
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "addresses")]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'addresses')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -80,12 +79,13 @@ class Address
 
     public function getUser(): ?User
     {
-    return $this->user;
+        return $this->user;
     }
 
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
         return $this;
     }
 
