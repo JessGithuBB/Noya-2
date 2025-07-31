@@ -146,7 +146,7 @@
 .btn-white-green-hover {
   background-color: white !important;      /* blanc en priorité */
   color: #212529 !important;               /* texte sombre */
-  border: 3px solid #cfe9a5 !important;    /* bord gris clair */
+  border: 4px solid #cfe9a5 !important;    /* bord gris clair */
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -161,7 +161,7 @@ input.form-control:focus,
 textarea.form-control:focus,
 select.form-control:focus {
   border-color: #cfe9a5 !important;
-  box-shadow: 0 0 0 0.2rem rgba(207, 233, 165, 0.5) !important;
+  box-shadow: 0 0 0 0.2rem #cfe9a580 !important;
   outline: none !important;
 }
 
@@ -295,4 +295,10 @@ h1.page-title {
 
 }
 
-    
+
+/////////// ADMIN TABLE ////////
+
+.table-custom{
+   background-color: #cfe9a580 !important;
+}
+            

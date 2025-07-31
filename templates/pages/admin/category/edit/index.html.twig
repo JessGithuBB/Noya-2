@@ -1,0 +1,29 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %} Modifier categorie{% endblock %}
+{% block description %} Modifier categorie{% endblock %}
+
+{% block main %}
+<h1 class="text-center my-3 display-5">Modifier catégorie</h1>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            {{ form_start(form) }}
+                <div class="mb-3">
+                <div class="text-danger">{{form_errors(form.name)}}
+                
+                </div>
+                    {{ form_widget(form.name, {
+                        'attr': {
+                            'placeholder': 'Nom',
+                            'class': 'form-control'
+                        }
+                    }) }}
+                </div>
+                <input type="submit" class="btn btn-primary">
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
