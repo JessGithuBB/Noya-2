@@ -2,13 +2,25 @@
 
 namespace App\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Repository\SsCategoryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
+#[UniqueEntity(
+    fields: ['name'],
+    message: 'Cette sous-catégorie existe déjà, veuillez en choisir une autre.'
+)]
 #[ORM\Entity(repositoryClass: SsCategoryRepository::class)]
 class SsCategory
 {
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'ssCategories')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+    
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -20,7 +32,7 @@ class SsCategory
     #[ORM\Column(length: 255, unique: true)]
     private ?string $slug = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
@@ -93,4 +105,17 @@ class SsCategory
 
         return $this;
     }
+
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
+        return $this;
+    }
+
 }

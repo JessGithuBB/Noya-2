@@ -1,0 +1,25 @@
+{% extends "themes/base.html.twig" %}
+
+{% block title %}Toutes les catégories{% endblock %}
+
+{% block main %}
+    <h1 class="my-3 text-center">Toutes les catégories</h1>
+    <div class="container mt-4">
+        <div class="row">
+            {% for category in categories %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ category.name }}</h5>
+                            <p class="card-text">{{ category.slug }}</p>
+                            {# Par exemple un lien vers une page détail de la catégorie #}
+                            <a href="#" class="btn btn-primary">Voir plus</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Aucune catégorie trouvée.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
