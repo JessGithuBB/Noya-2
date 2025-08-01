@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit SsCategory</title>
+
+{% block body %}
+    <h1>Edit SsCategory</h1>
+
+    {{ include('ss_category/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_ss_category_index') }}">back to list</a>
+
+    {{ include('ss_category/_delete_form.html.twig') }}
+{% endblock %}

@@ -51,12 +51,25 @@ final class CategoryController extends AbstractController
             "form" => $form->createView()
         ]);
     }
-    #[Route('/category/edit{id<\d+}', name: 'app_admin_category_edit', methods: ['GET'])]
-    public function edit(Category $category): Response
+    #[Route('/category/edit/{id<\d+>}', name: 'app_admin_category_edit', methods: ['GET', 'POST'])]
+    public function edit(Category $category, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(AdminCategoryFormType::class, $category);
-        return $this->render('pages/admin/category/edit/index.html.twig',[
-            "form" => $form->createView()
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $category->setUpdatedAt(new \DateTimeImmutable());
+            $entityManager->persist($category);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'La catégorie a été modifiée');
+            return $this->redirectToRoute('app_admin_category');
+        }
+
+        return $this->render('pages/admin/category/edit/index.html.twig', [
+            'form' => $form->createView(),
+            'category' => $category
         ]);
     }
+
 }
