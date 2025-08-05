@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ProfilRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProfilRepository::class)]
 class Profil
@@ -18,7 +17,7 @@ class Profil
     #[ORM\Column]
     private ?int $user_id = null;
 
-    #[ORM\Column(length: 255,)]
+    #[ORM\Column(length: 255, )]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]

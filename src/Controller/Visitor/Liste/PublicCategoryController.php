@@ -1,6 +1,7 @@
 <?php
 
 // src/Controller/CategoryController.php
+
 namespace App\Controller\Visitor\Liste;
 
 use App\Repository\CategoryRepository;
@@ -16,22 +17,22 @@ class PublicCategoryController extends AbstractController
         $categories = $categoryRepository->findAll();
 
         return $this->render('pages/visitor/liste/index.html.twig', [
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
     #[Route('/visitor/{slug}', name: 'app_liste_ss_category', methods: ['GET'])]
     public function show(string $slug, CategoryRepository $categoryRepository): Response
-{
-    $category = $categoryRepository->findOneBy(['slug' => $slug]);
+    {
+        $category = $categoryRepository->findOneBy(['slug' => $slug]);
 
-    if (!$category) {
-        throw $this->createNotFoundException('Catégorie non trouvée');
+        if (!$category) {
+            throw $this->createNotFoundException('Catégorie non trouvée');
+        }
+
+        return $this->render('pages/visitor/liste/ss-category/index.html.twig', [
+            'category' => $category,
+            'subCategories' => $category->getSubCategories(),
+        ]);
     }
-
-    return $this->render('pages/visitor/liste/ss-category/index.html.twig', [
-        'category' => $category,
-        'subCategories' => $category->getSubCategories(),
-    ]);
-}
 }

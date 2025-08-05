@@ -3,14 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Entity\SsCategory;
-
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity(
     fields: ['name'],
@@ -24,7 +21,7 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank(message:"Le nom est obligtoire")]
+    #[Assert\NotBlank(message: 'Le nom est obligtoire')]
     #[Assert\Length(
         max: 255,
         maxMessage: 'Le nom ne doit pas dépasser{{ limit }} caractères',
