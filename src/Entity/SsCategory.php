@@ -2,11 +2,10 @@
 
 namespace App\Entity;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Repository\SsCategoryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[UniqueEntity(
     fields: ['name'],
@@ -18,8 +17,6 @@ class SsCategory
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'ssCategories')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
-    
-
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -106,7 +103,6 @@ class SsCategory
         return $this;
     }
 
-
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -115,7 +111,7 @@ class SsCategory
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
         return $this;
     }
-
 }

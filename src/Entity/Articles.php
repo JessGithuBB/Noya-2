@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticlesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -58,6 +60,14 @@ class Articles
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: ArticleImage::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $images;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -213,7 +223,7 @@ class Articles
         return $this->image;
     }
 
-    public function setImage(string $image): static
+    public function setImage(string $image): self
     {
         $this->image = $image;
 
@@ -240,6 +250,35 @@ class Articles
     public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArticleImage>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(ArticleImage $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(ArticleImage $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            if ($image->getArticle() === $this) {
+                $image->setArticle(null);
+            }
+        }
 
         return $this;
     }

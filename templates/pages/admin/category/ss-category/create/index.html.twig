@@ -1,28 +1,46 @@
 {% extends "themes/base_admin.html.twig" %}
 
-{% block title %} Nouvelle sous categorie{% endblock %}
-{% block description %} Nouvelle sous categorie{% endblock %}
+{% block title %} Nouvelle sous-catégorie{% endblock %}
+{% block description %} Nouvelle sous-catégorie{% endblock %}
 
 {% block main %}
-<h1 class="text-center my-3 display-5">Nouvelle sous catégorie</h1>
+<h1 class="text-center my-3 display-5">Nouvelle sous-catégorie</h1>
 
+<div>
+    <img src="{{ asset('build/images/annuler.png') }}" alt="retour" width="20" height="20">
+    <h6>
+        <a href="{{ path('app_admin_category_ss_category') }}">Revenir à sous-catégorie</a>
+    </h6>
+</div>
 
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 mx-auto">
+            <pre>{{ dump(form) }}</pre>
+
+
+
             {{ form_start(form) }}
                 <div class="mb-3">
-                <div class="text-danger">{{form_errors(form.name)}}
-                
+                    <div class="text-danger">{{ form_errors(form.name) }}</div>
+                    {{ form_widget(form.name, {'attr': {'placeholder': 'Nom', 'class': 'form-control'}}) }}
                 </div>
-                    {{ form_widget(form.name, {
+                
+
+                <div class="mb-3">
+                    <label for="{{ form.category.vars.id }}" class="form-label fw-semibold text-black">
+                        Catégorie parente
+                    </label>
+                    <div class="text-danger">{{ form_errors(form['category']) }}</div>
+                    {{ form_widget(form['category'], {
                         'attr': {
-                            'placeholder': 'Nom',
-                            'class': 'form-control'
+                            'class': 'form-select'
                         }
                     }) }}
+
+                <div class="mt-3">
+                    <input type="submit" class="btn btn-primary">
                 </div>
-                <input type="submit" class="btn btn-primary">
             {{ form_end(form) }}
         </div>
     </div>

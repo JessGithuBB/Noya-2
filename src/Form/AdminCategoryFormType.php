@@ -13,7 +13,7 @@ class AdminCategoryFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name',TextType::class)
+            ->add('name', TextType::class)
         ;
     }
 

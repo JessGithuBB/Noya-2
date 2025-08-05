@@ -1,17 +1,16 @@
 <?php
 
 namespace App\Controller\Admin;
-use Symfony\Component\HttpFoundation\Request;
 
 use App\Entity\Category;
 use App\Form\AdminCategoryFormType;
+use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use App\Repository\CategoryRepository;
-
 
 #[Route('/admin')]
 final class CategoryController extends AbstractController
@@ -22,7 +21,7 @@ final class CategoryController extends AbstractController
         $categories = $categoryRepository->findAll();
 
         return $this->render('pages/admin/category/index.html.twig', [
-            "categories" => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -43,14 +42,16 @@ final class CategoryController extends AbstractController
             $em->persist($category);
             $em->flush();
 
-            $this->addFlash('success', "La catégorie a été créée.");
+            $this->addFlash('success', 'La catégorie a été créée.');
+
             return $this->redirectToRoute('app_admin_category');
         }
 
         return $this->render('pages/admin/category/create/index.html.twig', [
-            "form" => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
+
     #[Route('/category/edit/{id<\d+>}', name: 'app_admin_category_edit', methods: ['GET', 'POST'])]
     public function edit(Category $category, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -63,13 +64,28 @@ final class CategoryController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'La catégorie a été modifiée');
+
             return $this->redirectToRoute('app_admin_category');
         }
 
         return $this->render('pages/admin/category/edit/index.html.twig', [
             'form' => $form->createView(),
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
+    #[Route('/category/delete/{id<\d+>}', name: 'app_admin_category_delete', methods: ['POST'])]
+    public function delete(Category $category, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        // Vérification du token CSRF (bonne pratique pour éviter les suppressions accidentelles)
+        if ($this->isCsrfTokenValid('delete-category-'.$category->getId(), $request->request->get('_token'))) {
+            $categoryName = $category->getName();
+            $entityManager->remove($category);
+            $entityManager->flush();
+
+            $this->addFlash('info', "La catégorie $categoryName a été supprimée avec succès.");
+        }
+
+        return $this->redirectToRoute('app_admin_category');
+    }
 }

@@ -4,5 +4,72 @@
 {% block description %}Liste des articles{% endblock %}
 
 {% block main %}
-     <h1 class="text-center my-3 display-5">Liste des articles</h1>
+    <h1 class="text-center my-3 display-5">Liste des articles</h1>
+
+    {# Utilisation alert/twig #}
+    {% include 'components/alert.html.twig' %}
+
+    <div class="position-relative">
+        <a href="{{ path('app_admin_articles_create') }}" class="btn btn-sm btn-outline-primary position-absolute top-0 end-0 m-2 text-black">
+            <img src="{{ asset('build/images/plusieurs.png') }}"
+                 alt="ajouter"
+                 width="20"
+                 height="20"> Nouvel Article
+        </a>
+    </div>
+
+    <div class="table-responsive" style="margin-top: 100px;">
+        <table class="table gb-secondary table-hover table-bordered text-center">
+            <thead class="table-custom">
+                <tr>
+                    <th>Id</th>
+                    <th>Image</th>
+                    <th>Référence</th>
+                    <th>Nom</th>
+                    <th>Slug</th>
+                    <th>Description</th>
+                    <th>Marque</th>
+                    <th>Quantité</th>
+                    <th>Prix de vente</th>
+                    <th>Nouveauté</th>
+                    <th>Best Seller</th>
+                    <th>Disponibilité</th>
+                    <th>Crée le</th>
+                    <th>Modifié le</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for articles in articles %}
+                    <tr>
+                        <td>{{ articles.id }}</td>
+                        <td>
+                            {% if articles.image %}
+                                <img src="{{ asset('uploads/images/' ~ articles.image) }}" alt="{{ articles.name }}" width="50" height="50">
+                            {% endif %}
+                        </td>
+                        <td>{{ articles.code }}</td>
+                        <td>{{ articles.name }}</td>
+                        <td>{{ articles.slug }}</td>
+                        <td>{{ articles.shortDescription }}</td>
+                        <td>{{ articles.brand }}</td>
+                        <td>{{ articles.quantity }}</td>
+                        <td>{{ articles.sellingPrice }}</td>
+                        <td>{{ articles.isNewArrival ? 'Oui' : 'Non' }}</td>
+                        <td>{{ articles.isBestSeller ? 'Oui' : 'Non' }}</td>
+                        <td>{{ articles.isAvailable ? 'Oui' : 'Non' }}</td>
+                        <td>{{ articles.createdAt ? articles.createdAt|date('d/m/Y H:i') : '' }}</td>
+                        <td>{{ articles.updatedAt ? articles.updatedAt|date('d/m/Y H:i') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_admin_articles_edit', {'id': articles.id}) }}" class="btn btn-sm btn-secondary">Modifier</a>
+                            <form class="d-inline" action="{{ path('app_admin_articles_delete', {'id': articles.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete-article-' ~ articles.id) }}">
+                                <input type="submit" class="btn btn-sm btn-danger" value="Supprimer">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
