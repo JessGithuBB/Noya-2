@@ -4,6 +4,7 @@
 {% block description %}Créer un nouvel article{% endblock %}
 
 {% block main %}
+
 <h1 class="text-center my-4 display-5">Création d'un article</h1>
 
 <div class="mb-3 d-flex align-items-center">
@@ -127,9 +128,19 @@
             </div>
 
             {# CARROUSEL SI IMAGES EXISTANTES #}
-            {% if article.images is defined and article.images|length > 0 %}
+
                 {% include 'components/carousel.html.twig' with { images: article.images } %}
-            {% endif %}
+                {% for imageForm in form.images %}
+                    <div class="mb-3">
+                        {{ form_label(imageForm.imageFile, null, { 'label_attr': { 'class': 'form-label fw-semibold' } }) }}
+                        <div class="text-danger">{{ form_errors(imageForm.imageFile) }}</div>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-image"></i></span>
+                            {{ form_widget(imageForm.imageFile, { 'attr': { 'class': 'form-control' } }) }}
+                        </div>
+                    </div>
+                {% endfor %}
+
 
             <button type="submit" class="btn btn-primary w-100 py-2 fs-5 fw-semibold mt-4">
                 <i class="bi bi-check-circle me-2"></i> Enregistrer
