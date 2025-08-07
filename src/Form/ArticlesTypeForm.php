@@ -62,8 +62,8 @@ class ArticlesTypeForm extends AbstractType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
-                    'label' => 'false',
-                    'prototype' => true,
+                    'label' => false,
+          
                 ])
             ->add('imageFile', FileType::class, [
                 'label' => 'Image de l’article',
