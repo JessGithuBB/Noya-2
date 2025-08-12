@@ -6,13 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
-#[UniqueEntity(
-    fields: ['name'],
-    message: 'Cette catégorie existe déjà, Veuillez en choisir une autre ',
-)]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
@@ -21,30 +15,23 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank(message: 'Le nom est obligtoire')]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: 'Le nom ne doit pas dépasser{{ limit }} caractères',
-    )]
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, unique: true)]
-    private ?string $slug = null;
+    // Relation vers le parent
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    private ?Category $parent = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SsCategory::class, orphanRemoval: true)]
-    private Collection $ssCategories;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $created_at = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updated_at = null;
+    // Relation vers les enfants
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    private Collection $children;
 
     public function __construct()
     {
-        $this->ssCategories = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
+
+    // Getters / setters
 
     public function getId(): ?int
     {
@@ -56,73 +43,46 @@ class Category
         return $this->name;
     }
 
-    public function setName(?string $name): static
+    public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getParent(): ?Category
     {
-        return $this->slug;
+        return $this->parent;
     }
 
-    public function setSlug(string $slug): static
+    public function setParent(?Category $parent): static
     {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(?\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
-    {
-        $this->updated_at = $updated_at;
-
+        $this->parent = $parent;
         return $this;
     }
 
     /**
-     * @return Collection<int, SsCategory>
+     * @return Collection<int, Category>
      */
-    public function getSsCategories(): Collection
+    public function getChildren(): Collection
     {
-        return $this->ssCategories;
+        return $this->children;
     }
 
-    public function addSsCategory(SsCategory $ssCategory): static
+    public function addChild(Category $child): static
     {
-        if (!$this->ssCategories->contains($ssCategory)) {
-            $this->ssCategories[] = $ssCategory;
-            $ssCategory->setCategory($this);
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+            $child->setParent($this);
         }
 
         return $this;
     }
 
-    public function removeSsCategory(SsCategory $ssCategory): static
+    public function removeChild(Category $child): static
     {
-        if ($this->ssCategories->removeElement($ssCategory)) {
-            // set the owning side to null (unless already changed)
-            if ($ssCategory->getCategory() === $this) {
-                $ssCategory->setCategory(null);
+        if ($this->children->removeElement($child)) {
+            if ($child->getParent() === $this) {
+                $child->setParent(null);
             }
         }
 

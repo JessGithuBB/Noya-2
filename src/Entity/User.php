@@ -28,8 +28,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         max: 255,
         maxMessage: 'Le nom ne doit pas dépasser {{ limit }} caractères',
     )]
-    #[ORM\Column(length: 255)]
+
+#[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le nom ne doit pas dépasser {{ limit }} caractères',
+    )]
     private ?string $lastName = null;
+
 
     #[Assert\NotBlank(message: "L'email est obligatoire.")]
     #[Assert\Length(
@@ -81,6 +87,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $phoneNumber = null;
+
+        /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatar;
+
+    // Getter
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    // Setter
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
 
     public function __construct()
     {

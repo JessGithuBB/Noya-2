@@ -3,43 +3,64 @@
 {% block title %}Modifier mon carnet d'adresse{% endblock %}
 
 {% block main %}
-                <!-- Adresses -->
-        <div class="container d-flex justify-content-center align-items-center min-vh-100 mb-5">
-            <div class="bg-white p-4 p-md-5 shadow-sm" style="max-width: 500px; width: 100%;">
-                <div id="addresses-wrapper" data-prototype="{{ form_widget(form.addresses.vars.prototype)|e('html_attr') }}">
-                    <h5 class="mt-4">Adresses</h5>
-                    {% for addressForm in form.addresses %}
-                        <div class="address-item mb-4 p-3 border rounded bg-light">
-                            <div class="mb-2">
-                                {{ form_widget(addressForm.street, {
-                                    'attr': {
-                                        'placeholder': 'Rue',
-                                        'class': 'form-control'
-                                    }
-                                }) }}
-                                {{ form_errors(addressForm.street) }}
-                            </div>
+<style>
+  .page-content {
+    padding-top: 100px;
+  }
+</style>
 
-                            <div class="mb-2">
-                                {{ form_widget(addressForm.city, {
-                                    'attr': {
-                                        'placeholder': 'Ville',
-                                        'class': 'form-control'
-                                    }
-                                }) }}
-                                {{ form_errors(addressForm.city) }}
-                            </div>
-                            <div class="mb-2">
-                                {{ form_widget(addressForm.postalCode, {
-                                    'attr': {
-                                        'placeholder': 'Code postal',
-                                        'class': 'form-control'
-                                    }
-                                }) }}
-                                {{ form_errors(addressForm.postalCode) }}
-                            </div>
+<div class="page-content d-flex justify-content-center">
+  <div class="card shadow rounded" style="max-width: 500px; width: 100%;">
+    <div class="card-body p-4">
+      <h3 class="mb-4 text-center">
+        Modifiez votre carnet d'adresse
+      </h3>
+      <br>
 
-                        </div>
-            {% endfor %}
-        </div>
+      {{ form_start(form) }}
+
+      <div id="addresses-wrapper" data-prototype="{{ form_widget(form.addresses.vars.prototype)|e('html_attr') }}">
+        <h5 class="mb-4">Adresses</h5>
+        {% for addressForm in form.addresses %}
+          <div class="address-item mb-4 p-3 border rounded bg-light">
+            <div class="mb-2">
+              {{ form_widget(addressForm.street, {
+                'attr': {
+                  'placeholder': 'Rue',
+                  'class': 'form-control'
+                }
+              }) }}
+              {{ form_errors(addressForm.street) }}
+            </div>
+
+            <div class="mb-2">
+              {{ form_widget(addressForm.city, {
+                'attr': {
+                  'placeholder': 'Ville',
+                  'class': 'form-control'
+                }
+              }) }}
+              {{ form_errors(addressForm.city) }}
+            </div>
+
+            <div class="mb-2">
+              {{ form_widget(addressForm.postalCode, {
+                'attr': {
+                  'placeholder': 'Code postal',
+                  'class': 'form-control'
+                }
+              }) }}
+              {{ form_errors(addressForm.postalCode) }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Enregistrer</button>
+
+      {{ form_end(form) }}
+
+    </div>
+  </div>
+</div>
 {% endblock %}

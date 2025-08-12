@@ -10,6 +10,13 @@
   class="img-fluid w-100"
   style="height: auto;">
 </div>
+
+{# FILTRAGE #}
+{% include 'components/_filters.html.twig' with {
+    categories: categories,
+    selectedCategories: selectedCategories
+} %}
+
 {% endblock %}
 
 

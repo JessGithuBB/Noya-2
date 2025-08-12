@@ -140,7 +140,14 @@
                         </div>
                     </div>
                 {% endfor %}
+            {# MOTS-CLÉS #}
+            <div class="mb-3">
+                {{ form_label(form.keywordsText, null, { 'label_attr': {'class': 'form-label fw-bold'} }) }}
+                {{ form_widget(form.keywordsText, { 'attr': {'class': 'form-control'} }) }}
+                <small class="text-muted">Séparez les mots-clés avec des virgules.</small>
+            </div>
 
+            {# BOUTON D'ENREGISTREMENT #}
 
             <button type="submit" class="btn btn-primary w-100 py-2 fs-5 fw-semibold mt-4">
                 <i class="bi bi-check-circle me-2"></i> Enregistrer

@@ -87,5 +87,7 @@ final class CategoryController extends AbstractController
         }
 
         return $this->redirectToRoute('app_admin_category');
+
+        
     }
 }

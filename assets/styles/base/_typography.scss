@@ -5,6 +5,15 @@
   font-style: normal;
 }
 
+.main {
+    margin-top: 100px; /* adapte selon la hauteur de ta navbar */
+}
+
+.container-style {
+  margin-top: 10px;
+}
+
+
 ///////  Navbar ///////
 .navbar-brand{
   background-color: rgb(255, 255, 255);
@@ -301,4 +310,13 @@ h1.page-title {
 .table-custom{
    background-color: #cfe9a580 !important;
 }
-        
+
+
+.newsletter form input.form-control {
+  flex-grow: 1;
+  max-width: calc(100% - 110px); /* laisse la place au bouton */
+  min-width: 0;
+}
+.newsletter form button {
+  width: 110px; /* largeur fixe */
+}
