@@ -16,28 +16,23 @@ class ArticlesRepository extends ServiceEntityRepository
         parent::__construct($registry, Articles::class);
     }
 
-    //    /**
-    //     * @return Articles[] Returns an array of Articles objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('a.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Retourne les articles liés aux catégories données.
+     *
+     * @param int[] $categoryIds
+     * @return Articles[]
+     */
+    public function findByCategories(array $categoryIds): array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->leftJoin('a.categories', 'c')
+            ->addSelect('c'); // utile si tu veux accéder aux catégories ensuite
 
-    //    public function findOneBySomeField($value): ?Articles
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if (!empty($categoryIds)) {
+            $qb->andWhere('c.id IN (:ids)')
+               ->setParameter('ids', $categoryIds);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -9,11 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 final class EditProfileController extends AbstractController
 {
     #[Route('/edit/profile', name: 'app_edit_profile')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
@@ -30,12 +32,40 @@ final class EditProfileController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var EditProfileDTO $dto */
-            $dto = $form->getData();  // Récupère les données mises à jour par le formulaire
+            $dto = $form->getData();
 
             $user->setFirstName($dto->firstName);
             $user->setLastName($dto->lastName);
             $user->setEmail($dto->email);
             $user->setPhoneNumber($dto->phoneNumber);
+
+            // Gestion de l'upload d'avatar
+            $avatarFile = $form->get('avatar')->getData();
+            if ($avatarFile) {
+                $originalFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$avatarFile->guessExtension();
+
+                try {
+                    $avatarFile->move(
+                        $this->getParameter('avatars_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Erreur lors de l\'upload de la photo.');
+                    return $this->redirectToRoute('app_edit_profile');
+                }
+
+                // Optionnel : supprimer l'ancienne photo si besoin
+                if ($user->getAvatar()) {
+                    $oldAvatarPath = $this->getParameter('avatars_directory').'/'.$user->getAvatar();
+                    if (file_exists($oldAvatarPath)) {
+                        @unlink($oldAvatarPath);
+                    }
+                }
+
+                $user->setAvatar($newFilename);
+            }
 
             $entityManager->flush();
 

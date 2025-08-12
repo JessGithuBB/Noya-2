@@ -73,3 +73,43 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+////////////// AJAX Search ///////////////
+
+document.addEventListener('DOMContentLoaded', function () {
+    const searchForm = document.querySelector('#searchBox form');
+    const input = searchForm.querySelector('input[name="q"]');
+
+    searchForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const q = input.value;
+
+        fetch(`/ajax/search?q=${encodeURIComponent(q)}`)
+            .then(res => res.json())
+            .then(data => {
+                const container = document.querySelector('#search-results');
+                container.innerHTML = '';
+
+                if (data.articles.length === 0) {
+                    container.innerHTML = '<p>Aucun article trouvé.</p>';
+                    return;
+                }
+
+                data.articles.forEach(article => {
+                    const card = `
+                        <div class="card mb-3">
+                            <img src="${article.image}" class="card-img-top" alt="${article.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${article.name}</h5>
+                                <p class="card-text">${article.price} €</p>
+                                <a href="${article.url}" class="btn btn-primary">Voir</a>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+            });
+    });
+});
+
+

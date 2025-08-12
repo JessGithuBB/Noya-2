@@ -61,12 +61,22 @@ class Articles
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
+    #[ORM\ManyToMany(targetEntity: Keyword::class, mappedBy: 'articles', cascade: ['persist'])]
+    private Collection $keywords;
+
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: ArticleImage::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $images;
 
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'articles')]
+    #[ORM\JoinTable(name: 'articles_categories')]
+    private Collection $categories;
+
     public function __construct()
     {
+        $this->keywords = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -82,7 +92,6 @@ class Articles
     public function setUserId(?string $user_id): static
     {
         $this->user_id = $user_id;
-
         return $this;
     }
 
@@ -94,7 +103,6 @@ class Articles
     public function setCode(string $code): static
     {
         $this->code = $code;
-
         return $this;
     }
 
@@ -106,7 +114,6 @@ class Articles
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -118,7 +125,6 @@ class Articles
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
-
         return $this;
     }
 
@@ -130,7 +136,6 @@ class Articles
     public function setShortDescription(string $short_description): static
     {
         $this->short_description = $short_description;
-
         return $this;
     }
 
@@ -142,7 +147,6 @@ class Articles
     public function setLongDescription(?string $long_description): static
     {
         $this->long_description = $long_description;
-
         return $this;
     }
 
@@ -154,7 +158,6 @@ class Articles
     public function setBrand(string $brand): static
     {
         $this->brand = $brand;
-
         return $this;
     }
 
@@ -166,7 +169,6 @@ class Articles
     public function setSellingPrice(float $selling_price): static
     {
         $this->selling_price = $selling_price;
-
         return $this;
     }
 
@@ -178,7 +180,6 @@ class Articles
     public function setQuantity(string $quantity): static
     {
         $this->quantity = $quantity;
-
         return $this;
     }
 
@@ -190,7 +191,6 @@ class Articles
     public function setIsNewArrival(bool $is_new_arrival): static
     {
         $this->is_new_arrival = $is_new_arrival;
-
         return $this;
     }
 
@@ -202,7 +202,6 @@ class Articles
     public function setIsBestSeller(bool $is_best_seller): static
     {
         $this->is_best_seller = $is_best_seller;
-
         return $this;
     }
 
@@ -214,7 +213,6 @@ class Articles
     public function setIsAvailable(bool $is_available): static
     {
         $this->is_available = $is_available;
-
         return $this;
     }
 
@@ -223,10 +221,9 @@ class Articles
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage(string $image): static
     {
         $this->image = $image;
-
         return $this;
     }
 
@@ -238,7 +235,6 @@ class Articles
     public function setCreatedAt(?\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
-
         return $this;
     }
 
@@ -250,7 +246,55 @@ class Articles
     public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
+        return $this;
+    }
 
+    /**
+ * @return Collection<int, Category>
+ */
+public function getCategories(): Collection
+{
+    return $this->categories;
+}
+
+public function addCategory(Category $category): static
+{
+    if (!$this->categories->contains($category)) {
+        $this->categories->add($category);
+    }
+
+    return $this;
+}
+
+public function removeCategory(Category $category): static
+{
+    $this->categories->removeElement($category);
+    return $this;
+}
+
+
+    /**
+     * @return Collection<int, Keyword>
+     */
+    public function getKeywords(): Collection
+    {
+        return $this->keywords;
+    }
+
+    public function addKeyword(Keyword $keyword): static
+    {
+        if (!$this->keywords->contains($keyword)) {
+            $this->keywords->add($keyword);
+            $keyword->addArticle($this);
+        }
+        return $this;
+    }
+
+    public function removeKeyword(Keyword $keyword): static
+    {
+        if ($this->keywords->removeElement($keyword)) {
+            $keyword->removeArticle($this);
+        }
         return $this;
     }
 
@@ -268,7 +312,6 @@ class Articles
             $this->images->add($image);
             $image->setArticle($this);
         }
-
         return $this;
     }
 
@@ -279,7 +322,6 @@ class Articles
                 $image->setArticle(null);
             }
         }
-
         return $this;
     }
 }

@@ -48,104 +48,115 @@
         </div>
         </div>
 
- <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top" style="top: 40px; z-index: 1030;">
-  <div class="container-fluid d-flex align-items-center justify-content-between">
-         <!-- Lien admin invisible -->
-    
-          {% if is_granted('ROLE_ADMIN') %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top" style="top: 40px; z-index: 1030;">
+  <div class="container-fluid px-3">
 
-          <!-- Lien vers accueil  -->   
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="">Accueil</a>
-            </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{{ path('app_admin_home') }}">Administration</a>
-              </li>
-          {% endif %}
-    </ul>
-
-    <!-- Logo + recherche -->
-    <div class="d-flex align-items-center gap-3">
-      <!-- Logo -->
-      <a class="navbar-brand" href="{{ path('app_visitor_welcome') }}">
-        <img src="{{ asset('build/images/n-logo.png') }}" alt="Logo Noya" width="50" height="50" class="d-inline-block align-text-top">
-      </a>
-
-      <!-- Bouton recherche et champ -->
-      <div class="search-container d-flex align-items-center">
-        <button id="searchToggle" class="btn btn-link p-0 search-icon" type="button" data-bs-toggle="collapse" data-bs-target="#searchBox" aria-expanded="false" aria-controls="searchBox">
-          <i class="bi bi-search fs-4"></i>
+    <!-- 🌐 VERSION MOBILE -->
+    <div class="d-flex d-lg-none w-100 flex-column">
+      <div class="d-flex w-100 align-items-center justify-content-between">
+        <!-- Toggler menu -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerMobile">
+          <span class="navbar-toggler-icon"></span>
         </button>
+
+        <!-- Logo -->
+        <a class="navbar-brand mx-auto" href="{{ path('app_visitor_welcome') }}">
+          <img src="{{ asset('build/images/n-logo.png') }}" alt="Logo Noya" width="40" height="40">
+        </a>
+
+        <!-- Recherche icône -->
+        <button class="btn p-0" type="button" data-bs-toggle="collapse" data-bs-target="#searchBoxMobile">
+          <i class="bi bi-search fs-5"></i>
+        </button>
+
+        <!-- Utilisateur (mobile = lien direct) -->
+        <a class="nav-link p-0" href="{{ app.user ? path('app_profile') : path('app_login') }}">
+          <img src="{{ asset('build/images/user.png') }}" alt="User" width="28" height="28">
+        </a>
+      </div>
+
+      <!-- Recherche mobile -->
+      <div class="collapse mt-2" id="searchBoxMobile">
+        <form action="{{ path('ajax_search') }}" method="get" class="d-flex">
+          <input type="text" name="q" class="form-control" placeholder="Rechercher...">
+          <button type="submit" class="btn btn-outline-secondary ms-2">
+            <i class="bi bi-search"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Menu mobile -->
+      <div class="collapse navbar-collapse mt-2" id="navbarTogglerMobile">
+        <ul class="navbar-nav w-100 text-center">
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_visitor_nouveautés_index') }}">Nouveautés</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_visitor_best-sellers') }}">Best-sellers</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_visitor_soin-de-la-peau') }}">Soin de la peau</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_visitor_corps_et_cheveux') }}">Corps et cheveux</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ path('app_visitor_problematique_cutanee') }}">Problématique Cutanée</a></li>
+        </ul>
       </div>
     </div>
 
-    <!-- Recherche déroulante (collapse) -->
-    <div class="collapse" id="searchBox">
-      <form class="d-flex ms-3" role="search" method="get" action="/search">
-        <input class="form-control me-2" type="search" name="q" placeholder="Rechercher..." aria-label="Search" />
-        <button class="btn btn-outline-primary" type="submit">
-          <i class="bi bi-arrow-right"></i>
-        </button>
-      </form>
-    </div>
+    <!-- 🌐 VERSION DESKTOP -->
+    <div class="d-none d-lg-flex w-100 align-items-center justify-content-between">
+      
+      <!-- Logo + recherche à gauche -->
+      <div class="d-flex align-items-center gap-3">
+        <a class="navbar-brand" href="{{ path('app_visitor_welcome') }}">
+          <img src="{{ asset('build/images/n-logo.png') }}" alt="Logo Noya" width="50" height="50">
+        </a>
+        <form action="{{ path('ajax_search') }}" method="get" class="d-flex">
+          <input type="text" name="q" class="form-control" placeholder="Rechercher..." style="max-width: 200px;">
+          <button type="submit" class="btn btn-outline-secondary ms-2">
+            <i class="bi bi-search"></i>
+          </button>
+        </form>
+      </div>
 
-    <!-- Bouton toggler (pour mobile) -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Menu + icônes -->
-    <div class="collapse navbar-collapse" id="navbarToggler">
       <!-- Menu centré -->
-      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 d-flex justify-content-center w-100">
-        <li class="nav-item"><a class="nav-link active" href="{{ path('app_visitor_nouveautés_index') }}">Nouveautés</a></li>
-        <li class="nav-item"><a class="nav-link active" href="{{ path('app_visitor_best-sellers') }}">Best-sellers</a></li>
-        <li class="nav-item"><a class="nav-link active" href="{{ path('app_visitor_soin_de_la_peau') }}">Soin de la peau</a></li>
-        <li class="nav-item"><a class="nav-link active" href="{{ path('app_visitor_corps_et_cheveux') }}">Corps et cheveux</a></li>
-        <li class="nav-item"><a class="nav-link active" href="{{ path('app_visitor_problematique_cutanee') }}">Problématique Cutanée</a></li>
+      <ul class="navbar-nav mx-auto mb-0 d-flex gap-3">
+        <li class="nav-item"><a class="nav-link" href="{{ path('app_visitor_nouveautés_index') }}">Nouveautés</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ path('app_visitor_best-sellers') }}">Best-sellers</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ path('app_visitor_soin-de-la-peau') }}">Soin de la peau</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ path('app_visitor_corps_et_cheveux') }}">Corps et cheveux</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ path('app_visitor_problematique_cutanee') }}">Problématique Cutanée</a></li>
       </ul>
 
-      <!-- Icônes à droite -->
-      <ul class="navbar-nav d-flex align-items-center gap-3">
-
-      <!-- liste deroulante  -->
+      <!-- Utilisateur + Panier à droite -->
+      <div class="d-flex align-items-center gap-3">
+        
         {% if app.user %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
+        <!-- Dropdown utilisateur -->
+        <div class="dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+            <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30" class="me-2">
+            Bonjour {{ app.user.firstName }}
           </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="{{ path('app_profile') }}">Mon compte</a></li>
+            <li><a class="dropdown-item" href="#}">❤️ favoris</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
+          </ul>
+        </div>
+        {% else %}
+        <a class="nav-link" href="{{ path('app_login') }}">
+          <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
+        </a>
+        {% endif %}
 
-
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-          <li><h5 class="dropdown-header">Bonjour, {{ app.user.firstName }} !</h5></li>
-          <li><hr class="dropdown-divider"></li>
-            {% if app.user %}
-          <li><a class="dropdown-item" href="{{ path('app_profile') }}">Mon compte</a></li>
-            {% endif %}
-          <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
-        </ul>
-      </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ path('app_login') }}">
-              <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
-            </a>
-          </li>
-          {% endif %}
-
-
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <img src="{{ asset('build/images/panier.png') }}" alt="Panier" width="30" height="30">
-          </a>
-        </li>
-      </ul>
+        <!-- Panier -->
+        <a class="nav-link" href="#">
+          <img src="{{ asset('build/images/panier.png') }}" alt="Panier" width="30" height="30">
+        </a>
+      </div>
     </div>
   </div>
 </nav>
 
 
+
+  <main style="padding-top: 80px;">
                             {# Main #}
                             {% block main %}
 
@@ -177,61 +188,119 @@
                     {% endfor %}
 
                             {% endblock %}
+                             </main>
         {# Footer #}
-<footer class="footer py-4">
-    <div class="container-fluid">
-        <div class="row align-items-start">
-            <!-- Colonne Logo -->
-            <div class="col-12 col-md-2 p-0 text-start text-md-center ">
-                <a href="{{ path('app_visitor_welcome') }}">
-                    <img src="{{ asset('build/images/new-noya2.png') }}"
-                         alt="Logo Noya"
-                         width="110"
-                         height="80">
-                </a>
-            </div>
 
-            <!-- Colonne navigation : Qui sommes-nous + Aide -->
-            <div class="col-12 col-md-9 d-flex ">
-                <div class="row">
-                    <!-- Qui sommes-nous -->
-                    <div class="col-6 col-lg-4 mb-3">
-                        <div class="fw-bold fs-5 ms-1">À propos</div>
-                        <ul class="nav flex-column ">
-                            <li class="nav-item "><a class="nav-link p-0 text-dark" href="{{path('app_visitor_about_us')}}">Qui sommes nous </a></li>
-                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">La Qualité Noya</a></li>
-                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Fiches produits</a></li>
-                            <img src="{{ asset('build/images/social.png') }}" alt=""
-                             width="100" height="100" >
-                        </ul>
-                    </div>
-                    
-
-                    <!-- Aide et support -->
-                    <div class="col-6 col-lg-4 mb-3">
-                        <div class="fw-bold fs-5">Aide et support</div>
-                        <ul class="nav flex-column">
-                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="{{path('app_visitor_contact-us')}}">Service client</a></li>
-                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Paiement sécurisé</a></li>
-                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Frais de port</a></li>
-                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">FAQ</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Informations légales -->
-                    <div class="col-12 col-lg-4 mb-3">
-                        <div class="fw-bold fs-5">Informations</div>
-                        <ul class="nav flex-column">
-                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Mentions légales</a></li>
-                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Politiques Cookies</a></li>
-                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Conditions générales</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+   
+      <div class="row justify-content-center g-3">
+        <div class="col-3 d-flex flex-column align-items-center">
+          <img src="{{ asset('build/images/3.png')}}" alt="paiement sécurisé" width="50" height="50" />
+          <div class="text-center mt-2">Paiement sécurisé</div>
         </div>
+        <div class="col-3 d-flex flex-column align-items-center">
+          <img src="{{ asset('build/images/2.png')}}" alt="deliver free" width="50" height="50" />
+          <div class="text-center mt-2">Livraison offerte</div>
+          <div class="text-center">Dès 30€ d'achat</div>
+        </div>
+        <div class="col-3 d-flex flex-column align-items-center">
+          <img src="{{ asset('build/images/1.png')}}" alt="satisfed" width="50" height="50" />
+          <div class="text-center mt-2">Satisfait</div>
+          <div class="text-center">ou remboursé</div>
+        </div>
+        <div class="col-3 d-flex flex-column align-items-center">
+          <img src="{{ asset('build/images/4.png')}}" alt="customer service" width="50" height="50" />
+          <div class="text-center mt-2">Service client</div>
+          <div class="text-center">disponible</div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
+
+    <div class="container d-flex justify-content-between align-items-center pt-3 mt-3 border-top">
+      <div>
+
+<footer class="footer py-4">
+  <div class="container-fluid">
+    <div class="row align-items-start">
+      <!-- Colonne Logo -->
+      </div>
+
+<div class="container-fluid">
+  <div class="row align-items-start">
+    <!-- Colonne Logo -->
+    <div class="col-12 col-md-2 p-0 text-start text-md-center">
+      <!-- Ton logo ici -->
+      <a href="{{ path('app_visitor_welcome') }}">
+        <img src="{{ asset('build/images/new-noya2.png') }}" alt="Logo Noya" width="110" height="80" />
+      </a>
+    </div>
+
+    <!-- Colonnes infos + newsletter dans la même row -->
+    <div class="col-12 col-md-10">
+      <div class="row">
+        <!-- À propos -->
+        <div class="col-6 col-lg-3 mb-3">
+          <div class="fw-bold fs-5 ms-1">À propos</div>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link p-0 text-dark" href="{{path('app_visitor_about_us')}}">Qui sommes nous</a></li>
+            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">La Qualité Noya</a></li>
+            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Fiches produits</a></li>
+          </ul>
+        </div>
+
+        <!-- Aide et support -->
+        <div class="col-6 col-lg-3 mb-3">
+          <div class="fw-bold fs-5">Aide et support</div>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link p-0 text-dark" href="{{path('app_visitor_contact-us')}}">Service client</a></li>
+            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Paiement sécurisé</a></li>
+            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Frais de port</a></li>
+            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- Informations légales -->
+        <div class="col-6 col-lg-3 mb-3">
+          <div class="fw-bold fs-5">Informations</div>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Mentions légales</a></li>
+            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Politiques Cookies</a></li>
+            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Conditions générales</a></li>
+          </ul>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="col-6 col-lg-3 mb-3 newsletter d-flex flex-column justify-content-start">
+          <div class="fw-bold fs-5 mb-2">Newsletter</div>
+          <form class="d-flex" role="form" action="#" method="post" style="width: 100%;">
+            <input
+              type="email"
+              class="form-control me-2"
+              placeholder="Votre email"
+              required
+              style="flex-grow:1; min-width:0;"
+            />
+            <button type="submit" class="btn btn-primary">S'abonner</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Bas du footer (optionnel) -->
+    <div class="container d-flex justify-content-between align-items-center pt-3 mt-3 border-top">
+      <div>
+        <p class="mb-0">© 2025 MonSite. Tous droits réservés.</p>
+      </div>
+    </div>
+  </div>
 </footer>
+
 
 
     </body>

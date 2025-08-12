@@ -25,6 +25,7 @@
                     <th>Id</th>
                     <th>Image</th>
                     <th>Référence</th>
+                    <th>Mots-clés</th>
                     <th>Nom</th>
                     <th>Slug</th>
                     <th>Description</th>
@@ -49,6 +50,16 @@
                             {% endif %}
                         </td>
                         <td>{{ articles.code }}</td>
+                        <td>
+                            {% if articles.keywords is not empty %}
+                                {% for keyword in articles.keywords %}
+                                    <span class="badge bg-info text-dark me-1">{{ keyword.name }}</span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+
                         <td>{{ articles.name }}</td>
                         <td>{{ articles.slug }}</td>
                         <td>{{ articles.shortDescription }}</td>
@@ -67,6 +78,8 @@
                                 <input type="submit" class="btn btn-sm btn-danger" value="Supprimer">
                             </form>
                         </td>
+
+
                     </tr>
                 {% endfor %}
             </tbody>

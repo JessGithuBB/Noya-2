@@ -3,16 +3,17 @@
 namespace App\Form;
 
 use App\Entity\Articles;
+use App\Form\ArticleImageType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ArticlesTypeForm extends AbstractType
 {
@@ -57,14 +58,13 @@ class ArticlesTypeForm extends AbstractType
                 'label' => 'Disponible',
                 'required' => false,
             ])
-                ->add('images', CollectionType::class, [
-                    'entry_type' => ArticleImageType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'label' => false,
-          
-                ])
+            ->add('images', CollectionType::class, [
+                'entry_type' => ArticleImageType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label' => false,
+            ])
             ->add('imageFile', FileType::class, [
                 'label' => 'Image de l’article',
                 'mapped' => false,
@@ -80,6 +80,15 @@ class ArticlesTypeForm extends AbstractType
                         'mimeTypesMessage' => 'Veuillez uploader une image valide (jpg, png, webp)',
                     ]),
                 ],
+            ])
+            ->add('keywordsText', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'Mots-clés (séparés par des virgules)',
+                'attr' => [
+                'placeholder' => 'ex: été, promo, coton',
+                'class' => 'form-control',
+            ]
             ]);
     }
 
