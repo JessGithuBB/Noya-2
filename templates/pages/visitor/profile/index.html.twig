@@ -65,5 +65,27 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1">
+  <div class="modal-dialog">
+    <form method="post" action="{{ path('account_delete_request') }}">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Supprimer mon compte</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Cette action est irréversible après 1 mois.</p>
+          <input type="password" name="password" placeholder="Mot de passe" class="form-control" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-danger">Demander suppression</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 </div>
 {% endblock %}

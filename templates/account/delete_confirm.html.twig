@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="container mt-5">
+    <h1>Suppression de votre compte</h1>
+    <p>Votre compte sera supprimé le {{ scheduledAt|date('d/m/Y H:i') }}.</p>
+    <form method="post" action="{{ path('account_delete_cancel') }}">
+        <button type="submit" class="btn btn-warning">Annuler la suppression</button>
+    </form>
+</div>
+{% endblock %}
