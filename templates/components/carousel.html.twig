@@ -1,0 +1,21 @@
+{% if images is defined and images|length > 0 %}
+    <div id="carouselArticleImages" class="carousel slide mb-4" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for img in images %}
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <img src="{{ asset('uploads/articles/' ~ img) }}" class="d-block w-100" alt="Image {{ loop.index }}">
+                    <img src="{{ asset('uploads/articles/' ~ img) }}" class="d-block w-100" alt="Image {{ loop.index }}">
+                    <img src="{{ asset('uploads/articles/' ~ img) }}" class="d-block w-100" alt="Image {{ loop.index }}">
+                </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselArticleImages" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselArticleImages" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+        </button>
+    </div>
+{% endif %}

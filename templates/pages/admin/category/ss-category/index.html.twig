@@ -1,0 +1,54 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %} Liste des sous categories{% endblock %}
+{% block description %}Liste des sous categories{% endblock %}
+
+{% block main %}
+    <h1 class="text-center my-3 display-5">Liste des sous catégories</h1>
+
+     {#} Utilisation alert/twig {#}
+    {% include 'components/alert.html.twig' %}
+
+<div class="position-relative">
+    <a href="{{ path('app_admin_category_ss_category_create') }}" class="btn btn-sm btn-outline-primary position-absolute top-0 end-0 m-2 text-black">
+        <img src="{{ asset('build/images/plusieurs.png') }}"
+             alt="ajouter"
+             width="20"
+             height="20"> Nouvelle sous catégorie
+    </a>
+</div>
+
+<div class="table-responsive  " style="margin-top: 100px;">
+    <table class="table table-striped table-hover table-bordered text-center">
+        <thead class="table-custom">
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Slug</th>
+                <th>Catégorie parente</th>
+                <th>Créé le</th>
+                <th>Modifié le</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ss_category in ss_categories %}
+            <tr>
+                <td>{{ ss_category.id }}</td>
+                <td>{{ ss_category.name }}</td>
+                <td>{{ ss_category.slug }}</td>
+                 <td>{{ ss_category.category ? ss_category.category.name : 'Aucune' }}</td>
+                <td>{{ ss_category.createdAt ? ss_category.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ss_category.updatedAt ? ss_category.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_admin_category_ss_category_edit', {'id': ss_category.id}) }}" class="btn btn-sm btn-secondary">Modifier</a>
+                         <form class="d-inline" action="{{ path('app_admin_category_ss_category_delete', {'id': ss_category.id}) }}" method="post">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-ss_category-' ~ ss_category.id) }}">
+                            <input type="submit" class="btn btn-sm btn-danger" value="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">
+                         </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

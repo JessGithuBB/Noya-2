@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+    <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="description" content="{% block description %}{% endblock %}"> 
+            <meta name="author" content="Noya">
+            <meta name="generator" content="Astro v5.9.2">
+            <title>{% block title %}{% endblock %}- Espace Admin - Noya </title>
+
+
+            <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+            <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+            <link rel="shortcut icon" href="/favicon.ico" />
+            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+            <link rel="manifest" href="/site.webmanifest" />
+            <meta name="theme-color" content="#712cf9">
+            {% block stylesheets %}
+                {{ encore_entry_link_tags('app') }}
+            {% endblock %}
+
+            {% block javascripts %}
+                {{ encore_entry_script_tags('app') }}
+            {% endblock %}
+
+
+        
+            <style>.bd-placeholder-img
+            {font-size:1.125rem;
+            text-anchor:middle;
+            -webkit-user-select:none;
+            -moz-user-select:none;
+            user-select:none
+            }
+            @media (min-width: 768px){
+            .bd-placeholder-img-lg{
+                font-size:3.5rem}}
+                
+            .b-example-divider{
+                width:100%;
+                height:3rem;
+                background-color:#0000001a;
+                border:solid rgba(0,0,0,.15);
+                border-width:1px 0;
+                box-shadow:inset 0 .5em 1.5em #0000001a,inset 0 .125em .5em #00000026
+                }
+                
+            .b-example-vr{
+                flex-shrink:0;width:1.5rem;height:100vh
+                }
+
+            .bi{
+                vertical-align:-.125em;fill:currentColor
+            
+                }
+            .nav-scroller{
+                position:relative;z-index:2;height:2.75rem;overflow-y:hidden
+                }
+            .nav-scroller .nav{
+                display:flex;
+                flex-wrap:nowrap;
+                padding-bottom:1rem;
+                margin-top:-1px;
+                overflow-x:auto;
+                text-align:center;
+                white-space:nowrap;
+                -webkit-overflow-scrolling:touch
+                }
+                .btn-bd-primary{
+                --bd-violet-bg: #712cf9;
+                --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+                --bs-btn-font-weight: 600;
+                --bs-btn-color: var(--bs-white);
+                --bs-btn-bg: var(--bd-violet-bg);
+                --bs-btn-border-color: var(--bd-violet-bg);
+                --bs-btn-hover-color: var(--bs-white);
+                --bs-btn-hover-bg: #6528e0;
+                --bs-btn-hover-border-color: #6528e0;
+                --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+                --bs-btn-active-color: var(--bs-btn-hover-color);
+                --bs-btn-active-bg: #5a23c8;
+                --bs-btn-active-border-color: #5a23c8
+                }
+                .bd-mode-toggle{z-index:1500}
+                .bd-mode-toggle 
+                .bi{width:1em;height:1em}
+                .bd-mode-toggle .dropdown-menu .active 
+                .bi{display:block!important}
+                
+                .bi {
+                display: inline-block;
+                width: 1rem;
+                height: 1rem;
+                }
+
+            /*
+            * Sidebar
+            */
+
+            @media (min-width: 768px) {
+            .sidebar .offcanvas-lg {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 48px;
+            }
+            .navbar-search {
+                display: block;
+            }
+            }
+
+            .sidebar .nav-link {
+            font-size: .875rem;
+            font-weight: 500;
+            }
+
+            .sidebar .nav-link.active {
+            color: #2470dc;
+            }
+
+            .sidebar-heading {
+            font-size: .75rem;
+            }
+
+            /*
+            * Navbar
+            */
+
+            .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+            }
+
+            .navbar .form-control {
+            padding: .75rem 1rem;
+            }
+            </style>
+    </head>
+
+    <body> 
+
+        <header class="navbar sticky-top flex-md-nowrap p-0 shadow custom-navbar"> 
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Noya</a> 
+            <ul class="navbar-nav flex-row d-md-none"> 
+                <li class="nav-item text-nowrap"> 
+                    <button class="nav-link px-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch" aria-controls="navbarSearch" aria-expanded="false" aria-label="Toggle search"> 
+                        <svg class="bi" aria-hidden="true"><use xlink:href="#search"></use></svg> 
+                    </button> 
+                </li>
+
+                <li class="nav-item text-nowrap">
+                    <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                        <svg class="bi" aria-hidden="true"><use xlink:href="#list"></use></svg> 
+                    </button> 
+                </li> 
+            </ul> 
+        
+        <div id="navbarSearch" class="navbar-search w-100 collapse"> <input class="form-control w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search"> </div> 
+        </header> 
+
+        <div class="container-fluid"> 
+            <div class="row"> 
+                <div class="sidebar border-end col-md-3 col-lg-2 p-0 bg-body-tertiary">
+                     <div class="offcanvas-md offcanvas-start bg-body-tertiary" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+
+                        <div class="offcanvas-header"> 
+                            <h5 class="offcanvas-title" id="sidebarMenuLabel">Noya</h5> 
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
+                    </div> 
+                        <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto"> 
+                            <ul class="nav flex-column"> 
+                                <li class="nav-item"> 
+                                    <a class="nav-link d-flex  justify-content-center align-items-center gap-2 active text-black fs-5 fw-bold " aria-current="page" href="{{ path('app_admin_home') }}">
+                                            <img src="{{ asset('build/images/dashboard.png') }}"
+                                            alt="dashboard"
+                                            width="20"
+                                            height="20">  
+                                        Tableau de bord
+                                    </a>
+                                </li> 
+                                    <li class="nav-item"> 
+                                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="{{path('app_admin_category')}}">
+                                            <img src="{{ asset('build/images/dossiers.png') }}"
+                                            alt="catégories"
+                                            width="20"
+                                            height="20"> 
+                                        Catégories
+                                    </a> 
+                                    </li> 
+                                    <li class="nav-item"> 
+                                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="{{path('app_admin_category_ss_category')}}">
+                                            <img src="{{ asset('build/images/dossiers.png') }}"
+                                            alt="catégories"
+                                            width="20"
+                                            height="20"> 
+                                        Sous-Catégories
+                                    </a> 
+                                    </li> 
+                                    <li class="nav-item"> 
+                                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="{{path('app_admin_articles_index')}}"> 
+                                            <img src="{{ asset('build/images/lotus.png') }}"
+                                            alt="lotus"
+                                            width="20"
+                                            height="20"> 
+                                        Articles
+                                    </a> 
+                                    </li> 
+                                    <li class="nav-item"> 
+                                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="#"> 
+                                            <img src="{{ asset('build/images/hashtag.png') }}"
+                                            alt="tags"
+                                            width="20"
+                                            height="20"> 
+                                        Tags
+                                    </a> 
+                                    </li> 
+                                    <li class="nav-item"> 
+                                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="#"> 
+                                            <img src="{{ asset('build/images/phone.png') }}"
+                                            alt="contact"
+                                            width="20"
+                                            height="20"> 
+                                        Contacts
+                                    </a> 
+                                    </li> 
+                                    <li class="nav-item"> 
+                                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="#"> 
+                                            <img src="{{ asset('build/images/utilisateurs.png') }}"
+                                            alt="user"
+                                            width="20"
+                                            height="20"> 
+                                        Utilisateurs
+                                    </a> 
+                                    </li> 
+                                    <li class="nav-item"> 
+                                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="#"> 
+                                            <img src="{{ asset('build/images/bavarder.png') }}"
+                                            alt="commentaires"
+                                            width="20"
+                                            height="20"> 
+                                        Commentaires
+                                    </a> 
+                                    </li> 
+
+                            </ul>
+
+                            <hr>
+
+            
+            <ul class="nav flex-column mb-auto"> 
+                        <li class="nav-item"> 
+                            <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="#"> 
+                                            <img src="{{ asset('build/images/profil.png') }}"
+                                            alt="profil"
+                                            width="20"
+                                            height="20"> 
+
+                                        Mon profil
+                            </a>
+                        </li> 
+
+                <li class="nav-item"> 
+                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="#"> 
+                                            <img src="{{ asset('build/images/parametre.png') }}"
+                                            alt="parametre"
+                                            width="20"
+                                            height="20"> 
+                                        Paramètres
+                    </a> 
+                </li> 
+
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="#"> 
+                                            <img src="{{ asset('build/images/utilisateurs.png') }}"
+                                            alt="utilisateurs"
+                                            width="20"
+                                            height="20"> 
+                                    Espace utilisateur
+                    </a> 
+                </li> 
+
+                <li class="nav-item"> 
+                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="{{path('app_visitor_welcome')}}"> 
+                                            <img src="{{ asset('build/images/retour.png') }}"
+                                            alt="retour"
+                                            width="20"
+                                            height="20"> 
+                                Retour au site
+                    </a> 
+                </li> 
+                <li class="nav-item"> 
+                    <a class="nav-link d-flex align-items-center gap-2 text-black ps-5" href="#">.
+                                            <img src="{{ asset('build/images/logout.png') }}"
+                                            alt="logout"
+                                            width="20"
+                                            height="20">    
+
+                                Déconnexion
+                    </a> 
+                </li> 
+
+            </ul> 
+
+                    </ul> 
+                </div> 
+            </div> 
+        </div>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"> 
+        {% block main %}{% endblock %}
+            {# Graphique total ventes #}
+        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+                integrity="sha384-zL4+5EmjtJ1iGmY+dedFdS1FQda7fHR6OeI3XnZQ2lGyl2z8GTCstE4l6l9gU04h"
+                crossorigin="anonymous">
+        </script>
+
+            <script>
+                // Données des ventes par mois
+                const data = {
+                    labels: ['Mai', 'Juin', 'Juillet'], // Noms des mois
+                    datasets: [{
+                        label: 'Total des ventes',
+                        data: [152, 500, 1200], // Totaux des ventes par mois
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)', 
+                            'rgba(255, 206, 86, 0.2)', 
+                            'rgba(255, 99, 132, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)', 
+                            'rgba(255, 206, 86, 1)', 
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                };
+
+                // Configuration du graphique
+                const config = {
+                    type: 'bar', // Type de graphique (ici, un histogramme)
+                    data: data,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true // Commencer l’axe Y à 0
+                            }
+                        }
+                    }
+                };
+
+                // Création et affichage du graphique
+                new Chart(
+                    document.getElementById('ventesChart'),
+                    config
+                );
+                    </script>
+                    <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" 
+                    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
+                    class="astro-vvvwv3sm">
+                    </script> 
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" 
+                        integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" 
+                        crossorigin="anonymous" 
+                        class="astro-vvvwv3sm">
+                    </script>
+                    <script src="dashboard.js" class="astro-vvvwv3sm"></script> 
+    </body> 
+</html>

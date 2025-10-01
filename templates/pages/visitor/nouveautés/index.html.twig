@@ -1,0 +1,18 @@
+{% extends "themes/base.html.twig" %}
+{% block title %}Nouveautés{% endblock %}
+{% block description %}Liste des nouveautés{% endblock %}
+
+    
+{% block main %}
+<div class="nouveautés mb-3">
+  <img src="{{asset('build/images/nos-nouveautés.png')}}" 
+  alt="Liste des nouveautés"
+  class="img-fluid w-100"
+  style="height: auto;">
+</div>
+
+{#}KEYWORDS LIST{#}
+{% include 'components/keywords.html.twig' with { article: article } only %}
+{% endblock %}
+
+

@@ -1,0 +1,17 @@
+{% extends "themes/base.html.twig" %}
+{% block title %}Corps et Cheveux{% endblock %}
+{% block description %}Retrouvez nos produits pour le soin de votre corps et vos cheveux{% endblock %}
+
+    
+{% block main %}
+<div class="corps-cheveux mb-3">
+  <img src="{{asset('build/images/Corps-et-cheveux.png')}}" 
+  alt="Liste des produits corps et cheveux"
+  class="img-fluid w-100"
+  style="height: auto;">
+</div>
+{#}KEYWORDS LIST{#}
+{% include 'components/keywords.html.twig' with { article: article } only %}
+{% endblock %}
+
+

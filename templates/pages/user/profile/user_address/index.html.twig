@@ -1,0 +1,68 @@
+{% extends "themes/base.html.twig" %}
+
+{% block title %}Adresses {% endblock %}
+
+{% block main %}
+     <div class="mt-5 container d-flex justify-content-center align-items-start">
+        <div class="bg-white p-2 p-md-2 shadow-sm" style="max-width: 500px; width: 100%;">
+            <h3> Modifiez votre carnet d'adresse</h3>
+    {{ form_start(form) }}
+    {% for addressForm in form.addresses %}
+<div class="mb-3">
+    {{ form_widget(addressForm.address, {
+        'attr': {
+            'placeholder': 'Adresse',
+            'class': 'form-control'
+        }
+    }) }}
+    {{ form_errors(addressForm.address) }}
+</div>
+
+<div class="mb-3">
+    {{ form_widget(addressForm.city, {
+        'attr': {
+            'placeholder': 'Ville',
+            'class': 'form-control'
+        }
+    }) }}
+    {{ form_errors(addressForm.city) }}
+</div>
+
+<div class="mb-3">
+    {{ form_widget(addressForm.postaleCode, {
+        'attr': {
+            'placeholder': 'Code postal',
+            'class': 'form-control'
+        }
+    }) }}
+    {{ form_errors(addressForm.postaleCode) }}
+</div>
+
+<div class="mb-3">
+    {{ form_widget(addressForm.country, {
+        'attr': {
+            'placeholder': 'Pays',
+            'class': 'form-control'
+        }
+    }) }}
+    {{ form_errors(addressForm.country) }}
+</div>
+
+
+    {% else %}
+    <p>Aucune adresse enregistrée.</p>
+{% endfor %}
+
+
+
+
+
+<button type="submit" class="btn btn-primary">Enregistrer</button>
+
+</div>
+</div>
+
+
+
+{{ form_end(form) }}
+{% endblock %}

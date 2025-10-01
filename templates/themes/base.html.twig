@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Noya{% endblock %}</title>
+
+        {# SEO #}
+        <meta name="description" content="{% block description %}{% endblock %}">
+        <meta name="robots" content="index, follow">    
+        <meta name="author" content="Noya">    
+        <meta name="publisher" content=" Jessica">    
+
+        {# Google font #}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+       
+        {# Favicon #}
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="theme-color" content="#712cf9">
+
+        {# Logo #}
+        <link rel="icon" href="{{ asset('build/images/logo-noya.png') }}">
+      
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        <!-- Bannière promo -->
+        <div class="promo-banner fixed-top bg-primary text-black text-center p-2" style="z-index: 1028;">
+            <div class="promo-slider">
+                <div class="promo-slide">Livraison gratuite à partir de 30 € d'achat</div>
+                <div class="promo-slide">Paiement sécurisé</div>
+                <div class="promo-slide">Satisfait ou remboursé</div>
+                <div class="promo-slide">Service client disponible</div>
+            </div>
+        </div>
+
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top" style="top: 40px; z-index: 1030;">
+            <div class="container-fluid d-flex align-items-center justify-content-between">
+
+                <!-- 🌐 MOBILE -->
+                <div class="d-flex align-items-center gap-2 d-lg-none w-100">
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a class="btn btn-outline-dark btn-sm me-2" href="{{ path('app_admin_home') }}">Admin</a>
+                    {% endif %}
+
+                    <!-- Logo -->
+                    <a class="navbar-brand me-2" href="{{ path('app_visitor_welcome') }}">
+                        <img src="{{ asset('build/images/n-logo.png') }}" alt="Logo Noya" width="40" height="40">
+                    </a>
+
+                    <!-- Recherche -->
+                    <button class="btn p-0 me-2" type="button" data-bs-toggle="collapse" data-bs-target="#searchBoxMobile">
+                        <i class="bi bi-search fs-5"></i>
+                    </button>
+
+                    <!-- Utilisateur -->
+                    <a class="nav-link p-0 me-2" href="{{ app.user ? path('app_profile') : path('app_login') }}">
+                        <img src="{{ asset('build/images/user.png') }}" alt="User" width="28" height="28">
+                    </a>
+
+                    <!-- Hamburger -->
+                    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerMobile" aria-controls="navbarTogglerMobile" aria-expanded="false" aria-label="Basculer la navigation">
+                        <i class="bi bi-list fs-3"></i>
+                    </button>
+                </div>
+
+                <!-- Barre de recherche mobile -->
+                <div class="collapse mt-2 d-lg-none" id="searchBoxMobile">
+                    <form action="{{ path('ajax_search') }}" method="get" class="d-flex">
+                        <input type="text" name="q" class="form-control" placeholder="Rechercher...">
+                        <button type="submit" class="btn btn-outline-secondary ms-2">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Menu mobile -->
+                <div class="collapse navbar-collapse mt-2 d-lg-none" id="navbarTogglerMobile">
+                    <ul class="navbar-nav w-100 text-center">
+                        {% include 'components/_nav_links.html.twig' with { suffix: 'Mobile' } %}
+                    </ul>
+                </div>
+
+                <!-- 🌐 DESKTOP -->
+                <div class="d-none d-lg-flex w-100 align-items-center justify-content-between">
+
+                    <!-- Gauche : Admin + Logo + Recherche -->
+                    <div class="d-flex align-items-center gap-3">
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a class="btn btn-outline-dark" href="{{ path('app_admin_home') }}">Administration</a>
+                        {% endif %}
+                        <a class="navbar-brand" href="{{ path('app_visitor_welcome') }}">
+                            <img src="{{ asset('build/images/n-logo.png') }}" alt="Logo Noya" width="50" height="50">
+                        </a>
+                        <form action="{{ path('ajax_search') }}" method="get" class="d-flex">
+                            <input type="text" name="q" class="form-control" placeholder="Rechercher..." style="max-width: 200px;">
+                            <button type="submit" class="btn btn-outline-secondary ms-2">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Centre : Menu -->
+                    <ul class="navbar-nav mx-auto mb-0 d-flex gap-3">
+                        {% include 'components/_nav_links.html.twig' with { suffix: 'Desktop' } %}
+                    </ul>
+
+                    <!-- Droite : Utilisateur + Panier -->
+                    <div class="d-flex align-items-center gap-3">
+                        {% if app.user %}
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30" class="me-2">
+                                Bonjour {{ app.user.firstName }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{{ path('app_profile') }}">Mon compte</a></li>
+                                <li><a class="dropdown-item" href="#">❤️ Favoris</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                            </ul>
+                        </div>
+                        {% else %}
+                        <a class="nav-link" href="{{ path('app_login') }}">
+                            <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
+                        </a>
+                        {% endif %}
+
+                        <!-- Panier -->
+                        <a class="nav-link" href="#">
+                            <img src="{{ asset('build/images/panier.png') }}" alt="Panier" width="30" height="30">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main style="padding-top: 80px;">
+            {% block main %}
+
+            {% for message in app.flashes('confirmation_email_sent') %}
+            <div class="popup popup-validate">
+                <div class="popup-content">
+                    <p>{{ message }}</p>
+                    <button class="close-popup">Fermer</button>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% for message in app.flashes('success') %}
+            <div class="popup popup-success">
+                <div class="popup-content">
+                    <p>{{ message }}</p>
+                    <button class="close-popup">Fermer</button>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% for message in app.flashes('welcome') %}
+            <div class="popup popup-hi">
+                <div class="popup-content">
+                    <p>{{ message }}</p>
+                    <button class="close-popup">Fermer</button>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% endblock %}
+        </main>
+
+
+        {# Footer #}
+<footer class="footer py-5">
+    <div class="container">
+
+        <!-- Cadre autour des icônes -->
+        <div class="row justify-content-center mt-4">
+            <div class="col-12 col-md-auto">
+                <div class="d-flex justify-content-center p-3 border rounded flex-wrap" style="border-color: #ccc; gap: 60px;">
+
+                    <!-- Card 1 -->
+                    <div class="d-flex flex-column align-items-center mb-3">
+                        <div class="card text-center" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;">
+                            <img src="{{ asset('build/images/paiement.png') }}" alt="" style="width: 100px; height: 100px;">
+                        </div>
+                        <h6 class="mt-2 text-center">Paiement sécurisé</h6>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="d-flex flex-column align-items-center mb-3">
+                        <div class="card text-center" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;">
+                            <img src="{{ asset('build/images/livraison.png') }}" alt="" style="width: 100px; height: 100px;">
+                        </div>
+                        <h6 class="mt-2 text-center">Livraison rapide</h6>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="d-flex flex-column align-items-center mb-3">
+                        <div class="card text-center" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;">
+                            <img src="{{ asset('build/images/satisfait.png') }}" alt="" style="width: 100px; height: 100px;">
+                        </div>
+                        <h6 class="mt-2 text-center">Satisfait ou remboursé</h6>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="d-flex flex-column align-items-center mb-3">
+                        <div class="card text-center" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;">
+                            <img src="{{ asset('build/images/client.png') }}" alt="" style="width: 100px; height: 100px;">
+                        </div>
+                        <h6 class="mt-2 text-center">Support client</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trait de séparation -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <hr style="border-top: 1px solid #6e6a6aff;">
+            </div>
+        </div>
+
+        <!-- Sections info + newsletter -->
+        <div class="row text-center text-md-start mt-5 mb-5">
+
+            <!-- Logo -->
+            <div class="col-12 col-md-2 mb-4 mb-md-0">
+                <a href="{{ path('app_visitor_welcome') }}">
+                    <img src="{{ asset('build/images/new-noya2.png') }}" alt="Logo Noya" width="110" height="80">
+                </a>
+            </div>
+
+            <!-- Navigation -->
+            <div class="col-12 col-md-10">
+                <div class="row justify-content-center">
+
+                    <!-- À propos -->
+                    <div class="col-6 col-lg-4 mb-5">
+                        <div class="fw-bold fs-5">À propos</div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="{{path('app_visitor_about_us')}}">Qui sommes-nous</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">La Qualité Noya</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Fiches produits</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Aide et support -->
+                    <div class="col-6 col-lg-4 mb-5">
+                        <div class="fw-bold fs-5">Aide et support</div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="{{path('app_visitor_contact-us')}}">Service client</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Paiement sécurisé</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Frais de port</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Informations légales -->
+                    <div class="col-12 col-lg-4 mb-5">
+                        <div class="fw-bold fs-5">Informations</div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Mentions légales</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Politiques Cookies</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 text-dark" href="#">Conditions générales</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+                          <div class="row mt-5 justify-content-center">
+                  <div class="col-12 col-md-6 text-center">
+                      <h2 class="mb-4">Inscrivez-vous à notre newsletter</h2>
+                      <form class="d-flex justify-content-center flex-wrap" action="#" method="POST">
+                          <input type="email" name="email" class="form-control me-2 mb-2" placeholder="Votre email" required style="max-width: 300px;">
+                          <button type="submit" class="btn btn-primary mb-2">S'inscrire</button>
+                      </form>
+                      <small class="text-muted d-block mt-3">Recevez nos offres et nouveautés directement dans votre boîte mail.</small>
+                  </div>
+              </div>
+
+                      <!-- Social media -->
+            <div class="row justify-content-center mt-4">
+              <div class="col-12 text-center">
+                <h6 class="mb-3">Suivez-nous sur :</h6>
+
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+                  <!-- Facebook -->
+                  <div class="card d-flex align-items-center justify-content-center" 
+                      style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
+                    <img src="{{ asset('build/images/facebook.png') }}" 
+                        alt="Facebook" style="width: 24px; height: 24px;">
+                  </div>
+
+                  <!-- Instagram -->
+                  <div class="card d-flex align-items-center justify-content-center" 
+                      style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
+                    <img src="{{ asset('build/images/instagram.png') }}" 
+                        alt="Instagram" style="width: 24px; height: 24px;">
+                  </div>
+
+                  <!-- Pinterest -->
+                  <div class="card d-flex align-items-center justify-content-center" 
+                      style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
+                    <img src="{{ asset('build/images/pinterest.png') }}" 
+                        alt="Pinterest" style="width: 24px; height: 24px;">
+                  </div>
+
+                  <!-- TikTok -->
+                  <div class="card d-flex align-items-center justify-content-center" 
+                      style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
+                    <img src="{{ asset('build/images/tic-tac.png') }}" 
+                        alt="TikTok" style="width: 24px; height: 24px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+           <div class="container my-5">
+  <div class="d-flex justify-content-center flex-wrap gap-5">
+    <!-- Icône 1 -->
+    <img src="{{ asset('build/images/paypal.png') }}" alt="Icon 1" style="width: 50px; height: auto;">
+
+    <!-- Icône 2 -->
+    <img src="{{ asset('build/images/visa.png') }}" alt="Icon 2" style="width: 50px; height: auto;">
+
+    <!-- Icône 3 -->
+    <img src="{{ asset('build/images/carte.png') }}" alt="Icon 3" style="width: 50px; height: 40px;">
+
+    <!-- Icône 4 -->
+    <img src="{{ asset('build/images/g pay.png') }}" alt="Icon 4" style="width: 50px; height: 50px;">
+
+    <!-- Icône 5 -->
+    <img src="{{ asset('build/images/pay.png') }}" alt="Icon 5" style="width: 50px; height: 40px;">
+
+    <!-- Icône 6 -->
+    <img src="{{ asset('build/images/tether.png') }}" alt="Icon 6" style="width: 70px; height: 40px;">
+
+    <!-- Icône 7 -->
+    <img src="{{ asset('build/images/ethereum.png') }}" alt="Icon 7" style="width: 70px; height: 60px;">
+  </div>
+</div>
+
+
+</footer>
+
+
+
+
+
+    </body>
+</html>

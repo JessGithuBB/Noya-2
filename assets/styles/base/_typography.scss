@@ -1,0 +1,437 @@
+*{
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:400 ;
+  font-style: normal;
+}
+
+.main {
+    margin-top: 100px; /* adapte selon la hauteur de ta navbar */
+}
+
+.container-style {
+  margin-top: 10px;
+}
+
+
+///////  Navbar ///////
+.navbar-brand{
+  background-color: rgb(255, 255, 255);
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+.navbar-brand img {
+  background-color: white;
+  margin-left: 10px;
+    width: 60px; 
+    height: 40px;  
+}
+
+.navbar-nav .nav-item {
+  background-color: white;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+}
+
+.navbar-nav {
+  list-style: none;      /* enlève puces */
+  padding-left: 0;       /* enlève padding gauche par défaut */
+  margin: 0;             /* enlève marges par défaut */
+}
+
+.navbar-nav li {
+  list-style: none;
+}
+
+
+///// Bannière livraison /////
+
+.promo-banner {
+    font-family: "Nunito", sans-serif;
+    background-color: #cfe9a5;
+    font-size: 15px;
+}
+
+.promo-banner {
+  overflow: hidden;
+  height: 40px; /* hauteur fixe de la bannière */
+  line-height: 40px; /* centrer verticalement le texte */
+}
+
+.promo-slider {
+  display: flex;
+  flex-direction: column;
+  animation: scroll-vertical 15s linear infinite;
+}
+
+.promo-slide {
+  height: 40px; /* même hauteur que la bannière */
+}
+
+@keyframes scroll-vertical {
+  0%   { transform: translateY(0); }
+  43%  { transform: translateY(-40px); }
+  66%  { transform: translateY(-80px); }
+  100% { transform: translateY(0); }
+}
+
+
+/////  Icon search ///////
+.search-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+#searchInput {
+  width: 0;
+  opacity: 0;
+  padding: 0.5rem;
+  margin-left: 10px;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  border-radius: 5px;
+}
+
+#searchInput.expanded {
+  width: 200px; /* Largeur quand ouvert */
+  opacity: 1;
+}
+
+.search-icon {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 10px;
+  cursor: pointer;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+
+    i {
+      font-size: 1.2rem;
+      color: inherit;
+    }
+  }
+
+  /////// Caroussel ////////
+.carousel {
+  max-height: 70vh; // ou 60vh pour ne pas dépasser l'écran
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+//// Service client //////
+.service {
+   font-family: "Nunito", sans-serif;
+   background-color: #cfe9a5;
+}
+
+////////// BUTTON PAGE CONNEXION ET CONNEXION //////////
+.button-connexion {
+  background-color: #cfe9a5;
+  color: #000000;
+  border: none;
+  padding: 12px 20px;
+  font-family: "Nunito", sans-serif;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-register:hover {
+  background-color: #b6d181;
+}
+
+.btn-white-green-hover {
+  background-color: white !important;      /* blanc en priorité */
+  color: #212529 !important;               /* texte sombre */
+  border: 4px solid #cfe9a5 !important;    /* bord gris clair */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-white-green-hover:hover,
+.btn-white-green-hover:focus {
+  background-color: #cfe9a5 !important;    /* vert custom */
+  color: rgb(0, 0, 0) !important;                  /* texte blanc */
+  border-color: #cfe9a5 !important;        /* bord vert */
+}
+
+input.form-control:focus,
+textarea.form-control:focus,
+select.form-control:focus {
+  border-color: #cfe9a5 !important;
+  box-shadow: 0 0 0 0.2rem #cfe9a580 !important;
+  outline: none !important;
+}
+
+input[autofocus].form-control,
+textarea[autofocus].form-control,
+select[autofocus].form-control {
+  border-color: #cfe9a5 !important;
+  box-shadow: 0 0 0 0.2rem #cfe9a580 !important;
+  outline: none !important;
+}
+
+
+///// Pop up validation ///////////
+.popup {
+    display: none; /* caché par défaut */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.popup button.close-popup {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+
+
+///// Pop up user CLICK MENU ///////////
+.dropdown-menu-user {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #adadad;
+    padding: 10px;
+    top: 100%; /* en dessous de l'icône */
+    right: 0;
+    z-index: 1000;
+}
+
+.dropdown-menu-user.show {
+    display: block;
+}
+
+/// MESSAGE BIENVENUE NAV BAR ////////
+ .welcome-message {
+  font-weight: bold;     // met en gras
+  font-size: 1.1rem;     // un peu plus grand (tu peux augmenter à 1.2rem, etc.)
+  margin-bottom: 8px;    // espace en bas pour séparer du lien
+}
+
+.separator {
+  border-top: solid 1px #b6d181;
+}
+
+.separator-register {
+  margin-bottom: 15px;
+  margin-top: 15px;
+   border-top: solid 1px #b6d181;
+}
+
+///// Footer //////////
+
+.footer {
+  background-color: white;
+}
+
+
+//// ADMIN //////
+/// lISTE UTILISATEURS ////
+h1.page-title {
+    background-color: #cfe9a5;
+    color: rgb(0, 0, 0);
+    padding: 15px 0;
+    margin: 0 -15px 1.5rem -15px; /* enlève la marge horizontale du container pour que ça prenne toute la largeur */
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* ombre douce */
+    border-radius: 4px;
+    } 
+
+    /* Centrer la table dans son container */
+    .table-container {
+    display: flex;
+    justify-content: center;
+    }
+
+    /* Fond vert clair pour les lignes paires */
+    .table-striped tbody tr:nth-child(even) {
+      background-color: #d4edda; /* vert clair bootstrap */
+    }
+
+    .bouton-new-user{
+    
+    background-color: #cfe9a5;
+    color: #000000; /* texte noir ou une autre couleur visible */
+    padding: 0.75rem 1.25rem;
+    font-size: 1.25rem; /* bouton large */
+    border: none;
+    border-radius: 0.25rem;
+    display: inline-block;
+    width: 100%; /* bouton pleine largeur */
+    max-width: 400px; /* largeur max, à adapter */
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 1.5rem; /* espace vers le bas */
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    
+    &:hover {
+        background-color: darken(#cfe9a5, 10%);
+        color: #000;
+        text-decoration: none;
+    }
+}
+
+////// ADMIN NAVBAR :///////////
+.custom-navbar{
+   background-color: #cfe9a5;
+
+}
+
+
+/////////// ADMIN TABLE ////////
+
+.table-custom{
+   background-color: #cfe9a580 !important;
+}
+        
+/////////// BANNIERE DEFILANTE NOYA////////////
+.simple-banner {
+    width: 100%;
+    height: 50px;          /* Réduction de la hauteur */
+    overflow: hidden;
+    background: #cfe9a580;
+    position: relative;
+    margin: 0;             /* Supprime toute marge extérieure */
+    padding: 0;            /* Supprime les éventuels espacements internes */
+}
+
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    animation: scrollLeft var(--scroll-speed, 20s) linear infinite;
+    width: max-content;
+}
+
+.logo-container {
+    flex-shrink: 0;
+    margin: 0 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* Animation continue */
+@keyframes scrollLeft {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+//// CAROUSSEL ARTICLES /////
+.custom-carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-top: 30px; /* ✅ Espace au-dessus des cards */
+}
+
+.carousel-wrapper {
+  overflow: hidden;
+}
+
+.custom-carousel-track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+.custom-carousel-item {
+  flex: 0 0 20%; /* ✅ Réduit la largeur pour plus d’espace autour */
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.card {
+  width: 100%;
+  height: 200px; /* optionnel : ajusté pour correspondre à la largeur réduite */
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  overflow: hidden;
+  text-align: center;
+   transition: transform 0.3s ease, box-shadow 0.3s ease; /* ✅ Ajout de la transition */
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.05); /* ✅ Agrandit et soulève la carte */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);   /* ✅ Ombre plus prononcée */
+}
+.card img {
+  width: 100%;       /* largeur 100% de la card */
+  height: auto;      /* hauteur automatique pour garder le ratio */
+  object-fit: cover; /* remplit le conteneur si besoin, mais peut recadrer légèrement */
+  max-height: 150px; /* optionnel, limite la hauteur pour uniformiser toutes les cartes */
+}
+
+.card-content {
+  padding: 10px;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.8);
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  padding: 5px 10px;
+  border-radius: 50%;
+}
+
+.carousel-btn.prev { left: 5px; }
+.carousel-btn.next { right: 5px; }
+
+.carousel-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.carousel-pagination span {
+  width: 10px;
+  height: 10px;
+  background: #bbb;
+  border-radius: 50%;
+  margin: 0 5px;
+  display: inline-block;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.carousel-pagination .active {
+  background: #333;
+}

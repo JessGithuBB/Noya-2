@@ -1,0 +1,27 @@
+{% set logoPath = logo|default('') %}
+{% set animationSpeed = speed|default('20s') %}
+{% set logoCount = count|default(8) %}
+
+<div class="simple-banner" style="--scroll-speed: {{ animationSpeed }}">
+    <div class="banner-content">
+        {# Première série de logos #}
+        {% for i in 1..logoCount %}
+            <div class="logo-container">
+                <img src="{{ asset('build/images/new-noya2.png') }}" 
+                     alt="Logo" 
+                     class="banner-logo"
+                     loading="lazy">
+            </div>
+        {% endfor %}
+
+        {# Deuxième série identique #}
+        {% for i in 1..logoCount %}
+            <div class="logo-container">
+                <img src="{{ asset('build/images/new-noya2.png') }}" 
+                     alt="Logo" 
+                     class="banner-logo"
+                     loading="lazy">
+            </div>
+        {% endfor %}
+    </div>
+</div>

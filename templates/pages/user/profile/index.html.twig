@@ -1,0 +1,69 @@
+{% extends 'themes/base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block main %}
+<div class="container mt-5">
+    <div class="row justify-content-center"> 
+        <!-- Colonne gauche avec les liens -->
+        <div class="col-md-3 mb-4">
+            <div class="list-group small shadow rounded">
+                <a href="" class="list-group-item list-group-item-action">
+                    🛒 Panier
+                </a>
+                <a href="" class="list-group-item list-group-item-action">
+                    📦 Historique de commandes
+                </a>
+                <a href="" class="list-group-item list-group-item-action">
+                    ❤️ Favoris
+                </a>
+            </div>
+        </div>
+
+
+        <!-- Colonne principale (profil + carnet d'adresse) -->
+<div class="col-md-6">
+    <!-- Profil -->
+    <div class="card shadow rounded p-4 mt-4 position-relative">
+        <a href="{{ path('app_edit_profile') }}" class="btn btn-sm btn-outline-primary position-absolute top-0 end-0 m-2">
+            Modifier
+        </a>
+        <h2 class="mb-4">Mon profil</h2>
+        <div class="d-flex align-items-center justify-content-start">
+            <img src="{{ asset('build/images/user.png') }}" alt="Avatar" class="img-fluid rounded-circle" style="width:50px; height:50px; object-fit: cover;">
+            <div class="ms-2 text-start">
+                <p class="mb-1"><strong>{{ app.user.firstName }} {{ app.user.lastName }}</strong></p>
+                <p class="mb-0">{{ app.user.email }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carnet d'adresse, structure identique -->
+    <div class="card shadow rounded p-4 mt-4 position-relative">
+        <a href="{{ path('app_user_profile_edit_address') }}" class="btn btn-sm btn-outline-primary position-absolute top-0 end-0 m-2">
+            Modifier
+        </a>
+        <h2 class="mb-4">Carnet d'adresse</h2>
+        <div class="d-flex align-items-center justify-content-start">
+            <img src="{{ asset('build/images/carnet.png') }}" alt="Carnet" class="img-fluid rounded-circle bg-light border" width="50">
+            <div class="ms-2 text-start">
+                {% for address in app.user.addresses %}
+                    <p class="mb-1 ">
+                        <strong>Adresse&nbsp;:</strong>
+                        {{ address.street|default('Non renseignée') }}, 
+                        {{ address.addressComplement|default('') }}, 
+                        {{ address.postalCode|default('') }} 
+                        {{ address.city|default('') }}, 
+                        {{ address.country|default('') }}
+                    </p>
+                {% else %}
+                    <p>Aucune adresse enregistrée.</p>
+                {% endfor %}
+                <p class="mb-0">
+                    <strong>Téléphone&nbsp;:</strong> {{ app.user.phoneNumber|default('Non renseigné') }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

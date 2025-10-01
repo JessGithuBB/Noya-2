@@ -1,0 +1,37 @@
+{% extends "themes/base_admin.html.twig" %}
+
+{% block title %} Modifier categorie{% endblock %}
+{% block description %} Modifier categorie{% endblock %}
+
+{% block main %}
+<h1 class="text-center my-3 display-5">Modifier catégorie</h1>
+
+<div>
+                <img 
+              src="{{ asset('build/images/annuler.png') }}" 
+              alt="retour"
+              width="20"
+              height="20">  <h6><a href="{{ path('app_admin_category') }}">    Revenir à Catégorie </a></h6>
+</div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+          {{ form_start(form, {'action': path('app_admin_category_edit', {'id': category.id})}) }}
+    <div class="mb-3">
+        <div class="text-danger">{{ form_errors(form.name) }}</div>
+        {{ form_widget(form.name, {
+            'attr': {
+                'placeholder': 'Nom',
+                'class': 'form-control'
+            }
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        <input type="submit" value="Enregistrer" class="btn btn-primary">
+    </div>
+{{ form_end(form) }}
+
+    </div>
+</div>
+{% endblock %}

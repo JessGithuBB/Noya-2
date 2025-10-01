@@ -1,0 +1,22 @@
+{% extends "themes/base.html.twig" %}
+
+{% block title %}{{ ss_category.name }}{% endblock %}
+
+{% block main %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('app_visitor_welcome') }}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('app_visitor_liste') }}">Catégories</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ ss_category.name }}</li>
+        </ol>
+    </nav>
+
+    <h1 class="h3 mb-3">{{ ss_category.name }}</h1>
+    {% if ss_category.description %}
+        <p class="text-muted">{{ ss_category.description }}</p>
+    {% endif %}
+
+    <div class="alert alert-info">Page sous-catégorie « {{ ss_category.name }} » — intégration produits à venir.</div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "themes/base.html.twig" %}
+
+{% block title %}Modification profil{% endblock %}
+
+{% block main %}
+
+  {% for label, messages in app.flashes %}
+    {% for message in messages %}
+      <div class="alert alert-{{ label }} alert-dismissible fade show mt-5" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endfor %}
+
+  <div class="container mt-5 container-style">
+    <div class="row justify-content-center">
+
+      <div class="col-md-6">
+        <div class="card shadow rounded">
+          <div class="card-body p-4">
+
+            <h3 class="mb-4 text-center">
+              <i class="bi bi-person-circle me-2"></i> Modifiez votre Profil
+            </h3>
+
+            <div class="text-center mb-4">
+              {% if app.user.avatar %}
+                <img id="profile-avatar-preview" src="{{ asset('uploads/avatars/' ~ app.user.avatar) }}" alt="Photo de profil" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+              {% else %}
+                <img id="profile-avatar-preview" src="{{ asset('build/images/user.png') }}" alt="Photo de profil" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+              {% endif %}
+            </div>
+
+            {{ form_start(form, { 'attr': { 'enctype': 'multipart/form-data' } }) }}
+
+              <div class="mb-3">
+                {{ form_row(form.avatar, { attr: { onchange: 'previewAvatar(event)', accept: 'image/*' } }) }}
+              </div>
+
+              <div class="mb-3">
+                {{ form_row(form.firstName, {
+                  attr: { class: 'form-control', placeholder: 'Prénom' }
+                }) }}
+              </div>
+
+              <div class="mb-3">
+                {{ form_row(form.lastName, {
+                  attr: { class: 'form-control', placeholder: 'Nom' }
+                }) }}
+              </div>
+
+              <div class="mb-3">
+                {{ form_row(form.email, {
+                  attr: { class: 'form-control', placeholder: 'Email' }
+                }) }}
+              </div>
+
+              <div class="mb-3">
+                {{ form_row(form.phoneNumber, {
+                  attr: { class: 'form-control', placeholder: 'Téléphone' }
+                }) }}
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Enregistrer</button>
+
+            {{ form_end(form) }}
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+  function previewAvatar(event) {
+    const input = event.target;
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById('profile-avatar-preview');
+        img.src = e.target.result;
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+</script>
+
+{% endblock %}
