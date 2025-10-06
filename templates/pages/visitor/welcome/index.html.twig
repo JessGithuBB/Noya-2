@@ -80,61 +80,125 @@
         }) }}
     </section>
 
-    <!-- Produits mis en avant -->
+    <!-- Section Nouveautés - Carrousel Simple -->
     <section class="home-products container py-5">
         <div class="d-flex justify-content-between align-items-end mb-3">
-            <h2 class="h3 m-0">Nos best‑sellers</h2>
-            <a href="{{ path('app_visitor_best-sellers') }}" class="btn btn-link">Tout voir</a>
+            <h2 class="h3 m-0">Nos Nouveautés</h2>
+            <a href="{{ path('app_visitor_nouveautés_index') }}" class="btn btn-link">Tout voir</a>
         </div>
-        <div class="row row-cols-2 row-cols-md-4 g-4">
-            {# Cartes produits statiques (exemple) — à remplacer par une boucle plus tard #}
-            <div class="col">
-                <article class="product-card card h-100">
-                    <div class="product-media">
-                        <img src="{{ asset('build/images/serum-marron.jpg') }}" class="card-img-top" alt="Sérum 1">
-                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
+        
+        <!-- Carrousel Simple -->
+        <div class="simple-carousel">
+            <!-- Boutons de navigation -->
+            <button class="carousel-btn carousel-btn-prev" id="prevBtn">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="carousel-btn carousel-btn-next" id="nextBtn">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+            
+            <!-- Conteneur des cartes -->
+            <div class="carousel-container" id="carouselContainer">
+                <div class="carousel-slide">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="{{ asset('build/images/serum-marron.jpg') }}" alt="Sérum éclat">
+                        </div>
+                        <div class="product-info">
+                            <h3>Sérum éclat</h3>
+                            <p class="price">19,00 €</p>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h3 class="h6 mb-1">Sérum éclat</h3>
-                        <div class="text-muted small">19,00 €</div>
+                </div>
+                
+                <div class="carousel-slide">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="{{ asset('build/images/sunscreen.jpg') }}" alt="Crème solaire">
+                        </div>
+                        <div class="product-info">
+                            <h3>Crème solaire SPF</h3>
+                            <p class="price">22,00 €</p>
+                        </div>
                     </div>
-                </article>
+                </div>
+                
+                <div class="carousel-slide">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="{{ asset('build/images/tonic-blue.jpg') }}" alt="Tonique apaisant">
+                        </div>
+                        <div class="product-info">
+                            <h3>Tonique apaisant</h3>
+                            <p class="price">14,50 €</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="carousel-slide">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="{{ asset('build/images/clear-cream.jpg') }}" alt="Crème hydratante">
+                        </div>
+                        <div class="product-info">
+                            <h3>Crème hydratante</h3>
+                            <p class="price">18,00 €</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="carousel-slide">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="{{ asset('build/images/creme-pink.jpg') }}" alt="Sérum anti-âge">
+                        </div>
+                        <div class="product-info">
+                            <h3>Sérum anti-âge</h3>
+                            <p class="price">28,00 €</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="carousel-slide">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="{{ asset('build/images/clear-cream.jpg') }}" alt="Nettoyant visage">
+                        </div>
+                        <div class="product-info">
+                            <h3>Nettoyant visage</h3>
+                            <p class="price">16,50 €</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="carousel-slide">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="{{ asset('build/images/tonic-blue.jpg') }}" alt="Masque hydratant">
+                        </div>
+                        <div class="product-info">
+                            <h3>Masque hydratant</h3>
+                            <p class="price">12,00 €</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="carousel-slide">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="{{ asset('build/images/serum-marron.jpg') }}" alt="Exfoliant doux">
+                        </div>
+                        <div class="product-info">
+                            <h3>Exfoliant doux</h3>
+                            <p class="price">21,00 €</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col">
-                <article class="product-card card h-100">
-                    <div class="product-media">
-                        <img src="{{ asset('build/images/sunscreen.jpg') }}" class="card-img-top" alt="Crème solaire">
-                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="h6 mb-1">Crème solaire SPF</h3>
-                        <div class="text-muted small">22,00 €</div>
-                    </div>
-                </article>
-            </div>
-            <div class="col">
-                <article class="product-card card h-100">
-                    <div class="product-media">
-                        <img src="{{ asset('build/images/tonic-blue.jpg') }}" class="card-img-top" alt="Tonique">
-                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="h6 mb-1">Tonique apaisant</h3>
-                        <div class="text-muted small">14,50 €</div>
-                    </div>
-                </article>
-            </div>
-            <div class="col">
-                <article class="product-card card h-100">
-                    <div class="product-media">
-                        <img src="{{ asset('build/images/clear-cream.jpg') }}" class="card-img-top" alt="Crème hydratante">
-                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="h6 mb-1">Crème hydratante</h3>
-                        <div class="text-muted small">18,00 €</div>
-                    </div>
-                </article>
+            
+            <!-- Pagination -->
+            <div class="carousel-dots" id="carouselDots">
+                <!-- Les points seront générés par JavaScript -->
             </div>
         </div>
     </section>
@@ -152,6 +216,253 @@
                     <img src="{{ asset('build/images/serum-marron.jpg') }}" class="img-fluid rounded-3 shadow-sm" alt="Routine Noya">
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Section Produits Recommandés -->
+    <section class="home-products container py-5">
+        <div class="d-flex justify-content-between align-items-end mb-3">
+            <h2 class="h3 m-0">Nos Best-Sellers</h2>
+        </div>
+        <div class="row row-cols-2 row-cols-md-4 g-4" id="products-container">
+            <!-- 4 premières cartes visibles -->
+            <div class="col product-card-item">
+                <article class="product-card card h-100">
+                    <div class="product-media">
+                        <img src="{{ asset('build/images/clear-cream.jpg') }}" class="card-img-top" alt="Sérum éclat">
+                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 mb-1">Sérum éclat</h3>
+                        <div class="product-rating mb-2">
+                            <div class="stars">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                            </div>
+                            <small class="text-muted ms-1">(24)</small>
+                        </div>
+                        <p class="text-muted small mb-2">Sérum hydratant pour un teint éclatant et uniforme</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="fw-bold text-primary">19,00 €</div>
+                            <button class="btn btn-success btn-sm add-to-cart" data-product="serum-eclat">
+                                Ajouté !
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="col product-card-item">
+                <article class="product-card card h-100">
+                    <div class="product-media">
+                        <img src="{{ asset('build/images/creme-pink.jpg') }}" class="card-img-top" alt="Crème hydratante">
+                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 mb-1">Crème hydratante</h3>
+                        <div class="product-rating mb-2">
+                            <div class="stars">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-half text-warning"></i>
+                            </div>
+                            <small class="text-muted ms-1">(18)</small>
+                        </div>
+                        <p class="text-muted small mb-2">Texture légère pour une hydratation intense</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="fw-bold text-primary">22,00 €</div>
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product="creme-hydratante">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="col product-card-item">
+                <article class="product-card card h-100">
+                    <div class="product-media">
+                        <img src="{{ asset('build/images/tonic-blue.jpg') }}" class="card-img-top" alt="Tonique apaisant">
+                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 mb-1">Tonique apaisant</h3>
+                        <div class="product-rating mb-2">
+                            <div class="stars">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                            </div>
+                            <small class="text-muted ms-1">(31)</small>
+                        </div>
+                        <p class="text-muted small mb-2">Tonique doux pour équilibrer et apaiser la peau</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="fw-bold text-primary">14,50 €</div>
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product="tonique-apaisant">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="col product-card-item">
+                <article class="product-card card h-100">
+                    <div class="product-media">
+                        <img src="{{ asset('build/images/serum-marron.jpg') }}" class="card-img-top" alt="Sérum anti-âge">
+                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 mb-1">Sérum anti-âge</h3>
+                        <div class="product-rating mb-2">
+                            <div class="stars">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-half text-warning"></i>
+                            </div>
+                            <small class="text-muted ms-1">(27)</small>
+                        </div>
+                        <p class="text-muted small mb-2">Formule concentrée pour lutter contre le vieillissement</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="fw-bold text-primary">28,00 €</div>
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product="serum-anti-age">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <!-- 4 cartes supplémentaires (masquées initialement) avec IDs uniques -->
+            <div class="col product-card-item d-none additional-product" id="additional-product-1">
+                <article class="product-card card h-100">
+                    <div class="product-media">
+                        <img src="{{ asset('build/images/sunscreen.jpg') }}" class="card-img-top" alt="Crème solaire">
+                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 mb-1">Crème solaire SPF 50</h3>
+                        <div class="product-rating mb-2">
+                            <div class="stars">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star text-warning"></i>
+                            </div>
+                            <small class="text-muted ms-1">(15)</small>
+                        </div>
+                        <p class="text-muted small mb-2">Protection solaire haute pour tous types de peau</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="fw-bold text-primary">25,00 €</div>
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product="creme-solaire">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="col product-card-item d-none additional-product" id="additional-product-2">
+                <article class="product-card card h-100">
+                    <div class="product-media">
+                        <img src="{{ asset('build/images/clear-cream.jpg') }}" class="card-img-top" alt="Nettoyant visage">
+                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 mb-1">Nettoyant visage</h3>
+                        <div class="product-rating mb-2">
+                            <div class="stars">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                            </div>
+                            <small class="text-muted ms-1">(42)</small>
+                        </div>
+                        <p class="text-muted small mb-2">Nettoyant doux qui respecte l'équilibre de la peau</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="fw-bold text-primary">16,50 €</div>
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product="nettoyant-visage">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="col product-card-item d-none additional-product" id="additional-product-3">
+                <article class="product-card card h-100">
+                    <div class="product-media">
+                        <img src="{{ asset('build/images/creme-pink.jpg') }}" class="card-img-top" alt="Masque hydratant">
+                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 mb-1">Masque hydratant</h3>
+                        <div class="product-rating mb-2">
+                            <div class="stars">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-half text-warning"></i>
+                            </div>
+                            <small class="text-muted ms-1">(33)</small>
+                        </div>
+                        <p class="text-muted small mb-2">Masque en tissu pour une hydratation profonde</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="fw-bold text-primary">12,00 €</div>
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product="masque-hydratant">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="col product-card-item d-none additional-product" id="additional-product-4">
+                <article class="product-card card h-100">
+                    <div class="product-media">
+                        <img src="{{ asset('build/images/tonic-blue.jpg') }}" class="card-img-top" alt="Exfoliant doux">
+                        <button class="favorite-btn" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="h6 mb-1">Exfoliant doux</h3>
+                        <div class="product-rating mb-2">
+                            <div class="stars">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                            </div>
+                            <small class="text-muted ms-1">(19)</small>
+                        </div>
+                        <p class="text-muted small mb-2">Exfoliant aux micro-grains pour une peau lisse</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="fw-bold text-primary">21,00 €</div>
+                            <button class="btn btn-primary btn-sm add-to-cart" data-product="exfoliant-doux">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+        
+        <!-- Bouton Voir plus -->
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-primary" id="show-more-btn">Voir plus</button>
         </div>
     </section>
 </div>

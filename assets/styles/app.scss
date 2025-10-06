@@ -90,3 +90,904 @@ $secondary-color: #000000;
         border: 1px solid rgba(0, 0, 0, 0.06);
     }
 }
+
+// DOUBLE NAVBAR - STYLE THE ORDINARY
+// ==========================================
+
+// Variables couleurs sobres
+$primary-green: #4a7c59;
+$light-green: #f0f4f1;
+$gray-light: #f8f9fa;
+$gray-medium: #6c757d;
+$gray-dark: #343a40;
+$white: #ffffff;
+
+// Header Secondaire - Logo + Recherche + Actions
+.navbar-secondary {
+    background-color: $white;
+    border-bottom: 1px solid #e9ecef;
+    padding: 12px 0;
+    position: sticky;
+    top: 40px; // Compense la bannière promo
+    z-index: 1031;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    // Logo secondaire
+    .navbar-brand-secondary {
+        padding: 0;
+        margin: 0;
+        text-decoration: none;
+
+        .logo-secondary {
+            width: 45px;
+            height: 35px;
+            transition: transform 0.2s ease;
+        }
+
+        &:hover .logo-secondary {
+            transform: scale(1.05);
+        }
+    }
+
+    // Recherche extensible
+    .search-container {
+        position: relative;
+
+        .search-wrapper {
+            position: relative;
+
+            .search-form {
+                display: flex;
+                align-items: center;
+                position: relative;
+
+                .search-input {
+                    width: 250px;
+                    padding: 8px 12px;
+                    border: 1px solid #e9ecef;
+                    border-radius: 25px;
+                    font-size: 0.9rem;
+                    font-family: "Nunito", sans-serif;
+                    background-color: $light-green;
+                    transition: all 0.3s ease;
+
+                    &:focus {
+                        outline: none;
+                        border-color: $primary-green;
+                        background-color: $white;
+                        width: 350px;
+                        box-shadow: 0 2px 8px rgba(74, 124, 89, 0.15);
+                    }
+
+                    &::placeholder {
+                        color: $gray-medium;
+                        font-style: italic;
+                    }
+                }
+
+                .search-btn {
+                    position: absolute;
+                    right: 8px;
+                    background: none;
+                    border: none;
+                    color: $primary-green;
+                    font-size: 0.9rem;
+                    padding: 4px;
+                    transition: color 0.2s ease;
+
+                    &:hover {
+                        color: darken($primary-green, 10%);
+                    }
+                }
+            }
+        }
+    }
+
+    // Actions (User, Panier, Admin)
+    .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        position: relative;
+
+        &.user-btn,
+        &.cart-btn {
+            background-color: transparent;
+            border: 1px solid transparent;
+
+            &:hover {
+                background-color: $light-green;
+                border-color: $primary-green;
+            }
+        }
+
+        &.admin-btn {
+            background-color: transparent;
+            color: $gray-medium;
+
+            &:hover {
+                background-color: $light-green;
+                color: $primary-green;
+            }
+        }
+
+        .user-icon,
+        .cart-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: $primary-green;
+            color: $white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+    }
+
+    // Dropdown utilisateur
+    .dropdown-menu {
+        border: 1px solid #e9ecef;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
+        margin-top: 8px;
+
+        .dropdown-item {
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            color: $gray-dark;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background-color: $light-green;
+                color: $primary-green;
+            }
+        }
+    }
+}
+
+// Header Principal - Navigation des Catégories
+.navbar-primary {
+    background-color: $light-green;
+    border-bottom: 1px solid #e9ecef;
+    padding: 16px 0;
+    position: sticky;
+    top: 104px; // Compense bannière promo + header secondaire
+    z-index: 1030;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    // Logo mobile
+    .navbar-brand-mobile {
+        padding: 0;
+        margin: 0;
+        text-decoration: none;
+
+        .logo-mobile {
+            width: 35px;
+            height: 35px;
+            transition: transform 0.2s ease;
+        }
+
+        &:hover .logo-mobile {
+            transform: scale(1.05);
+        }
+    }
+
+    // Toggle hamburger mobile
+    .mobile-toggle {
+        border: none;
+        background: none;
+        padding: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+
+        .hamburger-line {
+            width: 20px;
+            height: 2px;
+            background-color: $gray-dark;
+            transition: all 0.3s ease;
+        }
+
+        &:hover .hamburger-line {
+            background-color: $primary-green;
+        }
+
+        &[aria-expanded="true"] {
+            .hamburger-line:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            .hamburger-line:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger-line:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+        }
+    }
+
+    // Actions mobiles
+    .action-btn-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        text-decoration: none;
+        color: $gray-dark;
+        transition: all 0.2s ease;
+        position: relative;
+
+        &:hover {
+            background-color: $white;
+            color: $primary-green;
+        }
+
+        .cart-icon-mobile {
+            width: 18px;
+            height: 18px;
+        }
+
+        .cart-badge-mobile {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: $primary-green;
+            color: $white;
+            font-size: 0.6rem;
+            padding: 1px 4px;
+            border-radius: 8px;
+            min-width: 16px;
+            text-align: center;
+        }
+    }
+
+    // Navigation mobile
+    .navbar-nav-mobile {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        .nav-item-mobile {
+            border-bottom: 1px solid rgba(74, 124, 89, 0.1);
+
+            .nav-link-mobile {
+                display: block;
+                padding: 12px 0;
+                color: $gray-dark;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 1rem;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    color: $primary-green;
+                    padding-left: 8px;
+                }
+            }
+
+            .mobile-submenu {
+                list-style: none;
+                padding: 0;
+                margin: 8px 0 0 16px;
+
+                li {
+                    padding: 6px 0;
+
+                    a {
+                        color: $gray-medium;
+                        text-decoration: none;
+                        font-size: 0.9rem;
+                        transition: color 0.2s ease;
+
+                        &:hover {
+                            color: $primary-green;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Navigation desktop
+    .navbar-nav-primary {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        .nav-item-primary {
+            position: relative;
+
+            .nav-link-primary {
+                color: $gray-dark;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                padding: 8px 0;
+                position: relative;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    color: $primary-green;
+                    text-decoration: none;
+                }
+
+                // Effet underline au survol
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background-color: $primary-green;
+                    transition: width 0.3s ease;
+                }
+
+                &:hover::after {
+                    width: 100%;
+                }
+
+                &.dropdown-toggle::after {
+                    display: none; // Masquer la flèche Bootstrap par défaut
+                }
+
+                // Flèche personnalisée
+                &::before {
+                    content: "▼";
+                    font-size: 0.7rem;
+                    margin-left: 8px;
+                    color: $gray-medium;
+                    transition: all 0.2s ease;
+                }
+
+                &:not(.dropdown-toggle)::before {
+                    display: none;
+                }
+
+                &[aria-expanded="true"]::before {
+                    transform: rotate(180deg);
+                    color: $primary-green;
+                }
+            }
+
+            // Dropdown desktop
+            .dropdown-menu-primary {
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: $white;
+                border: 1px solid #e9ecef;
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+                padding: 12px 0;
+                margin-top: 8px;
+                min-width: 220px;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.2s ease;
+
+                &.show {
+                    opacity: 1;
+                    visibility: visible;
+                }
+
+                .dropdown-item-primary {
+                    display: block;
+                    padding: 10px 20px;
+                    color: $gray-dark;
+                    text-decoration: none;
+                    font-size: 0.9rem;
+                    transition: all 0.2s ease;
+
+                    &:hover {
+                        background-color: $light-green;
+                        color: $primary-green;
+                        padding-left: 24px;
+                    }
+                }
+            }
+
+            &:hover .dropdown-menu-primary {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+
+    // Recherche mobile
+    .search-mobile {
+        border: 1px solid #e9ecef;
+        border-radius: 25px;
+        background-color: $white;
+
+        &:focus {
+            border-color: $primary-green;
+            box-shadow: 0 0 0 2px rgba(74, 124, 89, 0.1);
+        }
+    }
+}
+
+// Ajustement du contenu principal
+main {
+    padding-top: 160px !important; // Compense bannière + header secondaire + header principal
+
+    @media (max-width: 991.98px) {
+        padding-top: 120px !important; // Compense bannière + header principal seulement
+    }
+
+    @media (max-width: 575.98px) {
+        padding-top: 100px !important; // Ajustement mobile
+    }
+}
+
+// Responsive Design
+@media (max-width: 991.98px) {
+    .navbar-secondary {
+        display: none; // Masquer le header secondaire sur mobile
+    }
+
+    .navbar-primary {
+        top: 40px; // Compense seulement la bannière promo
+
+        main {
+            padding-top: 120px !important;
+        }
+    }
+}
+
+@media (max-width: 575.98px) {
+    .navbar-primary {
+        padding: 12px 0;
+
+        .navbar-nav-primary {
+            gap: 30px;
+        }
+
+        .search-container .search-wrapper .search-form .search-input {
+            width: 200px;
+
+            &:focus {
+                width: 280px;
+            }
+        }
+    }
+}
+
+// FOOTER STYLES
+// ==========================================
+
+// Services container (4 icônes principales)
+.services-container {
+    transition: all 0.3s ease;
+
+    .service-icon-container {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        border: 2px solid #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: $primary-green;
+            transition: all 0.3s ease;
+        }
+
+        &:hover {
+            border-color: $primary-green;
+            background-color: $light-green;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(74, 124, 89, 0.15);
+
+            .service-icon {
+                color: darken($primary-green, 10%);
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    h6 {
+        color: $gray-dark;
+        font-weight: 500;
+        font-size: 0.9rem;
+        margin-top: 12px;
+        transition: color 0.2s ease;
+    }
+
+    &:hover h6 {
+        color: $primary-green;
+    }
+}
+
+// Social media icons
+.social-icon-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    .social-icon {
+        font-size: 1.5rem;
+        color: $gray-medium;
+        transition: all 0.3s ease;
+    }
+
+    &:hover {
+        border-color: $primary-green;
+        background-color: $light-green;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(74, 124, 89, 0.15);
+
+        .social-icon {
+            color: $primary-green;
+            transform: scale(1.1);
+        }
+    }
+
+    // Couleurs spécifiques pour chaque réseau
+    &:nth-child(1):hover .social-icon {
+        // Facebook
+        color: #1877f2;
+    }
+
+    &:nth-child(2):hover .social-icon {
+        // Instagram
+        color: #e4405f;
+    }
+
+    &:nth-child(3):hover .social-icon {
+        // TikTok
+        color: #000000;
+    }
+
+    &:nth-child(4):hover .social-icon {
+        // Pinterest
+        color: #bd081c;
+    }
+}
+
+// PAYMENT ICONS
+// ==========================================
+
+.payment-icons {
+    .payment-icon-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 12px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        min-width: 80px;
+
+        .payment-icon {
+            font-size: 2rem;
+            color: $gray-medium;
+            transition: all 0.3s ease;
+        }
+
+        .payment-label {
+            font-size: 0.75rem;
+            color: $gray-dark;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        &:hover {
+            background-color: $light-green;
+            transform: translateY(-2px);
+
+            .payment-icon {
+                transform: scale(1.1);
+            }
+        }
+
+        // Couleurs spécifiques pour chaque moyen de paiement
+        &:hover .visa-icon {
+            color: #1a1f71; // Bleu Visa
+        }
+
+        &:hover .mastercard-icon {
+            color: #eb001b; // Rouge Mastercard
+        }
+
+        &:hover .paypal-icon {
+            color: #0070ba; // Bleu PayPal
+        }
+
+        &:hover .apple-icon {
+            color: #000000; // Noir Apple
+        }
+
+        &:hover .google-icon {
+            color: #4285f4; // Bleu Google
+        }
+
+        &:hover .crypto-icon {
+            color: #f7931a; // Orange Bitcoin/Crypto
+        }
+    }
+}
+
+// PRODUCT CARDS ENHANCEMENTS
+// ==========================================
+
+// Amélioration des cartes de produits
+.product-card {
+    .product-rating {
+        display: flex;
+        align-items: center;
+
+        .stars {
+            display: flex;
+            gap: 1px;
+        }
+    }
+
+    .add-to-cart {
+        transition: all 0.2s ease;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+    }
+}
+
+// Animation pour les cartes qui apparaissent
+.product-card-item {
+    &.d-none {
+        display: none !important;
+    }
+
+    &:not(.d-none) {
+        animation: fadeInUp 0.5s ease forwards;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Bouton "Voir plus"
+#show-more-btn {
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
+    }
+}
+
+// Notifications
+.cart-notification {
+    .notification-content {
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            opacity: 0.7;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+// CARROUSEL NOUVEAUTÉS - NOUVEAU
+// ==========================================
+
+.simple-carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+
+    .carousel-container {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        width: 100%;
+    }
+
+    .carousel-slide {
+        flex: 0 0 25%; // 4 cartes visibles sur desktop
+        padding: 0 10px;
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+
+            &:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+
+            .product-image {
+                position: relative;
+                height: 200px;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.3s ease;
+                }
+
+                &:hover img {
+                    transform: scale(1.05);
+                }
+            }
+
+            .product-info {
+                padding: 15px;
+
+                h3 {
+                    font-size: 1rem;
+                    font-weight: 600;
+                    margin-bottom: 5px;
+                    color: #333;
+                }
+
+                .price {
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    color: $primary-green;
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    // Boutons de navigation
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: $primary-green;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+            background: $primary-green;
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        &.carousel-btn-prev {
+            left: 15px;
+        }
+
+        &.carousel-btn-next {
+            right: 15px;
+        }
+    }
+
+    // Pagination
+    .carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 20px;
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.5);
+                transform: scale(1.2);
+            }
+
+            &.active {
+                background: $primary-green;
+                transform: scale(1.3);
+            }
+        }
+    }
+
+    // Responsive
+    @media (max-width: 1200px) {
+        .carousel-slide {
+            flex: 0 0 33.333%; // 3 cartes sur tablette large
+        }
+    }
+
+    @media (max-width: 992px) {
+        .carousel-slide {
+            flex: 0 0 50%; // 2 cartes sur tablette
+        }
+
+        .carousel-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .carousel-slide {
+            flex: 0 0 100%; // 1 carte sur mobile
+            padding: 0 5px;
+        }
+
+        .carousel-btn {
+            width: 35px;
+            height: 35px;
+            font-size: 1rem;
+
+            &.carousel-btn-prev {
+                left: 10px;
+            }
+
+            &.carousel-btn-next {
+                right: 10px;
+            }
+        }
+
+        .carousel-dots .dot {
+            width: 8px;
+            height: 8px;
+        }
+    }
+}

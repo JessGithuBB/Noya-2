@@ -47,104 +47,123 @@
             </div>
         </div>
 
-        <!-- NAVBAR -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top" style="top: 40px; z-index: 1030;">
-            <div class="container-fluid d-flex align-items-center justify-content-between">
-
-                <!-- 🌐 MOBILE -->
-                <div class="d-flex align-items-center gap-2 d-lg-none w-100">
-                    {% if is_granted('ROLE_ADMIN') %}
-                    <a class="btn btn-outline-dark btn-sm me-2" href="{{ path('app_admin_home') }}">Admin</a>
-                    {% endif %}
-
-                    <!-- Logo -->
-                    <a class="navbar-brand me-2" href="{{ path('app_visitor_welcome') }}">
-                        <img src="{{ asset('build/images/n-logo.png') }}" alt="Logo Noya" width="40" height="40">
-                    </a>
-
-                    <!-- Recherche -->
-                    <button class="btn p-0 me-2" type="button" data-bs-toggle="collapse" data-bs-target="#searchBoxMobile">
-                        <i class="bi bi-search fs-5"></i>
-                    </button>
-
-                    <!-- Utilisateur -->
-                    <a class="nav-link p-0 me-2" href="{{ app.user ? path('app_profile') : path('app_login') }}">
-                        <img src="{{ asset('build/images/user.png') }}" alt="User" width="28" height="28">
-                    </a>
-
-                    <!-- Hamburger -->
-                    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerMobile" aria-controls="navbarTogglerMobile" aria-expanded="false" aria-label="Basculer la navigation">
-                        <i class="bi bi-list fs-3"></i>
-                    </button>
-                </div>
-
-                <!-- Barre de recherche mobile -->
-                <div class="collapse mt-2 d-lg-none" id="searchBoxMobile">
-                    <form action="{{ path('ajax_search') }}" method="get" class="d-flex">
-                        <input type="text" name="q" class="form-control" placeholder="Rechercher...">
-                        <button type="submit" class="btn btn-outline-secondary ms-2">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Menu mobile -->
-                <div class="collapse navbar-collapse mt-2 d-lg-none" id="navbarTogglerMobile">
-                    <ul class="navbar-nav w-100 text-center">
-                        {% include 'components/_nav_links.html.twig' with { suffix: 'Mobile' } %}
-                    </ul>
-                </div>
-
-                <!-- 🌐 DESKTOP -->
-                <div class="d-none d-lg-flex w-100 align-items-center justify-content-between">
-
-                    <!-- Gauche : Admin + Logo + Recherche -->
-                    <div class="d-flex align-items-center gap-3">
-                        {% if is_granted('ROLE_ADMIN') %}
-                        <a class="btn btn-outline-dark" href="{{ path('app_admin_home') }}">Administration</a>
-                        {% endif %}
-                        <a class="navbar-brand" href="{{ path('app_visitor_welcome') }}">
-                            <img src="{{ asset('build/images/n-logo.png') }}" alt="Logo Noya" width="50" height="50">
+        <!-- DOUBLE NAVBAR - STYLE THE ORDINARY -->
+        
+        <!-- Header Secondaire - Logo + Recherche + Actions -->
+        <div class="navbar-secondary sticky-top">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center justify-content-between">
+                    
+                    <!-- Gauche : Logo Noya + Recherche extensible -->
+                    <div class="d-flex align-items-center gap-4">
+                        <a class="navbar-brand-secondary" href="{{ path('app_visitor_welcome') }}">
+                            <img src="{{ asset('build/images/n-logo.png') }}" alt="Noya" class="logo-secondary">
                         </a>
-                        <form action="{{ path('ajax_search') }}" method="get" class="d-flex">
-                            <input type="text" name="q" class="form-control" placeholder="Rechercher..." style="max-width: 200px;">
-                            <button type="submit" class="btn btn-outline-secondary ms-2">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </form>
+                        
+                        <!-- Recherche extensible -->
+                        <div class="search-container">
+                            <div class="search-wrapper">
+                                <form action="{{ path('ajax_search') }}" method="get" class="search-form">
+                                    <input type="text" name="q" class="search-input" placeholder="Rechercher..." autocomplete="off">
+                                    <button type="submit" class="search-btn">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Centre : Menu -->
-                    <ul class="navbar-nav mx-auto mb-0 d-flex gap-3">
-                        {% include 'components/_nav_links.html.twig' with { suffix: 'Desktop' } %}
-                    </ul>
-
-                    <!-- Droite : Utilisateur + Panier -->
+                    
+                    <!-- Droite : User + Panier -->
                     <div class="d-flex align-items-center gap-3">
+                        <!-- Admin si connecté -->
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_admin_home') }}" class="action-btn admin-btn">
+                            <i class="bi bi-gear"></i>
+                        </a>
+                        {% endif %}
+                        
+                        <!-- Utilisateur -->
                         {% if app.user %}
                         <div class="dropdown">
-                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                                <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30" class="me-2">
-                                Bonjour {{ app.user.firstName }}
+                            <a href="#" class="action-btn user-btn dropdown-toggle" data-bs-toggle="dropdown">
+                                <img src="{{ asset('build/images/user.png') }}" alt="User" class="user-icon">
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="{{ path('app_profile') }}">Mon compte</a></li>
-                                <li><a class="dropdown-item" href="#">❤️ Favoris</a></li>
+                                <li><a class="dropdown-item" href="#">Mes commandes</a></li>
+                                <li><a class="dropdown-item" href="#">Favoris</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
                             </ul>
                         </div>
                         {% else %}
-                        <a class="nav-link" href="{{ path('app_login') }}">
-                            <img src="{{ asset('build/images/user.png') }}" alt="User" width="30" height="30">
+                        <a href="{{ path('app_login') }}" class="action-btn user-btn">
+                            <img src="{{ asset('build/images/user.png') }}" alt="User" class="user-icon">
                         </a>
                         {% endif %}
-
+                        
                         <!-- Panier -->
-                        <a class="nav-link" href="#">
-                            <img src="{{ asset('build/images/panier.png') }}" alt="Panier" width="30" height="30">
+                        <a href="#" class="action-btn cart-btn">
+                            <img src="{{ asset('build/images/panier.png') }}" alt="Panier" class="cart-icon">
+                            <span class="cart-badge">0</span>
                         </a>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header Principal - Navigation des Catégories -->
+        <nav class="navbar-primary sticky-top">
+            <div class="container-fluid">
+                
+                <!-- MOBILE LAYOUT -->
+                <div class="d-flex align-items-center justify-content-between w-100 d-lg-none">
+                    <!-- Menu hamburger -->
+                    <button class="navbar-toggler mobile-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
+                    
+                    <!-- Logo mobile -->
+                    <a class="navbar-brand-mobile" href="{{ path('app_visitor_welcome') }}">
+                        <img src="{{ asset('build/images/n-logo.png') }}" alt="Noya" class="logo-mobile">
+                    </a>
+                    
+                    <!-- Actions mobiles -->
+                    <div class="d-flex align-items-center gap-3">
+                        <button class="action-btn-mobile" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch">
+                            <i class="bi bi-search"></i>
+                        </button>
+                        <a href="#" class="action-btn-mobile">
+                            <img src="{{ asset('build/images/panier.png') }}" alt="Panier" class="cart-icon-mobile">
+                            <span class="cart-badge-mobile">0</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Recherche mobile -->
+                <div class="collapse mt-3 d-lg-none" id="mobileSearch">
+                    <form action="{{ path('ajax_search') }}" method="get" class="d-flex">
+                        <input type="text" name="q" class="form-control search-mobile" placeholder="Rechercher...">
+                        <button type="submit" class="btn btn-outline-success ms-2">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Menu mobile -->
+                <div class="collapse navbar-collapse mt-3 d-lg-none" id="mobileMenu">
+                    <ul class="navbar-nav-mobile">
+                        {% include 'components/_nav_links_mobile.html.twig' %}
+                    </ul>
+                </div>
+                
+                <!-- DESKTOP LAYOUT -->
+                <div class="d-none d-lg-flex w-100 align-items-center justify-content-center">
+                    <ul class="navbar-nav-primary">
+                        {% include 'components/_nav_links_desktop.html.twig' %}
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -190,36 +209,36 @@
         <!-- Cadre autour des icônes -->
         <div class="row justify-content-center mt-4">
             <div class="col-12 col-md-auto">
-                <div class="d-flex justify-content-center p-3 border rounded flex-wrap" style="border-color: #ccc; gap: 60px;">
+                <div class="d-flex justify-content-center p-3 border rounded flex-wrap services-container" style="border-color: #ddd; gap: 60px; background-color: #f8f9fa;">
 
-                    <!-- Card 1 -->
+                    <!-- Card 1 - Paiement sécurisé -->
                     <div class="d-flex flex-column align-items-center mb-3">
-                        <div class="card text-center" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;">
-                            <img src="{{ asset('build/images/paiement.png') }}" alt="" style="width: 100px; height: 100px;">
+                        <div class="service-icon-container">
+                            <i class="bi bi-shield-check service-icon"></i>
                         </div>
                         <h6 class="mt-2 text-center">Paiement sécurisé</h6>
                     </div>
 
-                    <!-- Card 2 -->
+                    <!-- Card 2 - Livraison rapide -->
                     <div class="d-flex flex-column align-items-center mb-3">
-                        <div class="card text-center" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;">
-                            <img src="{{ asset('build/images/livraison.png') }}" alt="" style="width: 100px; height: 100px;">
+                        <div class="service-icon-container">
+                            <i class="bi bi-truck service-icon"></i>
                         </div>
                         <h6 class="mt-2 text-center">Livraison rapide</h6>
                     </div>
 
-                    <!-- Card 3 -->
+                    <!-- Card 3 - Satisfait ou remboursé -->
                     <div class="d-flex flex-column align-items-center mb-3">
-                        <div class="card text-center" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;">
-                            <img src="{{ asset('build/images/satisfait.png') }}" alt="" style="width: 100px; height: 100px;">
+                        <div class="service-icon-container">
+                            <i class="bi bi-arrow-repeat service-icon"></i>
                         </div>
                         <h6 class="mt-2 text-center">Satisfait ou remboursé</h6>
                     </div>
 
-                    <!-- Card 4 -->
+                    <!-- Card 4 - Support client -->
                     <div class="d-flex flex-column align-items-center mb-3">
-                        <div class="card text-center" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;">
-                            <img src="{{ asset('build/images/client.png') }}" alt="" style="width: 100px; height: 100px;">
+                        <div class="service-icon-container">
+                            <i class="bi bi-headset service-icon"></i>
                         </div>
                         <h6 class="mt-2 text-center">Support client</h6>
                     </div>
@@ -298,58 +317,71 @@
 
                 <div class="d-flex justify-content-center flex-wrap gap-3">
                   <!-- Facebook -->
-                  <div class="card d-flex align-items-center justify-content-center" 
-                      style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
-                    <img src="{{ asset('build/images/facebook.png') }}" 
-                        alt="Facebook" style="width: 24px; height: 24px;">
+                  <div class="social-icon-container">
+                    <i class="bi bi-facebook social-icon"></i>
                   </div>
 
                   <!-- Instagram -->
-                  <div class="card d-flex align-items-center justify-content-center" 
-                      style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
-                    <img src="{{ asset('build/images/instagram.png') }}" 
-                        alt="Instagram" style="width: 24px; height: 24px;">
-                  </div>
-
-                  <!-- Pinterest -->
-                  <div class="card d-flex align-items-center justify-content-center" 
-                      style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
-                    <img src="{{ asset('build/images/pinterest.png') }}" 
-                        alt="Pinterest" style="width: 24px; height: 24px;">
+                  <div class="social-icon-container">
+                    <i class="bi bi-instagram social-icon"></i>
                   </div>
 
                   <!-- TikTok -->
-                  <div class="card d-flex align-items-center justify-content-center" 
-                      style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden;">
-                    <img src="{{ asset('build/images/tic-tac.png') }}" 
-                        alt="TikTok" style="width: 24px; height: 24px;">
+                  <div class="social-icon-container">
+                    <i class="bi bi-tiktok social-icon"></i>
+                  </div>
+
+                  <!-- Pinterest -->
+                  <div class="social-icon-container">
+                    <i class="bi bi-pinterest social-icon"></i>
                   </div>
                 </div>
               </div>
             </div>
 
            <div class="container my-5">
-  <div class="d-flex justify-content-center flex-wrap gap-5">
-    <!-- Icône 1 -->
-    <img src="{{ asset('build/images/paypal.png') }}" alt="Icon 1" style="width: 50px; height: auto;">
+  <div class="d-flex justify-content-center flex-wrap gap-5 payment-icons">
+    <!-- Visa -->
+    <div class="payment-icon-container">
+      <i class="bi bi-credit-card payment-icon visa-icon"></i>
+      <span class="payment-label">Visa</span>
+    </div>
 
-    <!-- Icône 2 -->
-    <img src="{{ asset('build/images/visa.png') }}" alt="Icon 2" style="width: 50px; height: auto;">
+    <!-- Mastercard -->
+    <div class="payment-icon-container">
+      <i class="bi bi-credit-card-2-front payment-icon mastercard-icon"></i>
+      <span class="payment-label">Mastercard</span>
+    </div>
 
-    <!-- Icône 3 -->
-    <img src="{{ asset('build/images/carte.png') }}" alt="Icon 3" style="width: 50px; height: 40px;">
+    <!-- PayPal -->
+    <div class="payment-icon-container">
+      <i class="bi bi-paypal payment-icon paypal-icon"></i>
+      <span class="payment-label">PayPal</span>
+    </div>
 
-    <!-- Icône 4 -->
-    <img src="{{ asset('build/images/g pay.png') }}" alt="Icon 4" style="width: 50px; height: 50px;">
+    <!-- Apple Pay -->
+    <div class="payment-icon-container">
+      <i class="bi bi-apple payment-icon apple-icon"></i>
+      <span class="payment-label">Apple Pay</span>
+    </div>
 
-    <!-- Icône 5 -->
-    <img src="{{ asset('build/images/pay.png') }}" alt="Icon 5" style="width: 50px; height: 40px;">
+    <!-- Google Pay -->
+    <div class="payment-icon-container">
+      <i class="bi bi-google payment-icon google-icon"></i>
+      <span class="payment-label">Google Pay</span>
+    </div>
 
-    <!-- Icône 6 -->
-    <img src="{{ asset('build/images/tether.png') }}" alt="Icon 6" style="width: 70px; height: 40px;">
+    <!-- Tether -->
+    <div class="payment-icon-container">
+      <i class="bi bi-currency-bitcoin payment-icon crypto-icon"></i>
+      <span class="payment-label">Tether</span>
+    </div>
 
-    <!-- Icône 7 -->
-    <img src="{{ asset('build/images/ethereum.png') }}" alt="Icon 7" style="width: 70px; height: 60px;">
+    <!-- Ethereum -->
+    <div class="payment-icon-container">
+      <i class="bi bi-currency-bitcoin payment-icon crypto-icon"></i>
+      <span class="payment-label">Ethereum</span>
+    </div>
   </div>
 </div>
 

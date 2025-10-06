@@ -1,0 +1,51 @@
+{# Navigation mobile - Style The Ordinary #}
+
+<li class="nav-item-mobile">
+    <a class="nav-link-mobile" href="{{ path('app_visitor_nouveautés_index') }}">
+        Nouveautés
+    </a>
+</li>
+
+<li class="nav-item-mobile">
+    <a class="nav-link-mobile" href="{{ path('app_visitor_best-sellers') }}">
+        Best-sellers
+    </a>
+</li>
+
+<li class="nav-item-mobile">
+    <a class="nav-link-mobile" href="{{ path('app_visitor_soin-de-la-peau') }}">
+        Soin de la peau
+    </a>
+    <ul class="mobile-submenu">
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'serum'}) }}">Sérum</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'soins-solaires'}) }}">Soins solaires</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'creme-hydratante'}) }}">Crème hydratante</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'exfoliant'}) }}">Exfoliant</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'serum-contour-yeux'}) }}">Sérum contour yeux</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'nettoyant-pour-le-visage'}) }}">Nettoyant pour le visage</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'huile-pour-le-visage'}) }}">Huile pour le visage</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'tonique'}) }}">Tonique</a></li>
+    </ul>
+</li>
+
+<li class="nav-item-mobile">
+    <a class="nav-link-mobile" href="{{ path('app_visitor_corps_et_cheveux') }}">
+        Corps et cheveux
+    </a>
+    <ul class="mobile-submenu">
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'huile-pour-cheveux'}) }}">Huile pour cheveux</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'creme-visage'}) }}">Crème visage</a></li>
+    </ul>
+</li>
+
+<li class="nav-item-mobile">
+    <a class="nav-link-mobile" href="{{ path('app_visitor_problematique_cutanee') }}">
+        Problématique Cutanée
+    </a>
+    <ul class="mobile-submenu">
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'probleme-uniformite-teint'}) }}">Problème d'uniformité du teint</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'texture-peau-inegale'}) }}">Texture de peau inégale</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'secheresse-exces-sebum'}) }}">Sécheresse/excès de sébum</a></li>
+        <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'vieillissement'}) }}">Vieillissement</a></li>
+    </ul>
+</li>
