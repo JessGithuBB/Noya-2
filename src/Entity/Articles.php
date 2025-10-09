@@ -71,12 +71,16 @@ class Articles
     #[ORM\JoinTable(name: 'articles_categories')]
     private Collection $categories;
 
+    #[ORM\ManyToMany(targetEntity: SsCategory::class)]
+    #[ORM\JoinTable(name: 'articles_ss_categories')]
+    private Collection $ssCategories;
+
     public function __construct()
     {
         $this->keywords = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->categories = new ArrayCollection();
-
+        $this->ssCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -322,6 +326,28 @@ public function removeCategory(Category $category): static
                 $image->setArticle(null);
             }
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SsCategory>
+     */
+    public function getSsCategories(): Collection
+    {
+        return $this->ssCategories;
+    }
+
+    public function addSsCategory(SsCategory $ssCategory): static
+    {
+        if (!$this->ssCategories->contains($ssCategory)) {
+            $this->ssCategories->add($ssCategory);
+        }
+        return $this;
+    }
+
+    public function removeSsCategory(SsCategory $ssCategory): static
+    {
+        $this->ssCategories->removeElement($ssCategory);
         return $this;
     }
 }

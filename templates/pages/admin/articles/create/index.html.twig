@@ -147,6 +147,28 @@
                 <small class="text-muted">Séparez les mots-clés avec des virgules.</small>
             </div>
 
+            {# CATÉGORIES #}
+            <div class="mb-3">
+                {{ form_label(form.categories, null, { 'label_attr': { 'class': 'form-label fw-semibold' } }) }}
+                <div class="text-danger">{{ form_errors(form.categories) }}</div>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-folder"></i></span>
+                    {{ form_widget(form.categories, { 'attr': { 'class': 'form-select' } }) }}
+                </div>
+                <small class="text-muted">Maintenez Ctrl (ou Cmd) pour sélectionner plusieurs catégories.</small>
+            </div>
+
+            {# SOUS-CATÉGORIES #}
+            <div class="mb-3">
+                {{ form_label(form.ssCategories, null, { 'label_attr': { 'class': 'form-label fw-semibold' } }) }}
+                <div class="text-danger">{{ form_errors(form.ssCategories) }}</div>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-folder2-open"></i></span>
+                    {{ form_widget(form.ssCategories, { 'attr': { 'class': 'form-select' } }) }}
+                </div>
+                <small class="text-muted">Maintenez Ctrl (ou Cmd) pour sélectionner plusieurs sous-catégories.</small>
+            </div>
+
             {# BOUTON D'ENREGISTREMENT #}
 
             <button type="submit" class="btn btn-primary w-100 py-2 fs-5 fw-semibold mt-4">
@@ -157,4 +179,39 @@
         </div>
     </div>
 </div>
+
+{# Script pour filtrer les sous-catégories selon la catégorie sélectionnée #}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const categoriesSelect = document.getElementById('article_categories');
+    const sseCategoriesSelect = document.getElementById('article_ss_categories');
+    
+    if (categoriesSelect && sseCategoriesSelect) {
+        // Sauvegarder toutes les options des sous-catégories
+        const allSsCategories = Array.from(sseCategoriesSelect.options);
+        
+        // Fonction pour filtrer les sous-catégories
+        function filterSsCategories() {
+            const selectedCategories = Array.from(categoriesSelect.selectedOptions).map(option => option.text);
+            
+            // Si aucune catégorie n'est sélectionnée, afficher toutes les sous-catégories
+            if (selectedCategories.length === 0) {
+                sseCategoriesSelect.innerHTML = '';
+                allSsCategories.forEach(option => {
+                    sseCategoriesSelect.appendChild(option.cloneNode(true));
+                });
+                return;
+            }
+            
+            // Filtrer et afficher uniquement les sous-catégories pertinentes
+            // Note: Cette fonctionnalité nécessite que les sous-catégories aient un attribut data-category
+            // Pour l'instant, nous laissons toutes les options visibles
+            // Vous pouvez améliorer cette fonction en ajoutant un attribut data-category dans le formulaire
+        }
+        
+        // Écouter les changements sur la sélection de catégories
+        categoriesSelect.addEventListener('change', filterSsCategories);
+    }
+});
+</script>
 {% endblock %}

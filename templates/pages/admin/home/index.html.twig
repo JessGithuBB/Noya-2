@@ -4,7 +4,338 @@
 {% block description %}Tableau de bord{% endblock %}
 
 {% block main %}
-     <h1 class="text-center my-3 display-5">Hello : {{app.user.firstname}}</h1>
+<div class="admin-dashboard">
+    {# En-tête de bienvenue #}
+    <div class="dashboard-header mb-4">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-8">
+                <h1 class="display-6 fw-bold text-dark mb-2">Bonjour, {{app.user.firstname}} 👋</h1>
+                <p class="text-muted mb-0">Voici un aperçu de votre activité aujourd'hui</p>
+            </div>
+            <div class="col-12 col-md-4 text-md-end mt-3 mt-md-0">
+                <span class="badge bg-success-subtle text-success px-3 py-2">
+                    <i class="bi bi-calendar3"></i> {{ "now"|date("d M Y") }}
+                </span>
+            </div>
+        </div>
+    </div>
 
+    {# Cartes de statistiques #}
+    <div class="stats-cards mb-4">
+        <div class="row g-3 g-md-4">
+            {# Ventes du jour #}
+            <div class="col-6 col-lg-3">
+                <div class="stat-card card border-0 shadow-sm h-100">
+                    <div class="card-body p-3 p-md-4">
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="stat-icon bg-success-subtle text-success">
+                                <i class="bi bi-currency-euro"></i>
+                            </div>
+                            <span class="badge bg-success-subtle text-success small">+12%</span>
+                        </div>
+                        <h3 class="stat-value mb-1">1 850€</h3>
+                        <p class="stat-label text-muted mb-0 small">Ventes du jour</p>
+                    </div>
+                </div>
+            </div>
 
+            {# Commandes #}
+            <div class="col-6 col-lg-3">
+                <div class="stat-card card border-0 shadow-sm h-100">
+                    <div class="card-body p-3 p-md-4">
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="stat-icon bg-primary-subtle text-primary">
+                                <i class="bi bi-bag-check"></i>
+                            </div>
+                            <span class="badge bg-primary-subtle text-primary small">+8%</span>
+                        </div>
+                        <h3 class="stat-value mb-1">47</h3>
+                        <p class="stat-label text-muted mb-0 small">Nouvelles commandes</p>
+                    </div>
+                </div>
+            </div>
+
+            {# Produits #}
+            <div class="col-6 col-lg-3">
+                <div class="stat-card card border-0 shadow-sm h-100">
+                    <div class="card-body p-3 p-md-4">
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="stat-icon bg-warning-subtle text-warning">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <span class="badge bg-warning-subtle text-warning small">126</span>
+                        </div>
+                        <h3 class="stat-value mb-1">234</h3>
+                        <p class="stat-label text-muted mb-0 small">Produits actifs</p>
+                    </div>
+                </div>
+            </div>
+
+            {# Utilisateurs #}
+            <div class="col-6 col-lg-3">
+                <div class="stat-card card border-0 shadow-sm h-100">
+                    <div class="card-body p-3 p-md-4">
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="stat-icon bg-info-subtle text-info">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <span class="badge bg-info-subtle text-info small">+24</span>
+                        </div>
+                        <h3 class="stat-value mb-1">1 432</h3>
+                        <p class="stat-label text-muted mb-0 small">Utilisateurs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Section graphiques et activités récentes #}
+    <div class="row g-3 g-md-4 mb-4">
+        {# Graphique des ventes #}
+        <div class="col-12 col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="fw-semibold mb-0">Évolution des ventes</h5>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-outline-secondary active">Mois</button>
+                            <button type="button" class="btn btn-outline-secondary">Année</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-3 p-md-4">
+                    <canvas id="salesChart" height="80"></canvas>
+                </div>
+            </div>
+        </div>
+
+        {# Activités récentes #}
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="fw-semibold mb-0">Activités récentes</h5>
+                </div>
+                <div class="card-body p-3 p-md-4">
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon bg-success-subtle text-success">
+                                <i class="bi bi-cart-check"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="mb-1 small fw-medium">Nouvelle commande #1234</p>
+                                <span class="text-muted small">Il y a 5 min</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon bg-primary-subtle text-primary">
+                                <i class="bi bi-person-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="mb-1 small fw-medium">Nouvel utilisateur inscrit</p>
+                                <span class="text-muted small">Il y a 15 min</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon bg-warning-subtle text-warning">
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="mb-1 small fw-medium">Nouvel avis 5★ reçu</p>
+                                <span class="text-muted small">Il y a 1h</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item mb-0">
+                            <div class="activity-icon bg-info-subtle text-info">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="mb-1 small fw-medium">Stock mis à jour</p>
+                                <span class="text-muted small">Il y a 2h</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Produits populaires et actions rapides #}
+    <div class="row g-3 g-md-4">
+        {# Produits les plus vendus #}
+        <div class="col-12 col-lg-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="fw-semibold mb-0">Produits les plus vendus</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="border-0 ps-4">Produit</th>
+                                    <th class="border-0 text-center d-none d-md-table-cell">Ventes</th>
+                                    <th class="border-0 text-center">Stock</th>
+                                    <th class="border-0 text-end pe-4">Revenus</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-2 gap-md-3">
+                                            <img src="{{ asset('build/images/serum-marron.jpg') }}" alt="Produit" class="product-thumb rounded">
+                                            <div>
+                                                <p class="mb-0 fw-medium small">Sérum éclat</p>
+                                                <small class="text-muted d-none d-md-inline">Soin visage</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center align-middle d-none d-md-table-cell"><span class="badge bg-success-subtle text-success">142</span></td>
+                                    <td class="text-center align-middle"><span class="badge bg-warning-subtle text-warning">23</span></td>
+                                    <td class="text-end pe-4 align-middle fw-semibold">2 698€</td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-2 gap-md-3">
+                                            <img src="{{ asset('build/images/clear-cream.jpg') }}" alt="Produit" class="product-thumb rounded">
+                                            <div>
+                                                <p class="mb-0 fw-medium small">Crème hydratante</p>
+                                                <small class="text-muted d-none d-md-inline">Soin visage</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center align-middle d-none d-md-table-cell"><span class="badge bg-success-subtle text-success">128</span></td>
+                                    <td class="text-center align-middle"><span class="badge bg-warning-subtle text-warning">15</span></td>
+                                    <td class="text-end pe-4 align-middle fw-semibold">2 304€</td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-2 gap-md-3">
+                                            <img src="{{ asset('build/images/tonic-blue.jpg') }}" alt="Produit" class="product-thumb rounded">
+                                            <div>
+                                                <p class="mb-0 fw-medium small">Tonique apaisant</p>
+                                                <small class="text-muted d-none d-md-inline">Soin visage</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center align-middle d-none d-md-table-cell"><span class="badge bg-success-subtle text-success">96</span></td>
+                                    <td class="text-center align-middle"><span class="badge bg-success-subtle text-success">48</span></td>
+                                    <td class="text-end pe-4 align-middle fw-semibold">1 392€</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Actions rapides #}
+        <div class="col-12 col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="fw-semibold mb-0">Actions rapides</h5>
+                </div>
+                <div class="card-body p-3 p-md-4">
+                    <div class="quick-actions">
+                        <a href="{{ path('app_admin_articles_create') }}" class="quick-action-btn">
+                            <div class="quick-action-icon bg-success-subtle text-success">
+                                <i class="bi bi-plus-circle"></i>
+                            </div>
+                            <span class="small fw-medium">Ajouter un produit</span>
+                        </a>
+                        
+                        <a href="{{ path('app_admin_category_create') }}" class="quick-action-btn">
+                            <div class="quick-action-icon bg-primary-subtle text-primary">
+                                <i class="bi bi-folder-plus"></i>
+                            </div>
+                            <span class="small fw-medium">Créer une catégorie</span>
+                        </a>
+                        
+                        <a href="#" class="quick-action-btn">
+                            <div class="quick-action-icon bg-warning-subtle text-warning">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <span class="small fw-medium">Gérer les stocks</span>
+                        </a>
+                        
+                        <a href="#" class="quick-action-btn">
+                            <div class="quick-action-icon bg-info-subtle text-info">
+                                <i class="bi bi-file-earmark-bar-graph"></i>
+                            </div>
+                            <span class="small fw-medium">Voir les rapports</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Script pour le graphique Chart.js #}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('salesChart');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                datasets: [{
+                    label: 'Ventes (€)',
+                    data: [1200, 1900, 1500, 2100, 1800, 2400, 2200],
+                    backgroundColor: 'rgba(74, 124, 89, 0.1)',
+                    borderColor: 'rgba(74, 124, 89, 1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: 'rgba(74, 124, 89, 1)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + '€';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '€';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

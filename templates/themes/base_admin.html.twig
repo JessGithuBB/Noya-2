@@ -142,7 +142,10 @@
     <body> 
 
         <header class="navbar sticky-top flex-md-nowrap p-0 shadow custom-navbar"> 
-            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Noya</a> 
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white d-flex align-items-center gap-2" href="{{ path('app_admin_home') }}">
+                <img src="{{ asset('build/images/new-noya.png') }}" alt="Noya Logo" width="28" height="28">
+                <span class="fw-bold">Noya Admin</span>
+            </a> 
             <ul class="navbar-nav flex-row d-md-none"> 
                 <li class="nav-item text-nowrap"> 
                     <button class="nav-link px-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch" aria-controls="navbarSearch" aria-expanded="false" aria-label="Toggle search"> 
@@ -166,7 +169,10 @@
                      <div class="offcanvas-md offcanvas-start bg-body-tertiary" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
 
                         <div class="offcanvas-header"> 
-                            <h5 class="offcanvas-title" id="sidebarMenuLabel">Noya</h5> 
+                            <h5 class="offcanvas-title d-flex align-items-center gap-2" id="sidebarMenuLabel">
+                                <img src="{{ asset('build/images/whiteN.png') }}" alt="Noya Logo" width="32" height="32">
+                                <span>Noya Admin</span>
+                            </h5> 
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
                     </div> 
                         <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto"> 
@@ -310,62 +316,8 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"> 
         {% block main %}{% endblock %}
-            {# Graphique total ventes #}
-        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
-                integrity="sha384-zL4+5EmjtJ1iGmY+dedFdS1FQda7fHR6OeI3XnZQ2lGyl2z8GTCstE4l6l9gU04h"
-                crossorigin="anonymous">
-        </script>
-
-            <script>
-                // Données des ventes par mois
-                const data = {
-                    labels: ['Mai', 'Juin', 'Juillet'], // Noms des mois
-                    datasets: [{
-                        label: 'Total des ventes',
-                        data: [152, 500, 1200], // Totaux des ventes par mois
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 0.2)', 
-                            'rgba(255, 206, 86, 0.2)', 
-                            'rgba(255, 99, 132, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(75, 192, 192, 1)', 
-                            'rgba(255, 206, 86, 1)', 
-                            'rgba(255, 99, 132, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                };
-
-                // Configuration du graphique
-                const config = {
-                    type: 'bar', // Type de graphique (ici, un histogramme)
-                    data: data,
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true // Commencer l’axe Y à 0
-                            }
-                        }
-                    }
-                };
-
-                // Création et affichage du graphique
-                new Chart(
-                    document.getElementById('ventesChart'),
-                    config
-                );
-                    </script>
-                    <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" 
-                    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
-                    class="astro-vvvwv3sm">
-                    </script> 
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" 
-                        integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" 
-                        crossorigin="anonymous" 
-                        class="astro-vvvwv3sm">
-                    </script>
-                    <script src="dashboard.js" class="astro-vvvwv3sm"></script> 
+        
+        {# Chargement de Chart.js pour les graphiques #}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script> 
     </body> 
 </html>

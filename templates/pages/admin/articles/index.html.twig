@@ -5,6 +5,46 @@
 
 {% block main %}
     <h1 class="text-center my-3 display-5">Liste des articles</h1>
+    
+    <style>
+        /* Styles pour les badges de catégories et sous-catégories */
+        .table td {
+            vertical-align: middle;
+        }
+        
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.35rem 0.65rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .badge i {
+            font-size: 0.85rem;
+        }
+        
+        /* Amélioration de la lisibilité du tableau */
+        .table-responsive {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .table thead th {
+            background-color: #4a7c59;
+            color: white;
+            font-weight: 600;
+            padding: 12px 8px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+        
+        .table tbody tr:hover {
+            background-color: rgba(74, 124, 89, 0.05);
+        }
+    </style>
 
     {# Utilisation alert/twig #}
     {% include 'components/alert.html.twig' %}
@@ -26,6 +66,8 @@
                     <th>Image</th>
                     <th>Référence</th>
                     <th>Mots-clés</th>
+                    <th>Catégories</th>
+                    <th>Sous-catégories</th>
                     <th>Nom</th>
                     <th>Slug</th>
                     <th>Description</th>
@@ -54,6 +96,28 @@
                             {% if articles.keywords is not empty %}
                                 {% for keyword in articles.keywords %}
                                     <span class="badge bg-info text-dark me-1">{{ keyword.name }}</span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if articles.categories is not empty %}
+                                {% for category in articles.categories %}
+                                    <span class="badge bg-success text-white me-1 mb-1">
+                                        <i class="bi bi-folder"></i> {{ category.name }}
+                                    </span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if articles.ssCategories is not empty %}
+                                {% for ssCategory in articles.ssCategories %}
+                                    <span class="badge bg-primary text-white me-1 mb-1">
+                                        <i class="bi bi-folder2-open"></i> {{ ssCategory.name }}
+                                    </span>
                                 {% endfor %}
                             {% else %}
                                 <span class="text-muted">—</span>

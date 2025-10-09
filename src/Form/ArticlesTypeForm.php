@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Articles;
+use App\Entity\Category;
+use App\Entity\SsCategory;
 use App\Form\ArticleImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ArticlesTypeForm extends AbstractType
 {
@@ -89,6 +92,30 @@ class ArticlesTypeForm extends AbstractType
                 'placeholder' => 'ex: été, promo, coton',
                 'class' => 'form-control',
             ]
+            ])
+            ->add('categories', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'label' => 'Catégorie(s)',
+                'multiple' => true,
+                'expanded' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-select',
+                    'id' => 'article_categories'
+                ],
+            ])
+            ->add('ssCategories', EntityType::class, [
+                'class' => SsCategory::class,
+                'choice_label' => 'name',
+                'label' => 'Sous-catégorie(s)',
+                'multiple' => true,
+                'expanded' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-select',
+                    'id' => 'article_ss_categories'
+                ],
             ]);
     }
 
