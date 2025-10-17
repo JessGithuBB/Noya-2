@@ -103,9 +103,9 @@
                         {% endif %}
                         
                         <!-- Panier -->
-                        <a href="#" class="action-btn cart-btn">
+                        <a href="{{ path('app_cart_index') }}" class="action-btn cart-btn">
                             <img src="{{ asset('build/images/panier.png') }}" alt="Panier" class="cart-icon">
-                            <span class="cart-badge">0</span>
+                            <span class="cart-badge" id="cart-count-desktop">{{ cart_count }}</span>
                         </a>
                     </div>
                 </div>
@@ -135,9 +135,9 @@
                         <button class="action-btn-mobile" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch">
                             <i class="bi bi-search"></i>
                         </button>
-                        <a href="#" class="action-btn-mobile">
+                        <a href="{{ path('app_cart_index') }}" class="action-btn-mobile">
                             <img src="{{ asset('build/images/panier.png') }}" alt="Panier" class="cart-icon-mobile">
-                            <span class="cart-badge-mobile">0</span>
+                            <span class="cart-badge-mobile" id="cart-count-mobile">{{ cart_count }}</span>
                         </a>
                     </div>
                 </div>

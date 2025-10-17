@@ -7,50 +7,204 @@
     <h1 class="text-center my-3 display-5">Liste des articles</h1>
     
     <style>
-        /* Styles pour les badges de catégories et sous-catégories */
-        .table td {
-            vertical-align: middle;
-        }
-        
-        .badge {
-            font-size: 0.75rem;
-            padding: 0.35rem 0.65rem;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        
-        .badge i {
-            font-size: 0.85rem;
-        }
-        
-        /* Amélioration de la lisibilité du tableau */
-        .table-responsive {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+        /* Container du tableau avec défilement optimisé */
+        .articles-table-container {
+            margin-top: 80px;
+            position: relative;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
         
+        /* Zone de défilement horizontal */
+        .table-responsive {
+            overflow-x: auto;
+            overflow-y: visible;
+            max-width: 100%;
+            position: relative;
+            
+            /* Style de la barre de défilement */
+            scrollbar-width: thin;
+            scrollbar-color: #4a7c59 #f0f4f1;
+        }
+        
+        /* Barre de défilement Chrome/Safari */
+        .table-responsive::-webkit-scrollbar {
+            height: 12px;
+        }
+        
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f0f4f1;
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #4a7c59;
+            border-radius: 10px;
+            border: 2px solid #f0f4f1;
+        }
+        
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #3d6548;
+        }
+        
+        /* Indicateur de défilement */
+        .scroll-indicator {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 60px;
+            background: linear-gradient(to left, rgba(255,255,255,0.95), transparent);
+            pointer-events: none;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s;
+        }
+        
+        .scroll-indicator i {
+            font-size: 1.5rem;
+            color: #4a7c59;
+            animation: scrollPulse 2s infinite;
+        }
+        
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.5; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(5px); }
+        }
+        
+        /* Tableau */
+        .table {
+            margin-bottom: 0;
+            min-width: 1800px; /* Largeur minimale pour éviter la compression */
+            font-size: 0.875rem;
+        }
+        
+        .table td {
+            vertical-align: middle;
+            padding: 10px 8px;
+        }
+        
+        /* En-têtes avec largeurs optimisées */
         .table thead th {
             background-color: #4a7c59;
             color: white;
             font-weight: 600;
-            padding: 12px 8px;
-            font-size: 0.85rem;
+            padding: 14px 10px;
+            font-size: 0.8rem;
             white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Largeurs spécifiques des colonnes */
+        .table th:nth-child(1), .table td:nth-child(1) { width: 50px; min-width: 50px; } /* ID */
+        .table th:nth-child(2), .table td:nth-child(2) { width: 70px; min-width: 70px; } /* Image */
+        .table th:nth-child(3), .table td:nth-child(3) { width: 100px; min-width: 100px; } /* Référence */
+        .table th:nth-child(4), .table td:nth-child(4) { width: 150px; min-width: 150px; } /* Mots-clés */
+        .table th:nth-child(5), .table td:nth-child(5) { width: 150px; min-width: 150px; } /* Catégories */
+        .table th:nth-child(6), .table td:nth-child(6) { width: 150px; min-width: 150px; } /* Sous-catégories */
+        .table th:nth-child(7), .table td:nth-child(7) { width: 180px; min-width: 180px; } /* Nom */
+        .table th:nth-child(8), .table td:nth-child(8) { width: 150px; min-width: 150px; } /* Slug */
+        .table th:nth-child(9), .table td:nth-child(9) { width: 200px; min-width: 200px; } /* Description */
+        .table th:nth-child(10), .table td:nth-child(10) { width: 100px; min-width: 100px; } /* Marque */
+        .table th:nth-child(11), .table td:nth-child(11) { width: 80px; min-width: 80px; } /* Quantité */
+        .table th:nth-child(12), .table td:nth-child(12) { width: 90px; min-width: 90px; } /* Prix */
+        .table th:nth-child(13), .table td:nth-child(13) { width: 80px; min-width: 80px; } /* Nouveauté */
+        .table th:nth-child(14), .table td:nth-child(14) { width: 90px; min-width: 90px; } /* Best Seller */
+        .table th:nth-child(15), .table td:nth-child(15) { width: 90px; min-width: 90px; } /* Disponibilité */
+        .table th:nth-child(16), .table td:nth-child(16) { width: 120px; min-width: 120px; } /* Créé le */
+        .table th:nth-child(17), .table td:nth-child(17) { width: 120px; min-width: 120px; } /* Modifié le */
+        .table th:nth-child(18), .table td:nth-child(18) { 
+            width: 180px; 
+            min-width: 180px;
+            position: sticky;
+            right: 0;
+            background: white;
+            box-shadow: -2px 0 4px rgba(0,0,0,0.1);
+        } /* Actions */
+        
+        .table thead th:nth-child(18) {
+            background-color: #4a7c59;
+            box-shadow: -2px 0 4px rgba(0,0,0,0.2);
+        }
+        
+        .table tbody tr:hover td:nth-child(18) {
+            background-color: rgba(74, 124, 89, 0.05);
+        }
+        
+        /* Badges */
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.55rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            white-space: nowrap;
+        }
+        
+        .badge i {
+            font-size: 0.75rem;
+        }
+        
+        /* Limitation de la description */
+        .description-cell {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        /* Effets de hover */
+        .table tbody tr {
+            transition: background-color 0.2s;
         }
         
         .table tbody tr:hover {
             background-color: rgba(74, 124, 89, 0.05);
+        }
+        
+        /* Image miniature */
+        .article-image {
+            border-radius: 6px;
+            object-fit: cover;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Boutons d'action */
+        .btn-sm {
+            padding: 0.35rem 0.7rem;
+            font-size: 0.75rem;
+            margin: 2px;
+        }
+        
+        /* Info message pour le défilement */
+        .scroll-info {
+            text-align: center;
+            padding: 10px;
+            background: #f0f4f1;
+            color: #4a7c59;
+            font-size: 0.85rem;
+            border-radius: 12px 12px 0 0;
+            font-weight: 500;
+        }
+        
+        .scroll-info i {
+            margin-right: 5px;
         }
     </style>
 
     {# Utilisation alert/twig #}
     {% include 'components/alert.html.twig' %}
 
-    <div class="position-relative">
-        <a href="{{ path('app_admin_articles_create') }}" class="btn btn-sm btn-outline-primary position-absolute top-0 end-0 m-2 text-black">
+    <div class="position-relative mb-4">
+        <a href="{{ path('app_admin_articles_create') }}" class="btn btn-outline-primary position-absolute top-0 end-0 m-2">
             <img src="{{ asset('build/images/plusieurs.png') }}"
                  alt="ajouter"
                  width="20"
@@ -58,8 +212,20 @@
         </a>
     </div>
 
-    <div class="table-responsive" style="margin-top: 100px;">
-        <table class="table gb-secondary table-hover table-bordered text-center">
+    {# Container du tableau avec défilement optimisé #}
+    <div class="articles-table-container">
+        {# Message d'information sur le défilement #}
+        <div class="scroll-info">
+            <i class="bi bi-arrow-left-right"></i> Faites défiler horizontalement pour voir toutes les colonnes
+        </div>
+        
+        <div class="table-responsive">
+            {# Indicateur de défilement animé #}
+            <div class="scroll-indicator" id="scrollIndicator">
+                <i class="bi bi-chevron-double-right"></i>
+            </div>
+            
+            <table class="table table-hover table-bordered text-center">
             <thead class="table-custom">
                 <tr>
                     <th>Id</th>
@@ -88,7 +254,11 @@
                         <td>{{ articles.id }}</td>
                         <td>
                             {% if articles.image %}
-                                <img src="{{ asset('uploads/images/' ~ articles.image) }}" alt="{{ articles.name }}" width="50" height="50">
+                                <img src="{{ asset('uploads/images/' ~ articles.image) }}" 
+                                     alt="{{ articles.name }}" 
+                                     class="article-image"
+                                     width="50" 
+                                     height="50">
                             {% endif %}
                         </td>
                         <td>{{ articles.code }}</td>
@@ -126,7 +296,9 @@
 
                         <td>{{ articles.name }}</td>
                         <td>{{ articles.slug }}</td>
-                        <td>{{ articles.shortDescription }}</td>
+                        <td class="description-cell" title="{{ articles.shortDescription }}">
+                            {{ articles.shortDescription }}
+                        </td>
                         <td>{{ articles.brand }}</td>
                         <td>{{ articles.quantity }}</td>
                         <td>{{ articles.sellingPrice }}</td>
@@ -148,5 +320,39 @@
                 {% endfor %}
             </tbody>
         </table>
+        </div>
     </div>
+    
+    {# Script pour gérer l'indicateur de défilement #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableResponsive = document.querySelector('.table-responsive');
+            const scrollIndicator = document.getElementById('scrollIndicator');
+            
+            if (tableResponsive && scrollIndicator) {
+                // Fonction pour vérifier si on peut encore défiler
+                function checkScroll() {
+                    const scrollLeft = tableResponsive.scrollLeft;
+                    const scrollWidth = tableResponsive.scrollWidth;
+                    const clientWidth = tableResponsive.clientWidth;
+                    
+                    // Masquer l'indicateur si on est à la fin ou si tout est visible
+                    if (scrollLeft + clientWidth >= scrollWidth - 10 || scrollWidth <= clientWidth) {
+                        scrollIndicator.style.opacity = '0';
+                    } else {
+                        scrollIndicator.style.opacity = '1';
+                    }
+                }
+                
+                // Vérifier au chargement
+                checkScroll();
+                
+                // Vérifier pendant le défilement
+                tableResponsive.addEventListener('scroll', checkScroll);
+                
+                // Vérifier lors du redimensionnement de la fenêtre
+                window.addEventListener('resize', checkScroll);
+            }
+        });
+    </script>
 {% endblock %}

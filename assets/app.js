@@ -11,6 +11,9 @@ import "./styles/app.scss";
 require("bootstrap");
 import "bootstrap-icons/font/bootstrap-icons.css";
 
+// Import du carrousel
+import "./carousel.js";
+
 /////////////  Icon Search ///////////////
 
 const searchToggle = document.getElementById("searchToggle");
@@ -139,11 +142,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /////////////// CARROUSEL NOUVEAUTÉS /////////////////
+// Le carrousel est maintenant géré par carousel.js
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialisation du carrousel simple
-    initSimpleCarousel();
-
     /////////////// PRODUCT CARDS FUNCTIONALITY /////////////////
 
     // Gestion de l'ajout au panier
@@ -270,136 +271,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
-// Fonction du carrousel simple
-function initSimpleCarousel() {
-    console.log("🎠 Initialisation du carrousel...");
-
-    const container = document.getElementById("carouselContainer");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const dotsContainer = document.getElementById("carouselDots");
-
-    console.log("Éléments trouvés:", {
-        container: !!container,
-        prevBtn: !!prevBtn,
-        nextBtn: !!nextBtn,
-        dotsContainer: !!dotsContainer,
-    });
-
-    if (!container || !prevBtn || !nextBtn || !dotsContainer) {
-        console.log("❌ Carrousel non trouvé - éléments manquants");
-        return;
-    }
-
-    const slides = container.querySelectorAll(".carousel-slide");
-    const totalSlides = slides.length;
-    let currentSlide = 0;
-    let slidesToShow = 4; // Desktop par défaut
-
-    console.log(`📊 ${totalSlides} cartes trouvées`);
-
-    // Déterminer le nombre de slides à afficher selon la taille d'écran
-    function updateSlidesToShow() {
-        const width = window.innerWidth;
-        if (width >= 1200) {
-            slidesToShow = 4; // Desktop
-        } else if (width >= 992) {
-            slidesToShow = 3; // Tablette large
-        } else if (width >= 576) {
-            slidesToShow = 2; // Tablette
-        } else {
-            slidesToShow = 1; // Mobile
-        }
-
-        const totalPages = Math.ceil(totalSlides / slidesToShow);
-        if (currentSlide >= totalPages) {
-            currentSlide = totalPages - 1;
-        }
-
-        console.log(
-            `📱 Affichage: ${slidesToShow} cartes par page (${totalPages} pages)`
-        );
-        updateCarousel();
-        updateDots();
-    }
-
-    // Mettre à jour la position du carrousel
-    function updateCarousel() {
-        const translateX = -(currentSlide * (100 / slidesToShow));
-        container.style.transform = `translateX(${translateX}%)`;
-        console.log(`🎯 Page ${currentSlide + 1} - Décalage: ${translateX}%`);
-    }
-
-    // Créer les points de pagination
-    function createDots() {
-        dotsContainer.innerHTML = "";
-        const totalPages = Math.ceil(totalSlides / slidesToShow);
-
-        for (let i = 0; i < totalPages; i++) {
-            const dot = document.createElement("button");
-            dot.className = "dot";
-            if (i === currentSlide) dot.classList.add("active");
-            dot.addEventListener("click", () => goToSlide(i));
-            dotsContainer.appendChild(dot);
-        }
-        console.log(`📍 ${totalPages} points de pagination créés`);
-    }
-
-    // Mettre à jour les points actifs
-    function updateDots() {
-        const dots = dotsContainer.querySelectorAll(".dot");
-        dots.forEach((dot, index) => {
-            dot.classList.toggle("active", index === currentSlide);
-        });
-    }
-
-    // Aller à un slide spécifique
-    function goToSlide(slideIndex) {
-        const totalPages = Math.ceil(totalSlides / slidesToShow);
-        currentSlide = Math.max(0, Math.min(slideIndex, totalPages - 1));
-        console.log(`🎯 Aller à la page ${currentSlide + 1}`);
-        updateCarousel();
-        updateDots();
-    }
-
-    // Slide suivant
-    function nextSlide() {
-        const totalPages = Math.ceil(totalSlides / slidesToShow);
-        currentSlide = (currentSlide + 1) % totalPages;
-        console.log(`➡️ Page suivante: ${currentSlide + 1}`);
-        updateCarousel();
-        updateDots();
-    }
-
-    // Slide précédent
-    function prevSlide() {
-        const totalPages = Math.ceil(totalSlides / slidesToShow);
-        currentSlide = (currentSlide - 1 + totalPages) % totalPages;
-        console.log(`⬅️ Page précédente: ${currentSlide + 1}`);
-        updateCarousel();
-        updateDots();
-    }
-
-    // Event listeners
-    prevBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        prevSlide();
-    });
-
-    nextBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        nextSlide();
-    });
-
-    // Redimensionnement de la fenêtre
-    window.addEventListener("resize", updateSlidesToShow);
-
-    // Initialisation
-    updateSlidesToShow();
-    createDots();
-    console.log("✅ Carrousel initialisé avec succès!");
-
-    // Autoplay (optionnel)
-    setInterval(nextSlide, 5000);
-}

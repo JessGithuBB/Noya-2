@@ -2,17 +2,61 @@
 {% block title %}Best-sellers{% endblock %}
 {% block description %}Retrouvez nos meilleurs ventes{% endblock %}
 
-    
 {% block main %}
-<div class="best-sellers mb-3">
-  <img src="{{asset('build/images/best-sellers.png')}}" 
-  alt="Liste des best-sellers"
-  class="img-fluid w-100"
-  style="height: auto;">
+{{ parent() }}
+
+<div class="best-sellers-page">
+    {# Bannière d'en-tête #}
+    <section class="page-header container-fluid py-5 mb-4" style="background: linear-gradient(135deg, #f0f4f1 0%, #e8f5e9 100%);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 fw-bold text-dark mb-3">
+                        <i class="bi bi-star-fill text-warning me-2"></i> Nos Best-Sellers
+                    </h1>
+                    <p class="lead text-muted">
+                        Découvrez nos produits les plus appréciés par nos clients
+                    </p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="{{ asset('build/images/best-sellers.png') }}" 
+                         alt="Best-sellers" 
+                         style="max-width: 150px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# Liste des articles #}
+    <section class="articles-section container py-4">
+        {% if articles is empty %}
+            {# Message si aucun best-seller #}
+            <div class="alert alert-info text-center" role="alert">
+                <i class="bi bi-info-circle fs-3 d-block mb-3"></i>
+                <h4>Aucun best-seller pour le moment</h4>
+                <p>Nos produits les plus populaires apparaîtront bientôt ici !</p>
+                <a href="{{ path('app_visitor_welcome') }}" class="btn btn-primary mt-3">
+                    <i class="bi bi-house"></i> Retour à l'accueil
+                </a>
+            </div>
+        {% else %}
+            {# Compteur d'articles #}
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 mb-0">
+                    <span class="badge bg-success">{{ articles|length }}</span> 
+                    {{ articles|length > 1 ? 'produits' : 'produit' }}
+                </h2>
+            </div>
+
+            {# Grille de produits #}
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                {% for article in articles %}
+                    <div class="col">
+                        {% include 'components/product_card.html.twig' with {'article': article} %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
 </div>
-
-{#}KEYWORDS LIST{#}
-{% include 'components/keywords.html.twig' with { article: article } only %}
 {% endblock %}
-
-
