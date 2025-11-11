@@ -4,15 +4,24 @@
 
     
 {% block main %}
-<div class="problématique-cutanée mb-3">
-  <img src="{{asset('build/images/problématique-cutanée.png')}}" 
-  alt="Liste des produits corps et cheveux"
-  class="img-fluid w-100"
-  style="height: auto;">
-</div>
+<div class="container-fluid">
+    <section 
+        class="page-header container-fluid py-5 mb-4 text-white position-relative"
+        style="
+            background-image: url('{{ asset('build/images/problématique-cutanée.png') }}');
+            background-size: cover;
+            background-position: center;
+            min-height: 320px;
+        ">
+        <div class="container position-relative"></div>
+    </section>
 
-{#}KEYWORDS LIST{#}
-{% include 'components/keywords.html.twig' with { article: article } only %}
+    {# KEYWORDS LIST #}
+    {% include 'components/keywords.html.twig' with { 
+        keywords: keywords,
+        articles: articles 
+    } %}
+</div>
 
 {% endblock %}
 

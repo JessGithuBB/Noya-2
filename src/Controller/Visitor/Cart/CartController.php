@@ -15,11 +15,23 @@ final class CartController extends AbstractController
      * Affiche le contenu du panier
      */
     #[Route('/', name: 'app_cart_index', methods: ['GET'])]
-    public function index(CartService $cartService): Response
+    public function index(CartService $cartService, Request $request): Response
     {
+        // Debug: voir le contenu de la session
+        $session = $request->getSession();
+        $cartData = $session->get('cart', []);
+        
+        // Ajouter un message de debug
+        if (!empty($cartData)) {
+            $this->addFlash('info', 'Panier session: ' . count($cartData) . ' article(s) différent(s)');
+        }
+        
+        $items = $cartService->getFullCart();
+        
         return $this->render('pages/visitor/cart/index.html.twig', [
-            'items' => $cartService->getFullCart(),
+            'items' => $items,
             'total' => $cartService->getTotal(),
+            'debug_session' => $cartData, // Pour debug
         ]);
     }
 
@@ -31,9 +43,13 @@ final class CartController extends AbstractController
     {
         $quantity = (int) $request->query->get('quantity', 1);
         
-        $cartService->add($id, $quantity);
+        $success = $cartService->add($id, $quantity);
 
-        $this->addFlash('success', 'Article ajouté au panier avec succès !');
+        if ($success) {
+            $this->addFlash('success', 'Article ajouté au panier avec succès !');
+        } else {
+            $this->addFlash('error', 'Impossible d\'ajouter cet article au panier.');
+        }
 
         // Rediriger vers la page précédente ou vers le panier
         $referer = $request->headers->get('referer');

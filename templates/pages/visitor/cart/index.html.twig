@@ -20,7 +20,7 @@
     </section>
 
     <div class="container pb-5">
-        {% if items is empty %}
+        {% if items|length == 0 %}
             {# Panier vide #}
             <div class="text-center py-5">
                 <i class="bi bi-cart-x display-1 text-muted"></i>
@@ -148,9 +148,9 @@
                             </div>
                             
                             {# Bouton Commander #}
-                            <button class="btn btn-success w-100 mb-3 py-3">
+                            <a href="{{ path('app_checkout_index') }}" class="btn btn-success w-100 mb-3 py-3">
                                 <i class="bi bi-check-circle"></i> Procéder au paiement
-                            </button>
+                            </a>
                             
                             {# Infos supplémentaires #}
                             <div class="text-center">

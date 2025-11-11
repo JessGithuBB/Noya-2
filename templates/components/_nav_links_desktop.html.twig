@@ -13,10 +13,14 @@
 </li>
 
 <li class="nav-item-primary dropdown">
-    <a class="nav-link-primary dropdown-toggle" href="{{ path('app_visitor_soin-de-la-peau') }}" 
-       id="navSoinDesktop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Soin de la peau
-    </a>
+    <div class="d-flex align-items-center">
+        <a class="nav-link-primary" href="{{ path('app_visitor_soin-de-la-peau') }}">
+            Soin de la peau
+        </a>
+        <button class="btn btn-link nav-link-primary dropdown-toggle ms-1 p-0" type="button" id="navSoinDesktop" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Voir les sous-catégories Soin de la peau</span>
+        </button>
+    </div>
     <ul class="dropdown-menu-primary" aria-labelledby="navSoinDesktop">
         <li><a class="dropdown-item-primary" href="{{ path('app_visitor_ss_category_show', {slug: 'serum'}) }}">Sérum</a></li>
         <li><a class="dropdown-item-primary" href="{{ path('app_visitor_ss_category_show', {slug: 'soins-solaires'}) }}">Soins solaires</a></li>
@@ -30,10 +34,14 @@
 </li>
 
 <li class="nav-item-primary dropdown">
-    <a class="nav-link-primary dropdown-toggle" href="{{ path('app_visitor_corps_et_cheveux') }}" 
-       id="navCorpsDesktop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Corps et cheveux
-    </a>
+    <div class="d-flex align-items-center">
+        <a class="nav-link-primary" href="{{ path('app_visitor_corps_et_cheveux') }}">
+            Corps et cheveux
+        </a>
+        <button class="btn btn-link nav-link-primary dropdown-toggle ms-1 p-0" type="button" id="navCorpsDesktop" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Voir les sous-catégories Corps et cheveux</span>
+        </button>
+    </div>
     <ul class="dropdown-menu-primary" aria-labelledby="navCorpsDesktop">
         <li><a class="dropdown-item-primary" href="{{ path('app_visitor_ss_category_show', {slug: 'huile-pour-cheveux'}) }}">Huile pour cheveux</a></li>
         <li><a class="dropdown-item-primary" href="{{ path('app_visitor_ss_category_show', {slug: 'creme-visage'}) }}">Crème visage</a></li>
@@ -41,10 +49,14 @@
 </li>
 
 <li class="nav-item-primary dropdown">
-    <a class="nav-link-primary dropdown-toggle" href="{{ path('app_visitor_problematique_cutanee') }}" 
-       id="navProblematiqueDesktop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Problématique Cutanée
-    </a>
+    <div class="d-flex align-items-center">
+        <a class="nav-link-primary" href="{{ path('app_visitor_problematique_cutanee') }}">
+            Problématique Cutanée
+        </a>
+        <button class="btn btn-link nav-link-primary dropdown-toggle ms-1 p-0" type="button" id="navProblematiqueDesktop" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Voir les sous-catégories Problématique Cutanée</span>
+        </button>
+    </div>
     <ul class="dropdown-menu-primary" aria-labelledby="navProblematiqueDesktop">
         <li><a class="dropdown-item-primary" href="{{ path('app_visitor_ss_category_show', {slug: 'probleme-uniformite-teint'}) }}">Problème d'uniformité du teint</a></li>
         <li><a class="dropdown-item-primary" href="{{ path('app_visitor_ss_category_show', {slug: 'texture-peau-inegale'}) }}">Texture de peau inégale</a></li>

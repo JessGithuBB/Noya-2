@@ -33,8 +33,30 @@ final class WelcomeController extends AbstractController
             }
         }
 
+        // Récupérer les best-sellers disponibles
+        $bestSellers = $articlesRepository->findBy([
+            'is_best_seller' => true,
+            'is_available' => true
+        ], ['created_at' => 'DESC'], 8);
+
+        // Si pas assez de best-sellers, compléter avec les articles disponibles
+        if (count($bestSellers) < 8) {
+            $articlesSupplementaires = $articlesRepository->findBy([
+                'is_available' => true
+            ], ['created_at' => 'DESC'], 8);
+            
+            // Fusionner sans doublons
+            $bestSellersIds = array_map(fn($a) => $a->getId(), $bestSellers);
+            foreach ($articlesSupplementaires as $article) {
+                if (!in_array($article->getId(), $bestSellersIds) && count($bestSellers) < 8) {
+                    $bestSellers[] = $article;
+                }
+            }
+        }
+
         return $this->render('pages/visitor/welcome/index.html.twig', [
             'nouveautes' => $nouveautes,
+            'bestSellers' => $bestSellers,
         ]);
     }
 }

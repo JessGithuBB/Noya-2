@@ -1,0 +1,53 @@
+{# Composant pour afficher les mots-clés et les articles associés #}
+{# Variables attendues : keywords #}
+
+{% if keywords is defined and keywords is not empty %}
+    <div class="container py-4">
+        <h2 class="h4 mb-4">Filtrer par problématique</h2>
+        
+        {# Liste des keywords sous forme de boutons #}
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a href="{{ path(app.request.attributes.get('_route')) }}" 
+               class="btn btn-sm {% if app.request.query.get('keyword') is null %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                Tous
+            </a>
+            {% for keyword in keywords %}
+                <a href="{{ path(app.request.attributes.get('_route'), {'keyword': keyword.id}) }}" 
+                   class="btn btn-sm {% if app.request.query.get('keyword') == keyword.id %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                    {{ keyword.name }}
+                </a>
+            {% endfor %}
+        </div>
+
+        {# Liste des articles filtrés #}
+        {% if articles is defined and articles is not empty %}
+            <h3 class="h5 mb-4">
+                <span class="badge bg-success">{{ articles|length }}</span> 
+                {{ articles|length > 1 ? 'produits trouvés' : 'produit trouvé' }}
+            </h3>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                {% for article in articles %}
+                    <div class="col">
+                        {% include 'components/product_card.html.twig' with {'article': article} %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                <i class="bi bi-info-circle fs-3 d-block mb-3"></i>
+                <h4>Aucun produit trouvé</h4>
+                <p>Essayez de modifier votre sélection ou explorez nos autres catégories.</p>
+            </div>
+        {% endif %}
+    </div>
+{% else %}
+    <div class="container py-4">
+        <div class="alert alert-warning text-center" role="alert">
+            <i class="bi bi-exclamation-triangle fs-3 d-block mb-3"></i>
+            <h4>Aucun mot-clé disponible</h4>
+            <p>Les mots-clés pour cette catégorie seront bientôt disponibles.</p>
+        </div>
+    </div>
+{% endif %}
+
+

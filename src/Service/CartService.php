@@ -26,16 +26,35 @@ class CartService
      */
     private function getSession()
     {
-        return $this->requestStack->getSession();
+        $session = $this->requestStack->getSession();
+        
+        // S'assurer que la session est démarrée
+        if (!$session->isStarted()) {
+            $session->start();
+        }
+        
+        return $session;
     }
 
     /**
      * Ajoute un article au panier
      * @param int $id - ID de l'article
      * @param int $quantity - Quantité à ajouter (par défaut 1)
+     * @return bool - true si l'ajout a réussi, false sinon
      */
-    public function add(int $id, int $quantity = 1): void
+    public function add(int $id, int $quantity = 1): bool
     {
+        // Vérifier que l'article existe
+        $article = $this->articlesRepository->find($id);
+        if (!$article) {
+            return false;
+        }
+
+        // Vérifier que l'article est disponible
+        if (!$article->isAvailable()) {
+            return false;
+        }
+
         // Récupérer le panier actuel depuis la session
         $cart = $this->getSession()->get('cart', []);
 
@@ -49,6 +68,8 @@ class CartService
 
         // Sauvegarder dans la session
         $this->getSession()->set('cart', $cart);
+        
+        return true;
     }
 
     /**
@@ -75,14 +96,29 @@ class CartService
         $cart = $this->getSession()->get('cart', []);
         $cartWithData = [];
 
+        if (empty($cart)) {
+            return $cartWithData;
+        }
+
         foreach ($cart as $id => $quantity) {
+            // S'assurer que l'ID est bien un entier
+            $id = (int) $id;
             $article = $this->articlesRepository->find($id);
             
             if ($article) {
-                $cartWithData[] = [
-                    'article' => $article,
-                    'quantity' => $quantity
-                ];
+                // Vérifier la disponibilité
+                if ($article->isAvailable()) {
+                    $cartWithData[] = [
+                        'article' => $article,
+                        'quantity' => (int) $quantity
+                    ];
+                } else {
+                    // Article non disponible
+                    error_log("Article ID $id n'est pas disponible");
+                }
+            } else {
+                // Article introuvable
+                error_log("Article ID $id introuvable dans la base de données");
             }
         }
 

@@ -1,0 +1,165 @@
+{% extends "themes/base.html.twig" %}
+
+{% block title %}Choix du mode de paiement{% endblock %}
+{% block description %}Sélectionnez votre mode de paiement préféré{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="payment-page">
+    {# En-tête #}
+    <section class="page-header container py-4 mb-4">
+        <h1 class="display-5 fw-bold text-dark text-center">
+            <i class="bi bi-credit-card text-success"></i> Choisissez votre mode de paiement
+        </h1>
+        <p class="text-muted text-center">Sélectionnez la méthode de paiement qui vous convient</p>
+    </section>
+
+    <div class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form method="post" action="{{ path('app_checkout_payment') }}">
+                    {# Cartes bancaires #}
+                    <div class="payment-section mb-4">
+                        <h5 class="mb-3">
+                            <i class="bi bi-credit-card-2-front"></i> Cartes bancaires
+                        </h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="radio" class="btn-check" name="payment_method" id="visa" value="visa" required>
+                                <label class="btn btn-outline-primary w-100 py-4 d-flex align-items-center justify-content-center" for="visa">
+                                    <i class="bi bi-credit-card fs-2 me-3"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold">Visa</div>
+                                        <small class="text-muted">Paiement sécurisé</small>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="radio" class="btn-check" name="payment_method" id="mastercard" value="mastercard">
+                                <label class="btn btn-outline-primary w-100 py-4 d-flex align-items-center justify-content-center" for="mastercard">
+                                    <i class="bi bi-credit-card-2-back fs-2 me-3"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold">Mastercard</div>
+                                        <small class="text-muted">Paiement sécurisé</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Portefeuilles numériques #}
+                    <div class="payment-section mb-4">
+                        <h5 class="mb-3">
+                            <i class="bi bi-wallet2"></i> Portefeuilles numériques
+                        </h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="radio" class="btn-check" name="payment_method" id="paypal" value="paypal">
+                                <label class="btn btn-outline-primary w-100 py-4 d-flex align-items-center justify-content-center" for="paypal">
+                                    <i class="bi bi-paypal fs-2 me-3 text-primary"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold">PayPal</div>
+                                        <small class="text-muted">Rapide et sécurisé</small>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="radio" class="btn-check" name="payment_method" id="apple_pay" value="apple_pay">
+                                <label class="btn btn-outline-primary w-100 py-4 d-flex align-items-center justify-content-center" for="apple_pay">
+                                    <i class="bi bi-apple fs-2 me-3"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold">Apple Pay</div>
+                                        <small class="text-muted">Paiement en un clic</small>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="radio" class="btn-check" name="payment_method" id="google_pay" value="google_pay">
+                                <label class="btn btn-outline-primary w-100 py-4 d-flex align-items-center justify-content-center" for="google_pay">
+                                    <i class="bi bi-google fs-2 me-3"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold">Google Pay</div>
+                                        <small class="text-muted">Paiement rapide</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Cryptomonnaies #}
+                    <div class="payment-section mb-4">
+                        <h5 class="mb-3">
+                            <i class="bi bi-currency-bitcoin"></i> Cryptomonnaies
+                        </h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="radio" class="btn-check" name="payment_method" id="tether" value="tether">
+                                <label class="btn btn-outline-primary w-100 py-4 d-flex align-items-center justify-content-center" for="tether">
+                                    <i class="bi bi-currency-dollar fs-2 me-3"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold">Tether (USDT)</div>
+                                        <small class="text-muted">Stablecoin</small>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="radio" class="btn-check" name="payment_method" id="ethereum" value="ethereum">
+                                <label class="btn btn-outline-primary w-100 py-4 d-flex align-items-center justify-content-center" for="ethereum">
+                                    <i class="bi bi-currency-exchange fs-2 me-3"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold">Ethereum (ETH)</div>
+                                        <small class="text-muted">Crypto populaire</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Récapitulatif et validation #}
+                    <div class="card border-0 shadow-sm bg-light">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="h5 mb-0">Total à payer</span>
+                                <span class="h4 mb-0 text-success fw-bold">{{ total|number_format(2, ',', ' ') }} €</span>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 py-3">
+                                <i class="bi bi-lock-fill"></i> Continuer vers le paiement sécurisé
+                            </button>
+                            <div class="text-center mt-3">
+                                <small class="text-muted">
+                                    <i class="bi bi-shield-check"></i> Vos données sont protégées par cryptage SSL
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                {# Bouton retour #}
+                <div class="text-center mt-4">
+                    <a href="{{ path('app_checkout_index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Retour au récapitulatif
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-check:checked + .btn-outline-primary {
+        background-color: #4a7c59;
+        border-color: #4a7c59;
+        color: white;
+    }
+    
+    .payment-section {
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+    }
+</style>
+
+{% endblock %}
+
+

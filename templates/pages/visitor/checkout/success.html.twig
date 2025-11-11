@@ -1,0 +1,169 @@
+{% extends "themes/base.html.twig" %}
+
+{% block title %}Commande confirmée{% endblock %}
+{% block description %}Votre commande a été confirmée avec succès{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="success-page">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                {# Message de succès #}
+                <div class="text-center mb-5">
+                    <div class="success-icon mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 6rem;"></i>
+                    </div>
+                    <h1 class="display-4 fw-bold text-success mb-3">Commande confirmée !</h1>
+                    <p class="lead text-muted">
+                        Merci pour votre achat. Votre commande a été enregistrée avec succès.
+                    </p>
+                </div>
+
+                {# Informations de la commande #}
+                <div class="card border-0 shadow-lg mb-4">
+                    <div class="card-header bg-success text-white py-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-receipt"></i> Commande #{{ order.orderNumber }}
+                                </h5>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <span class="badge bg-light text-success">
+                                    {% if order.paymentStatus == 'paid' %}
+                                        <i class="bi bi-check-circle"></i> Payée
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        {# Informations générales #}
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-2">Date de commande</h6>
+                                <p class="mb-0">{{ order.createdAt|date('d/m/Y à H:i') }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-2">Méthode de paiement</h6>
+                                <p class="mb-0">
+                                    {% if order.paymentMethod == 'visa' %}
+                                        <i class="bi bi-credit-card"></i> Visa
+                                    {% elseif order.paymentMethod == 'mastercard' %}
+                                        <i class="bi bi-credit-card-2-back"></i> Mastercard
+                                    {% elseif order.paymentMethod == 'paypal' %}
+                                        <i class="bi bi-paypal"></i> PayPal
+                                    {% elseif order.paymentMethod == 'apple_pay' %}
+                                        <i class="bi bi-apple"></i> Apple Pay
+                                    {% elseif order.paymentMethod == 'google_pay' %}
+                                        <i class="bi bi-google"></i> Google Pay
+                                    {% elseif order.paymentMethod == 'tether' %}
+                                        <i class="bi bi-currency-dollar"></i> Tether (USDT)
+                                    {% elseif order.paymentMethod == 'ethereum' %}
+                                        <i class="bi bi-currency-exchange"></i> Ethereum (ETH)
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-2">Transaction ID</h6>
+                                <p class="mb-0">
+                                    <code>{{ order.paymentTransactionId }}</code>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-2">Statut</h6>
+                                <p class="mb-0">
+                                    <span class="badge bg-success">{{ order.status|upper }}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        {# Articles commandés #}
+                        <h6 class="mb-3">Articles commandés</h6>
+                        {% for item in order.orderItems %}
+                            <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+                                <div>
+                                    <strong>{{ item.article.name }}</strong>
+                                    <br>
+                                    <small class="text-muted">Quantité: {{ item.quantity }} × {{ item.unitPrice|number_format(2, ',', ' ') }} €</small>
+                                </div>
+                                <div class="text-end">
+                                    <strong class="text-success">{{ item.totalPrice|number_format(2, ',', ' ') }} €</strong>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <hr>
+
+                        {# Total #}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Total payé</h5>
+                            <h4 class="mb-0 text-success fw-bold">{{ order.totalAmount|number_format(2, ',', ' ') }} €</h4>
+                        </div>
+                    </div>
+                </div>
+
+                {# Informations de livraison #}
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="mb-3">
+                            <i class="bi bi-truck"></i> Informations de livraison
+                        </h5>
+                        <div class="alert alert-info mb-0">
+                            <i class="bi bi-info-circle"></i> 
+                            Votre commande sera expédiée sous 24-48h. Vous recevrez un email de confirmation avec le numéro de suivi.
+                        </div>
+                    </div>
+                </div>
+
+                {# Email de confirmation #}
+                <div class="alert alert-success">
+                    <i class="bi bi-envelope-check"></i> 
+                    Un email de confirmation a été envoyé à <strong>{{ order.user.email }}</strong>
+                </div>
+
+                {# Boutons d'action #}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <a href="{{ path('app_visitor_welcome') }}" class="btn btn-outline-primary w-100 py-3">
+                            <i class="bi bi-house"></i> Retour à l'accueil
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{{ path('app_visitor_nouveautés_index') }}" class="btn btn-primary w-100 py-3">
+                            <i class="bi bi-bag"></i> Continuer mes achats
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .success-icon {
+        animation: scaleIn 0.5s ease-out;
+    }
+    
+    @keyframes scaleIn {
+        from {
+            transform: scale(0);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>
+
+{% endblock %}
+
+

@@ -13,10 +13,15 @@
 </li>
 
 <li class="nav-item-mobile">
-    <a class="nav-link-mobile" href="{{ path('app_visitor_soin-de-la-peau') }}">
-        Soin de la peau
-    </a>
-    <ul class="mobile-submenu">
+    <div class="d-flex align-items-center">
+        <a class="nav-link-mobile flex-grow-1" href="{{ path('app_visitor_soin-de-la-peau') }}">
+            Soin de la peau
+        </a>
+        <button class="btn btn-link text-decoration-none p-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSoinMenu" aria-expanded="false" aria-controls="mobileSoinMenu">
+            <i class="bi bi-chevron-down"></i><span class="visually-hidden">Voir les sous-catégories Soin de la peau</span>
+        </button>
+    </div>
+    <ul class="mobile-submenu collapse" id="mobileSoinMenu">
         <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'serum'}) }}">Sérum</a></li>
         <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'soins-solaires'}) }}">Soins solaires</a></li>
         <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'creme-hydratante'}) }}">Crème hydratante</a></li>
@@ -29,20 +34,30 @@
 </li>
 
 <li class="nav-item-mobile">
-    <a class="nav-link-mobile" href="{{ path('app_visitor_corps_et_cheveux') }}">
-        Corps et cheveux
-    </a>
-    <ul class="mobile-submenu">
+    <div class="d-flex align-items-center">
+        <a class="nav-link-mobile flex-grow-1" href="{{ path('app_visitor_corps_et_cheveux') }}">
+            Corps et cheveux
+        </a>
+        <button class="btn btn-link text-decoration-none p-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileCorpsMenu" aria-expanded="false" aria-controls="mobileCorpsMenu">
+            <i class="bi bi-chevron-down"></i><span class="visually-hidden">Voir les sous-catégories Corps et cheveux</span>
+        </button>
+    </div>
+    <ul class="mobile-submenu collapse" id="mobileCorpsMenu">
         <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'huile-pour-cheveux'}) }}">Huile pour cheveux</a></li>
         <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'creme-visage'}) }}">Crème visage</a></li>
     </ul>
 </li>
 
 <li class="nav-item-mobile">
-    <a class="nav-link-mobile" href="{{ path('app_visitor_problematique_cutanee') }}">
-        Problématique Cutanée
-    </a>
-    <ul class="mobile-submenu">
+    <div class="d-flex align-items-center">
+        <a class="nav-link-mobile flex-grow-1" href="{{ path('app_visitor_problematique_cutanee') }}">
+            Problématique Cutanée
+        </a>
+        <button class="btn btn-link text-decoration-none p-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileProblematiqueMenu" aria-expanded="false" aria-controls="mobileProblematiqueMenu">
+            <i class="bi bi-chevron-down"></i><span class="visually-hidden">Voir les sous-catégories Problématique Cutanée</span>
+        </button>
+    </div>
+    <ul class="mobile-submenu collapse" id="mobileProblematiqueMenu">
         <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'probleme-uniformite-teint'}) }}">Problème d'uniformité du teint</a></li>
         <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'texture-peau-inegale'}) }}">Texture de peau inégale</a></li>
         <li><a href="{{ path('app_visitor_ss_category_show', {slug: 'secheresse-exces-sebum'}) }}">Sécheresse/excès de sébum</a></li>

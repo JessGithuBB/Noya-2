@@ -1,0 +1,158 @@
+{% extends "themes/base.html.twig" %}
+
+{% block title %}Paiement en cours{% endblock %}
+{% block description %}Finalisation de votre paiement{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="process-page">
+    {# En-tête #}
+    <section class="page-header container py-4 mb-4">
+        <h1 class="display-5 fw-bold text-dark text-center">
+            <i class="bi bi-shield-check text-success"></i> Paiement sécurisé
+        </h1>
+    </section>
+
+    <div class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                {# Carte de paiement #}
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-success text-white py-4 text-center">
+                        <h4 class="mb-0">
+                            {% if method == 'visa' %}
+                                <i class="bi bi-credit-card"></i> Paiement par Visa
+                            {% elseif method == 'mastercard' %}
+                                <i class="bi bi-credit-card-2-back"></i> Paiement par Mastercard
+                            {% elseif method == 'paypal' %}
+                                <i class="bi bi-paypal"></i> Paiement par PayPal
+                            {% elseif method == 'apple_pay' %}
+                                <i class="bi bi-apple"></i> Paiement par Apple Pay
+                            {% elseif method == 'google_pay' %}
+                                <i class="bi bi-google"></i> Paiement par Google Pay
+                            {% elseif method == 'tether' %}
+                                <i class="bi bi-currency-dollar"></i> Paiement par Tether (USDT)
+                            {% elseif method == 'ethereum' %}
+                                <i class="bi bi-currency-exchange"></i> Paiement par Ethereum (ETH)
+                            {% endif %}
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        {# Récapitulatif de la commande #}
+                        <div class="mb-4">
+                            <h5 class="mb-3">Récapitulatif</h5>
+                            {% for item in items %}
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>{{ item.article.name }} × {{ item.quantity }}</span>
+                                    <span>{{ (item.article.sellingPrice * item.quantity)|number_format(2, ',', ' ') }} €</span>
+                                </div>
+                            {% endfor %}
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <strong>Total</strong>
+                                <strong class="text-success">{{ total|number_format(2, ',', ' ') }} €</strong>
+                            </div>
+                        </div>
+
+                        {# Formulaire selon la méthode #}
+                        <form method="post" action="{{ path('app_checkout_process', {'method': method}) }}">
+                            {% if method in ['visa', 'mastercard'] %}
+                                {# Formulaire carte bancaire #}
+                                <div class="mb-3">
+                                    <label for="card_number" class="form-label">Numéro de carte</label>
+                                    <input type="text" class="form-control" id="card_number" placeholder="1234 5678 9012 3456" required>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-6">
+                                        <label for="expiry" class="form-label">Date d'expiration</label>
+                                        <input type="text" class="form-control" id="expiry" placeholder="MM/AA" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="cvv" class="form-label">CVV</label>
+                                        <input type="text" class="form-control" id="cvv" placeholder="123" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="card_name" class="form-label">Nom sur la carte</label>
+                                    <input type="text" class="form-control" id="card_name" placeholder="Nom complet" required>
+                                </div>
+                            {% elseif method == 'paypal' %}
+                                {# PayPal #}
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> Vous allez être redirigé vers PayPal pour finaliser votre paiement.
+                                </div>
+                                <div class="mb-3">
+                                    <label for="paypal_email" class="form-label">Email PayPal</label>
+                                    <input type="email" class="form-control" id="paypal_email" placeholder="votre@email.com" required>
+                                </div>
+                            {% elseif method in ['apple_pay', 'google_pay'] %}
+                                {# Apple Pay / Google Pay #}
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> Confirmez votre paiement avec 
+                                    {% if method == 'apple_pay' %}Apple Pay{% else %}Google Pay{% endif %}.
+                                </div>
+                                <div class="text-center py-4">
+                                    <i class="bi bi-{% if method == 'apple_pay' %}apple{% else %}google{% endif %} display-1 text-muted"></i>
+                                    <p class="mt-3">Utilisez votre appareil pour authentifier le paiement</p>
+                                </div>
+                            {% elseif method in ['tether', 'ethereum'] %}
+                                {# Crypto #}
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-triangle"></i> Envoyez exactement le montant indiqué à l'adresse ci-dessous
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Adresse de paiement</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" value="0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb" readonly>
+                                        <button class="btn btn-outline-secondary" type="button">
+                                            <i class="bi bi-clipboard"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Montant</label>
+                                    <input type="text" class="form-control" value="{{ total|number_format(2, ',', ' ') }} {% if method == 'tether' %}USDT{% else %}ETH{% endif %}" readonly>
+                                </div>
+                                <div class="text-center py-3">
+                                    <div class="bg-light p-3 rounded">
+                                        {# QR Code simulé #}
+                                        <div style="width: 200px; height: 200px; margin: 0 auto; background: repeating-linear-gradient(45deg, #000, #000 10px, #fff 10px, #fff 20px);"></div>
+                                        <small class="text-muted d-block mt-2">Scannez avec votre wallet</small>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {# Conditions #}
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="terms" required>
+                                <label class="form-check-label" for="terms">
+                                    J'accepte les <a href="#">conditions générales de vente</a>
+                                </label>
+                            </div>
+
+                            {# Boutons #}
+                            <button type="submit" class="btn btn-success w-100 py-3 mb-3">
+                                <i class="bi bi-lock-fill"></i> Confirmer le paiement de {{ total|number_format(2, ',', ' ') }} €
+                            </button>
+                            <a href="{{ path('app_checkout_payment') }}" class="btn btn-outline-secondary w-100">
+                                <i class="bi bi-arrow-left"></i> Changer de méthode
+                            </a>
+
+                            {# Badges de sécurité #}
+                            <div class="text-center mt-4">
+                                <small class="text-muted">
+                                    <i class="bi bi-shield-check text-success"></i> Paiement crypté et sécurisé
+                                </small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+

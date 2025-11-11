@@ -4,18 +4,55 @@
 
     
 {% block main %}
-<div class="soin mb-3">
-  <img src="{{asset('build/images/Soin-de-la-peau.png')}}" 
-  alt="Liste des produits pour les soins de la peau"
-  class="img-fluid w-100"
-  style="height: auto;">
-</div>
+<div class="container-fluid">
+    <section 
+        class="page-header container-fluid py-5 mb-4 text-white position-relative"
+        style="
+            background-image: url('{{ asset('build/images/Soin-de-la-peau.png') }}');
+            background-size: cover;
+            background-position: center;
+            min-height: 320px;
+        ">
+        <div class="container position-relative"></div>
+    </section>
 
-{# FILTRAGE #}
-{% include 'components/_filters.html.twig' with {
-    categories: categories,
-    selectedCategories: selectedCategories
-} %}
+    <div class="container py-4">
+        <div class="row">
+            {# Sidebar avec filtres #}
+            <div class="col-md-3">
+                <h5 class="mb-3">Filtrer par catégorie</h5>
+                {# FILTRAGE #}
+                {% include 'components/_filters.html.twig' with {
+                    categories: categories,
+                    selectedCategories: selectedCategories
+                } %}
+            </div>
+
+            {# Liste des produits #}
+            <div class="col-md-9">
+                {% if articles is defined and articles is not empty %}
+                    <h2 class="h4 mb-4">
+                        <span class="badge bg-success">{{ articles|length }}</span> 
+                        {{ articles|length > 1 ? 'produits trouvés' : 'produit trouvé' }}
+                    </h2>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+                        {% for article in articles %}
+                            <div class="col">
+                                {% include 'components/product_card.html.twig' with {'article': article} %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info text-center" role="alert">
+                        <i class="bi bi-info-circle fs-3 d-block mb-3"></i>
+                        <h4>Aucun produit trouvé</h4>
+                        <p>Essayez de modifier vos filtres ou explorez nos autres catégories.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
