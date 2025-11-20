@@ -1,0 +1,661 @@
+{% extends "themes/base.html.twig" %}
+
+{% block title %}{{ article.name }}{% endblock %}
+{% block description %}{{ article.shortDescription }}{% endblock %}
+
+{% block main %}
+{{ parent() }}
+
+<div class="article-detail-page">
+    <div class="container py-4">
+        {# Fil d'Ariane (Breadcrumb) #}
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('app_visitor_welcome') }}">Home</a></li>
+                {% if article.categories|length > 0 %}
+                    {% set firstCategory = article.categories.first %}
+                    <li class="breadcrumb-item"><a href="#">{{ firstCategory.name }}</a></li>
+                {% endif %}
+                <li class="breadcrumb-item active" aria-current="page">{{ article.name }}</li>
+            </ol>
+        </nav>
+
+        {# Section principale : Carrousel + Infos produit #}
+        <div class="row g-4 mb-5">
+            {# Colonne gauche : Carrousel d'images #}
+            <div class="col-lg-6">
+                {# Préparer la liste complète des images #}
+                {% set allImages = [] %}
+                {% set isFromCarousel = [] %}
+                {# Ajouter les images du carrousel #}
+                {% for image in carouselImages %}
+                    {% set allImages = allImages|merge([image]) %}
+                    {% set isFromCarousel = isFromCarousel|merge([true]) %}
+                {% endfor %}
+                {# Ajouter l'image principale si pas assez d'images #}
+                {% if allImages|length < 1 and mainImage %}
+                    {% set allImages = allImages|merge([mainImage]) %}
+                    {% set isFromCarousel = isFromCarousel|merge([false]) %}
+                {% endif %}
+                
+                {# Carrousel principal #}
+                <div id="productCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
+                    {# Contenu du carrousel #}
+                    <div class="carousel-inner">
+                        {% if allImages|length > 0 %}
+                            {% for image in allImages %}
+                                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                    <img 
+                                        src="{% if isFromCarousel[loop.index0] %}{{ asset('uploads/articles/' ~ image) }}{% else %}{{ asset('uploads/images/' ~ image) }}{% endif %}" 
+                                        class="d-block w-100 product-carousel-image" 
+                                        alt="{{ article.name }} - Image {{ loop.index }}">
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            {# Image par défaut si aucune image #}
+                            <div class="carousel-item active">
+                                <img 
+                                    src="{{ asset('uploads/images/' ~ mainImage) }}" 
+                                    class="d-block w-100 product-carousel-image" 
+                                    alt="{{ article.name }}">
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    {# Boutons de navigation (flèches) #}
+                    {% if allImages|length > 1 %}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Précédent</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Suivant</span>
+                        </button>
+                    {% endif %}
+                </div>
+
+                {# Miniatures des images (comme Nuxe) #}
+                {% if allImages|length > 1 %}
+                    <div class="product-thumbnails d-flex gap-2">
+                        {% for image in allImages %}
+                            <button 
+                                type="button" 
+                                class="thumbnail-btn {% if loop.first %}active{% endif %}"
+                                data-image-index="{{ loop.index0 }}"
+                                style="flex: 0 0 auto; width: 80px; height: 80px; border: 2px solid {% if loop.first %}#4a7c59{% else %}transparent{% endif %}; padding: 0; background: none; cursor: pointer; border-radius: 8px; overflow: hidden;">
+                                <img 
+                                    src="{% if isFromCarousel[loop.index0] %}{{ asset('uploads/articles/' ~ image) }}{% else %}{{ asset('uploads/images/' ~ image) }}{% endif %}" 
+                                    alt="Miniature {{ loop.index }}"
+                                    style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            {# Colonne droite : Informations produit #}
+            <div class="col-lg-6">
+                <div class="product-info">
+                    {# Titre #}
+                    <h1 class="product-title mb-3">{{ article.name }}</h1>
+
+                    {# Note et nombre d'avis #}
+                    {% if totalReviews > 0 %}
+                        <div class="product-rating mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                {% for i in 1..5 %}
+                                    <i class="bi bi-star-fill {% if i <= averageRating|round %}text-dark{% else %}text-muted{% endif %}"></i>
+                                {% endfor %}
+                                <span class="ms-2 text-muted">({{ totalReviews }})</span>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {# Prix #}
+                    <div class="product-price mb-4">
+                        <span class="h3 fw-bold text-dark">{{ article.sellingPrice|number_format(2, ',', ' ') }} €</span>
+                    </div>
+
+                    {# Description courte #}
+                    <div class="product-description mb-4">
+                        <p class="text-muted">{{ article.shortDescription }}</p>
+                    </div>
+
+                    {# Options de taille (si nécessaire) #}
+                    {% if article.quantity %}
+                        <div class="product-sizes mb-4">
+                            <label class="form-label fw-semibold mb-2">Format :</label>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-outline-dark size-btn active" data-size="standard">
+                                    30 ml
+                                </button>
+                                <button type="button" class="btn btn-outline-dark size-btn" data-size="large">
+                                    50 ml
+                                </button>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {# Bouton Ajouter au panier #}
+                    <div class="product-actions mb-4">
+                        {% if article.isAvailable %}
+                            <a href="{{ path('app_cart_add', {'id': article.id}) }}" 
+                               class="btn btn-success btn-lg w-100 py-3 add-to-cart-btn">
+                                <i class="bi bi-cart-plus me-2"></i>
+                                Ajouter au panier
+                            </a>
+                        {% else %}
+                            <button class="btn btn-secondary btn-lg w-100 py-3" disabled>
+                                Indisponible
+                            </button>
+                        {% endif %}
+                    </div>
+
+                    {# Informations de livraison (comme Nuxe) #}
+                    <div class="delivery-info mb-4 p-3 bg-light rounded">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-truck me-2" style="color: #4a7c59;"></i>
+                            <strong>Livraison offerte</strong> dès 40€ d'achat
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-gift me-2" style="color: #4a7c59;"></i>
+                            <strong>Cadeau offert</strong> dès 60€ d'achat
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Sections repliables : Description, Conseil d'utilisation et Composition #}
+        <div class="row mb-5">
+            <div class="col-12">
+                {# Description (toujours visible) #}
+                {% if article.longDescription %}
+                    <div class="product-section mb-4">
+                        <h3 class="fw-semibold mb-3">Description</h3>
+                        <div class="product-content">
+                            <p class="text-muted">{{ article.longDescription }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {# Conseil d'utilisation #}
+                <div class="collapse-section mb-3">
+                    <button 
+                        class="collapse-header d-flex justify-content-between align-items-center w-100" 
+                        type="button"
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#usageTips" 
+                        aria-expanded="false"
+                        aria-controls="usageTips"
+                    >
+                        <h3 class="fw-semibold mb-0">Conseil d'utilisation</h3>
+                        <i class="bi bi-plus-lg collapse-icon"></i>
+                    </button>
+                    <div id="usageTips" class="collapse collapse-content mt-3">
+                        <p class="text-muted mb-0">
+                            Appliquez une quantité généreuse sur le visage et le cou en évitant le contour des yeux. 
+                            Renouvelez l'application toutes les 2 heures et après chaque baignade ou transpiration excessive.
+                        </p>
+                    </div>
+                </div>
+
+                {# Composition #}
+                <div class="collapse-section">
+                    <button 
+                        class="collapse-header d-flex justify-content-between align-items-center w-100" 
+                        type="button"
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#composition" 
+                        aria-expanded="false"
+                        aria-controls="composition"
+                    >
+                        <h3 class="fw-semibold mb-0">Composition</h3>
+                        <i class="bi bi-plus-lg collapse-icon"></i>
+                    </button>
+                    <div id="composition" class="collapse collapse-content mt-3">
+                        {% if article.longDescription %}
+                            <p class="text-muted mb-0">{{ article.longDescription }}</p>
+                        {% else %}
+                            <p class="text-muted mb-0">Informations de composition non disponibles.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Section Avis des clients #}
+        {% if totalReviews > 0 %}
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="h4 mb-4 fw-bold">Avis des clients</h2>
+                </div>
+                
+                {# Colonne gauche : Notation et bouton écrire un avis #}
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    {# Résumé des notes par étoiles #}
+                    <div class="rating-summary">
+                        {% for rating in 5..1 %}
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="d-flex align-items-center me-2" style="min-width: 100px;">
+                                    {% for i in 1..5 %}
+                                        <i class="bi bi-star-fill {% if i <= rating %}text-dark{% else %}text-muted{% endif %}" style="font-size: 0.9rem;"></i>
+                                    {% endfor %}
+                                </div>
+                                <span class="text-muted small">({{ ratingDistribution[rating] }})</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {# Bouton Écrire un avis en bas de la notation #}
+                    <div class="mt-4">
+                        <button class="btn btn-outline-dark w-100" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                            Écrire un avis
+                        </button>
+                    </div>
+                </div>
+                
+                {# Colonne droite : Liste des avis clients avec pagination #}
+                <div class="col-lg-8">
+                    {# Liste des avis #}
+                    <div class="reviews-list" id="reviewsList">
+                        {% for review in reviews %}
+                            <div class="review-item border-bottom pb-4 mb-4">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <h5 class="h6 mb-1 fw-bold">{{ review.author }}</h5>
+                                        <span class="text-muted small">{{ review.date|date('d/m/Y') }}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        {% for i in 1..5 %}
+                                            <i class="bi bi-star-fill {% if i <= review.rating %}text-dark{% else %}text-muted{% endif %}" style="font-size: 0.9rem;"></i>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <h6 class="fw-semibold mb-2">{{ review.title }}</h6>
+                                <p class="text-muted mb-0">{{ review.comment }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {# Pagination en bas à droite #}
+                    {% set reviewsPerPage = 2 %}
+                    {% set totalPages = (totalReviews / reviewsPerPage)|round(0, 'ceil') %}
+                    {% if totalPages > 1 %}
+                        <nav aria-label="Pagination des avis" class="mt-4">
+                            <ul class="pagination justify-content-end mb-0">
+                                <li class="page-item" id="prevPage">
+                                    <a class="page-link" href="#" aria-label="Précédent" data-page="prev">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                {% for page in 1..totalPages %}
+                                    <li class="page-item {% if page == 1 %}active{% endif %}" data-page="{{ page }}">
+                                        <a class="page-link" href="#">{{ page }}</a>
+                                    </li>
+                                {% endfor %}
+                                <li class="page-item" id="nextPage">
+                                    <a class="page-link" href="#" aria-label="Suivant" data-page="next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{# Modal pour écrire un avis #}
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Écrire un avis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted">Fonctionnalité à venir...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Styles pour le fil d'Ariane */
+    .breadcrumb {
+        background: none;
+        padding: 0;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+    
+    .breadcrumb-item a {
+        color: #4a7c59;
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Styles pour le titre du produit */
+    .product-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1d1d1f;
+        line-height: 1.2;
+    }
+    
+    /* Styles pour les étoiles de notation */
+    .product-rating .bi-star-fill {
+        font-size: 1.2rem;
+        color: #000;
+    }
+    
+    /* Styles pour les boutons de taille */
+    .size-btn {
+        border: 1px solid #dee2e6;
+        background: white;
+        color: #333;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .size-btn.active,
+    .size-btn:hover {
+        background-color: #4a7c59;
+        color: #fff;
+        border-color: #4a7c59;
+    }
+    
+    /* Styles pour le carrousel */
+    .product-carousel-image {
+        height: 600px;
+        object-fit: cover;
+        border-radius: 12px;
+        background: #f8f9fa;
+    }
+    
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.8;
+        border: 1px solid #dee2e6;
+    }
+    
+    .carousel-control-prev {
+        left: 15px;
+    }
+    
+    .carousel-control-next {
+        right: 15px;
+    }
+    
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 1;
+        background-color: #fff;
+        border-color: #4a7c59;
+    }
+    
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        filter: invert(1);
+        width: 20px;
+        height: 20px;
+    }
+    
+    /* Styles pour les miniatures */
+    .product-thumbnails {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    
+    .thumbnail-btn:hover {
+        border-color: #4a7c59 !important;
+    }
+    
+    /* Styles pour les sections repliables */
+    .collapse-section {
+        border-bottom: 1px solid #e9ecef;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .collapse-header {
+        background: none;
+        border: none;
+        padding: 0.75rem 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .collapse-header:hover {
+        opacity: 0.8;
+    }
+    
+    .collapse-header h3 {
+        font-size: 1.1rem;
+        color: #333;
+    }
+    
+    .collapse-icon {
+        font-size: 1.2rem;
+        color: #4a7c59;
+        transition: transform 0.3s ease;
+    }
+    
+    .collapse-header[aria-expanded="true"] .collapse-icon {
+        transform: rotate(45deg);
+    }
+    
+    .collapse-content {
+        padding-left: 0;
+        color: #666;
+    }
+    
+    /* Styles pour le bouton Ajouter au panier */
+    .add-to-cart-btn {
+        background-color: #4a7c59;
+        border-color: #4a7c59;
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .add-to-cart-btn:hover {
+        background-color: #3a6b49;
+        border-color: #3a6b49;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(74, 124, 89, 0.3);
+        color: white;
+    }
+    
+    /* Styles pour les informations de livraison */
+    .delivery-info {
+        background-color: #f0f4f1 !important;
+        border: 1px solid #e9ecef;
+    }
+    
+    /* Styles pour la section des avis */
+    .rating-summary {
+        padding: 1.5rem 0;
+    }
+    
+    .review-item {
+        padding-bottom: 1rem;
+    }
+    
+    .review-item:last-child {
+        border-bottom: none !important;
+    }
+    
+    /* Styles pour la pagination */
+    .pagination .page-link {
+        color: #4a7c59;
+        border-color: #dee2e6;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #4a7c59;
+        border-color: #4a7c59;
+        color: #fff;
+    }
+    
+    .pagination .page-link:hover {
+        background-color: #f0f4f1;
+        color: #4a7c59;
+        border-color: #4a7c59;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .product-carousel-image {
+            height: 400px;
+        }
+        
+        .product-title {
+            font-size: 1.5rem;
+        }
+        
+        .thumbnail-btn {
+            width: 60px !important;
+            height: 60px !important;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gérer les boutons de taille
+    document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.size-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            this.classList.add('active');
+        });
+    });
+    
+    // Gérer le changement d'image principale au clic sur les miniatures
+    const carousel = document.querySelector('#productCarousel');
+    const thumbnailButtons = document.querySelectorAll('.thumbnail-btn');
+    
+    if (carousel && thumbnailButtons.length > 0) {
+        const carouselInstance = new bootstrap.Carousel(carousel);
+        
+        thumbnailButtons.forEach((btn, index) => {
+            btn.addEventListener('click', function() {
+                // Retirer l'état actif de tous les boutons
+                thumbnailButtons.forEach(b => {
+                    b.style.borderColor = 'transparent';
+                    b.classList.remove('active');
+                });
+                
+                // Activer le bouton cliqué
+                this.style.borderColor = '#4a7c59';
+                this.classList.add('active');
+                
+                // Changer l'image du carrousel
+                carouselInstance.to(index);
+            });
+        });
+        
+        // Synchroniser les miniatures avec le carrousel
+        carousel.addEventListener('slid.bs.carousel', function(event) {
+            const activeIndex = event.to;
+            thumbnailButtons.forEach((btn, index) => {
+                if (index === activeIndex) {
+                    btn.style.borderColor = '#4a7c59';
+                    btn.classList.add('active');
+                } else {
+                    btn.style.borderColor = 'transparent';
+                    btn.classList.remove('active');
+                }
+            });
+        });
+    }
+    
+    // Gérer la pagination des avis
+    const reviewsPerPage = 2;
+    const allReviewItems = document.querySelectorAll('.review-item');
+    const totalReviews = allReviewItems.length;
+    const totalPages = Math.ceil(totalReviews / reviewsPerPage);
+    let currentPage = 1;
+    
+    function showReviews(page) {
+        allReviewItems.forEach((item, index) => {
+            const startIndex = (page - 1) * reviewsPerPage;
+            const endIndex = startIndex + reviewsPerPage;
+            
+            if (index >= startIndex && index < endIndex) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        
+        document.querySelectorAll('.pagination .page-item').forEach(item => {
+            item.classList.remove('active');
+            const pageNumber = item.getAttribute('data-page');
+            if (pageNumber && parseInt(pageNumber) === page) {
+                item.classList.add('active');
+            }
+        });
+    }
+    
+    if (totalPages > 1) {
+        allReviewItems.forEach(item => {
+            item.style.display = 'none';
+        });
+        showReviews(1);
+        
+        document.querySelectorAll('.pagination .page-item[data-page]').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = parseInt(this.getAttribute('data-page'));
+                if (page && page >= 1 && page <= totalPages) {
+                    currentPage = page;
+                    showReviews(page);
+                }
+            });
+        });
+        
+        const prevPageBtn = document.getElementById('prevPage');
+        if (prevPageBtn) {
+            prevPageBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    currentPage--;
+                    showReviews(currentPage);
+                }
+            });
+        }
+        
+        const nextPageBtn = document.getElementById('nextPage');
+        if (nextPageBtn) {
+            nextPageBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    showReviews(currentPage);
+                }
+            });
+        }
+    } else {
+        allReviewItems.forEach(item => {
+            item.style.display = 'block';
+        });
+    }
+});
+</script>
+{% endblock %}

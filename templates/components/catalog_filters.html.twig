@@ -1,0 +1,417 @@
+{% set prefix = filterFormId is defined ? filterFormId : 'catalog-filters' %}
+{% set sortValues = {
+    'best': constant('App\\Service\\CatalogFilterService::SORT_BEST_SELLERS'),
+    'priceAsc': constant('App\\Service\\CatalogFilterService::SORT_PRICE_ASC'),
+    'priceDesc': constant('App\\Service\\CatalogFilterService::SORT_PRICE_DESC'),
+    'rating': constant('App\\Service\\CatalogFilterService::SORT_RATING_DESC')
+} %}
+
+<form
+    id="{{ filterFormId|default(prefix ~ '-form') }}"
+    class="catalog-filter-form"
+    method="get"
+    action="{{ actionPath|default(path(app.request.attributes.get('_route'))) }}"
+>
+    <div class="filter-stack">
+        <div class="filter-card">
+            <div class="filter-card__header">
+                <h5 class="filter-card__title">Filtrer par</h5>
+            </div>
+            <div class="filter-card__body">
+                <div class="filter-accordion" data-filter-group="types">
+                    <button
+                        class="filter-accordion__toggle"
+                        type="button"
+                        data-filter-target="#{{ prefix }}-types"
+                        aria-expanded="{{ selectedTypes|default([]) ? 'true' : 'false' }}"
+                    >
+                        <span>Type de produit</span>
+                        <i class="bi {{ selectedTypes is defined and selectedTypes is not empty ? 'bi-dash-lg' : 'bi-plus-lg' }}" data-icon></i>
+                    </button>
+                    <div
+                        class="filter-accordion__panel"
+                        id="{{ prefix }}-types"
+                        {% if selectedTypes is not defined or selectedTypes is empty %}hidden{% endif %}
+                    >
+                        <div class="filter-list">
+                            {% for option in filterOptions %}
+                                <label class="filter-list__item">
+                                    <input
+                                        class="form-check-input me-2"
+                                        type="checkbox"
+                                        name="types[]"
+                                        value="{{ option.value }}"
+                                        {% if option.value in selectedTypes %}checked{% endif %}
+                                    >
+                                    <span>{{ option.label }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                        <div class="filter-actions">
+                            <button
+                                type="submit"
+                                class="btn btn-dark btn-sm d-none"
+                                data-role="validate-btn"
+                            >
+                                Valider
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-accordion mt-4" data-filter-group="issues">
+                    <button
+                        class="filter-accordion__toggle"
+                        type="button"
+                        data-filter-target="#{{ prefix }}-issues"
+                        aria-expanded="{{ selectedIssues|default([]) ? 'true' : 'false' }}"
+                    >
+                        <span>Problématique cutanée</span>
+                        <i class="bi {{ selectedIssues is defined and selectedIssues is not empty ? 'bi-dash-lg' : 'bi-plus-lg' }}" data-icon></i>
+                    </button>
+                    <div
+                        class="filter-accordion__panel"
+                        id="{{ prefix }}-issues"
+                        {% if selectedIssues is not defined or selectedIssues is empty %}hidden{% endif %}
+                    >
+                        <div class="filter-list">
+                            {% for option in issueOptions %}
+                                <label class="filter-list__item">
+                                    <input
+                                        class="form-check-input me-2"
+                                        type="checkbox"
+                                        name="issues[]"
+                                        value="{{ option.value }}"
+                                        {% if option.value in selectedIssues %}checked{% endif %}
+                                    >
+                                    <span>{{ option.label }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                        <div class="filter-actions">
+                            <button
+                                type="submit"
+                                class="btn btn-dark btn-sm d-none"
+                                data-role="validate-btn"
+                            >
+                                Valider
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-card">
+            <div class="filter-card__header">
+                <h5 class="filter-card__title">Trier par</h5>
+            </div>
+            <div class="filter-card__body" data-filter-group="sort">
+                <div class="filter-list filter-list--radio mb-4">
+                    <label class="filter-list__item">
+                        <input
+                            class="form-check-input me-2"
+                            type="radio"
+                            name="sort"
+                            value="{{ sortValues.best }}"
+                            {% if selectedSort is defined and selectedSort == sortValues.best %}checked{% endif %}
+                        >
+                        <span>Best Sellers</span>
+                    </label>
+                    <label class="filter-list__item">
+                        <input
+                            class="form-check-input me-2"
+                            type="radio"
+                            name="sort"
+                            value="{{ sortValues.priceAsc }}"
+                            {% if selectedSort is defined and selectedSort == sortValues.priceAsc %}checked{% endif %}
+                        >
+                        <span>Prix croissant</span>
+                    </label>
+                    <label class="filter-list__item">
+                        <input
+                            class="form-check-input me-2"
+                            type="radio"
+                            name="sort"
+                            value="{{ sortValues.priceDesc }}"
+                            {% if selectedSort is defined and selectedSort == sortValues.priceDesc %}checked{% endif %}
+                        >
+                        <span>Prix décroissant</span>
+                    </label>
+                    <label class="filter-list__item d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <input
+                                class="form-check-input me-2"
+                                type="radio"
+                                name="sort"
+                                value="{{ sortValues.rating }}"
+                                data-rating-radio
+                                {% if selectedSort is defined and selectedSort == sortValues.rating %}checked{% endif %}
+                            >
+                            <span>Évaluation</span>
+                        </div>
+                        <i
+                            class="bi {{ selectedRatings is defined and selectedRatings is not empty or (selectedSort is defined and selectedSort == sortValues.rating) ? 'bi-dash-lg' : 'bi-plus-lg' }}"
+                            data-icon="evaluation"
+                        ></i>
+                    </label>
+                </div>
+
+                <div class="filter-accordion nested" data-filter-group="ratings">
+                    <button
+                        class="filter-accordion__toggle filter-accordion__toggle--icon-only"
+                        type="button"
+                        data-filter-target="#{{ prefix }}-ratings"
+                        aria-expanded="{{ selectedRatings|default([]) or (selectedSort is defined and selectedSort == sortValues.rating) ? 'true' : 'false' }}"
+                    >
+                        <span class="filter-stars">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </span>
+                    </button>
+                    <div
+                        class="filter-accordion__panel"
+                        id="{{ prefix }}-ratings"
+                        {% if selectedRatings is not defined or selectedRatings is empty %}{% if selectedSort is not defined or selectedSort != sortValues.rating %}hidden{% endif %}{% endif %}
+                    >
+                        <div class="filter-list">
+                            {% set ratingIcons = [
+                                {'value': 'rating-5', 'icons': 5},
+                                {'value': 'rating-4', 'icons': 4},
+                                {'value': 'rating-3', 'icons': 3},
+                                {'value': 'rating-2', 'icons': 2},
+                                {'value': 'rating-1', 'icons': 1}
+                            ] %}
+                            {% for option in ratingIcons %}
+                                <label class="filter-list__item">
+                                    <input
+                                        class="form-check-input me-2"
+                                        type="checkbox"
+                                        name="ratings[]"
+                                        value="{{ option.value }}"
+                                        data-rating-checkbox
+                                        {% if option.value in selectedRatings %}checked{% endif %}
+                                    >
+                                    <span class="filter-stars">
+                                        {% for i in 1..option.icons %}
+                                            <i class="bi bi-star-fill"></i>
+                                        {% endfor %}
+                                    </span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                        <div class="filter-actions">
+                            <button
+                                type="submit"
+                                class="btn btn-dark btn-sm d-none"
+                                data-role="validate-btn"
+                            >
+                                Valider
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button
+                        type="submit"
+                        class="btn btn-dark btn-sm d-none"
+                        data-role="validate-btn"
+                    >
+                        Valider
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {% if hasActiveFilters|default(false) %}
+            <div class="filter-card filter-card--reset">
+                <a href="{{ path(app.request.attributes.get('_route')) }}" class="btn btn-outline-dark btn-sm w-100">
+                    Réinitialiser les filtres
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('{{ filterFormId|default(prefix ~ '-form') }}');
+    if (!form) {
+        return;
+    }
+
+    const togglePanel = (button, panel) => {
+        if (!panel) {
+            return;
+        }
+        const isHidden = panel.hasAttribute('hidden');
+        panel.toggleAttribute('hidden', !isHidden);
+        button.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+        const icon = button.querySelector('[data-icon]');
+        if (icon) {
+            icon.classList.toggle('bi-plus-lg', !isHidden);
+            icon.classList.toggle('bi-dash-lg', isHidden);
+        }
+    };
+
+    form.querySelectorAll('[data-filter-target]').forEach(button => {
+        const selector = button.getAttribute('data-filter-target');
+        const panel = selector ? form.querySelector(selector) : null;
+        button.addEventListener('click', (event) => {
+            if (button.classList.contains('filter-accordion__toggle--icon-only')) {
+                event.preventDefault();
+                togglePanel(button, panel);
+            } else {
+                togglePanel(button, panel);
+            }
+        });
+    });
+
+    form.querySelectorAll('[data-filter-group]').forEach(group => {
+        const inputs = group.querySelectorAll('input');
+        const validateButton = group.querySelector('[data-role="validate-btn"]');
+        if (!validateButton) {
+            return;
+        }
+        const updateState = () => {
+            const hasSelection = Array.from(inputs).some(input => {
+                return input.type === 'radio' ? input.checked : input.checked;
+            });
+            validateButton.classList.toggle('d-none', !hasSelection);
+        };
+        inputs.forEach(input => input.addEventListener('change', updateState));
+        updateState();
+    });
+
+    const ratingRadio = form.querySelector('[data-rating-radio]');
+    const ratingPanel = form.querySelector('#{{ prefix }}-ratings');
+    const ratingButton = form.querySelector('[data-filter-target="#{{ prefix }}-ratings"]');
+    const evaluationIcon = form.querySelector('[data-icon="evaluation"]');
+    const ratingCheckboxes = form.querySelectorAll('[data-rating-checkbox]');
+
+    const openRatingPanel = () => {
+        if (!ratingPanel || !ratingButton) {
+            return;
+        }
+        if (evaluationIcon) {
+            evaluationIcon.classList.remove('bi-plus-lg');
+            evaluationIcon.classList.add('bi-dash-lg');
+        }
+        if (ratingPanel.hasAttribute('hidden')) {
+            ratingPanel.removeAttribute('hidden');
+        }
+        ratingButton.setAttribute('aria-expanded', 'true');
+        const icon = ratingButton.querySelector('[data-icon]');
+        if (icon) {
+            icon.classList.remove('bi-plus-lg');
+            icon.classList.add('bi-dash-lg');
+        }
+    };
+
+    ratingCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            if (ratingRadio && !ratingRadio.checked) {
+                ratingRadio.checked = true;
+            }
+            openRatingPanel();
+        });
+    });
+
+    if (ratingRadio) {
+        const ensureOpen = () => {
+            openRatingPanel();
+        };
+        ratingRadio.addEventListener('change', ensureOpen);
+        ratingRadio.addEventListener('click', ensureOpen);
+    }
+});
+</script>
+
+<style>
+    .filter-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .filter-card {
+        border: 1px solid #e6e6e6;
+        border-radius: 12px;
+        background-color: #fff;
+    }
+    .filter-card__header {
+        padding: 1rem 1.25rem 0.5rem;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .filter-card__title {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+    .filter-card__body {
+        padding: 1.25rem;
+    }
+    .filter-accordion + .filter-accordion {
+        border-top: 1px solid #f3f3f3;
+        padding-top: 1.25rem;
+        margin-top: 1.25rem;
+    }
+    .filter-accordion__toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: none;
+        border: none;
+        padding: 0;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #1d1d1f;
+    }
+    .filter-accordion__toggle:hover {
+        color: #0f0f10;
+    }
+    .filter-accordion__panel {
+        margin-top: 1rem;
+    }
+    .filter-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    .filter-list__item {
+        display: flex;
+        align-items: center;
+        font-size: 0.95rem;
+        cursor: pointer;
+        color: #1d1d1f;
+    }
+    .filter-list--radio .filter-list__item {
+        margin-bottom: 0.5rem;
+    }
+    .filter-actions {
+        margin-top: 1rem;
+        text-align: right;
+    }
+    .filter-card--reset {
+        border: none;
+        background: transparent;
+        padding: 0;
+    }
+    .filter-card--reset .btn {
+        border-radius: 999px;
+    }
+    @media (min-width: 992px) {
+        .filter-stack {
+            gap: 1rem;
+        }
+    }
+</style>
+

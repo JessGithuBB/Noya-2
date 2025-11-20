@@ -27,3 +27,5 @@ MODIFY COLUMN billing_address LONGTEXT DEFAULT NULL;
 -- Fin du script
 
 
+
+

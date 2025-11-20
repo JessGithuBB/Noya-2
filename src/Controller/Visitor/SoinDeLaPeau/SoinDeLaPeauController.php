@@ -3,45 +3,51 @@
 namespace App\Controller\Visitor\SoinDeLaPeau;
 
 use App\Repository\ArticlesRepository;
-use App\Repository\CategoryRepository;
+use App\Service\CatalogFilterService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class SoinDeLaPeauController extends AbstractController
 {
-#[Route('/soin-de-la-peau', name: 'app_visitor_soin-de-la-peau')]
-public function soin(Request $request, CategoryRepository $categoryRepository, ArticlesRepository $articleRepository): Response
-{
-    $selectedIds = $request->query->all('categories');
+#[Route('/soin-de-la-peau', name: 'app_visitor_soin-de-la-peau', methods: ['GET'])]
+public function soin(
+    Request $request,
+    ArticlesRepository $articlesRepository,
+    CatalogFilterService $catalogFilterService
+): Response {
+    $selectedTypes = $catalogFilterService->resolveProductTypes($request->query->all('types'));
+    $selectedIssues = $catalogFilterService->resolveProblematicKeywords($request->query->all('issues'));
+    $selectedRatings = $catalogFilterService->resolveRatingFilters($request->query->all('ratings'));
+
+    $sort = $catalogFilterService->sanitizeSort($request->query->get('sort'));
     
-    $articles = $articleRepository->findByCategories($selectedIds);
-    $categories = $categoryRepository->findBy(['parent' => null]);
+    $articles = $articlesRepository->findWithFilters(
+        $selectedTypes['idList'],
+        $selectedIssues['idList'],
+        array_map('mb_strtolower', $selectedRatings['keywordNames']),
+        $sort,
+        $selectedRatings['scoreMap'],
+        $sort === CatalogFilterService::SORT_BEST_SELLERS
+    );
 
     return $this->render('pages/visitor/soin-de-la-peau/index.html.twig', [
         'articles' => $articles,
-        'categories' => $categories,
-        'selectedCategories' => $selectedIds,
-    ]);
-
-    $categoriesWithSubs = [];
-
-foreach ($categories as $category) {
-    $subcategories = $subcategoryRepository->findBy(['category' => $category]);
-
-    if (count($subcategories) > 0) {
-        $categoriesWithSubs[] = [
-            'category' => $category,
-            'subcategories' => $subcategories,
-        ];
-    }
-}
-
-return $this->render('soin_de_la_peau/index.html.twig', [
-    'categories' => $categoriesWithSubs,
-    'selectedCategories' => $selectedCategories,
+        'filterOptions' => $catalogFilterService->getProductTypeOptions(),
+        'issueOptions' => $catalogFilterService->getProblematicOptions(),
+        'ratingOptions' => $catalogFilterService->getRatingOptions(),
+        'selectedTypes' => $selectedTypes['values'],
+        'selectedIssues' => $selectedIssues['values'],
+        'selectedRatings' => $selectedRatings['values'],
+        'selectedSort' => $sort,
+        'filterFormId' => 'catalog-filters-soin',
+        'hasActiveFilters' => $catalogFilterService->hasActiveSelection(
+            $selectedTypes['values'],
+            $selectedIssues['values'],
+            $selectedRatings['values'],
+            $sort
+        ),
 ]);
-
 }
 }
